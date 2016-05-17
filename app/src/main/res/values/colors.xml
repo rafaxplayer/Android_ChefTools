@@ -1,0 +1,14 @@
+<resources>
+    <color name="colorPrimary">#ff8b4513</color>
+    <color name="colorPrimaryDark">#5e200f</color>
+    <color name="colorAccent">#802002</color>
+    <color name="windowBackgroundColor">#D2B48C</color>
+    <color name="editBackgroundColor">#38fdffd5</color>
+    <color name="textColorDark">#802002</color>
+    <color name="textTitletColor">#B8860B</color>
+    <color name="itemSelectColor">#bcc68f0b</color>
+    <color name="textNameColor">#de20251c</color>
+    <color name="editextback">#89c7aa80</color>
+    <color name="introred">#cc0000</color>
+
+</resources>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_imagebutton_more"
+    android:focusable="false"
+    android:orientation="horizontal"
+    android:padding="5dp">
+
+    <FrameLayout
+        android:layout_width="@dimen/image_dimen_thumbnail"
+        android:layout_height="@dimen/image_dimen_thumbnail"
+        android:layout_gravity="center_vertical"
+        android:background="#ffb8860b"
+        android:padding="1dp">
+
+        <ImageView
+            android:id="@+id/imageList"
+            android:layout_width="@dimen/image_dimen_thumbnail"
+            android:layout_height="@dimen/image_dimen_thumbnail"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:src="@drawable/item_image_placeholder" />
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical"
+        android:padding="5dp"
+        android:layout_marginLeft="6dp">
+
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Large Text"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textStyle="bold|italic"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/textNameColor" />
+
+        <TextView
+            android:id="@+id/text2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/text_list_padding_top"
+            android:text="Medium Text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="italic" />
+    </LinearLayout>
+</LinearLayout>

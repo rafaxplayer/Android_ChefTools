@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/edit"
+        android:title="@string/edit_menu"
+        android:icon="@drawable/ic_editrecipe"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/share"
+        android:title="@string/share_menu"
+        android:icon="@drawable/ic_share"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+</menu>

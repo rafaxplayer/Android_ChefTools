@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="imge_menu_width">100dp</dimen>
+    <dimen name="imge_menu_height">80dp</dimen>
+    <dimen name="text_menu_size">25sp</dimen>
+    <dimen name="image_dimen_thumbnail">80dp</dimen>
+    <dimen name="image_dimen_thumbnail_min">45dp</dimen>
+    <dimen name="item_menu_padding">25dp</dimen>
+    <dimen name="image_dimen_width">240dp</dimen>
+    <dimen name="image_dimen_height">190dp</dimen>
+    <dimen name="dimen_textbuttons">14dp</dimen>
+    <dimen name="text_list_padding_top">4dp</dimen>
+    <dimen name="icon_list_dimen">35dp</dimen>
+    <dimen name="texttitle_width">500dp</dimen>
+</resources>

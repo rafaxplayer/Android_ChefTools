@@ -1,0 +1,189 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context="rafaxplayer.micocina.fragments.Detalle_Recipes_Fragment">
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="false"
+        android:padding="15dp">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/menunamedetalle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:capitalize="words"
+                android:ellipsize="end"
+                android:text="@string/menu_name"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="normal|bold|italic" />
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/textTitletColor" />
+
+
+            <TextView
+                android:id="@+id/titlemenuEntrantes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/menu_entrantes"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+
+                android:textColor="@color/colorPrimary"
+                android:textStyle="normal|italic" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/textTitletColor" />
+
+            <TextView
+                android:id="@+id/menuEntrantes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="15dp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/titleMenuPrimerosPlatos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/menu_primeros"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+
+                android:textColor="@color/colorPrimary"
+                android:textStyle="normal|italic" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/textTitletColor" />
+
+            <TextView
+                android:id="@+id/menuPrimeros"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="15dp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/menutitleSegundosPlatos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/menu_segundos"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+
+                android:textColor="@color/colorPrimary"
+                android:textStyle="normal|italic" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/textTitletColor" />
+
+            <TextView
+                android:id="@+id/menuSegundos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:clickable="true"
+                android:inputType="textMultiLine"
+                android:text=""
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="15dp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/menutitlePostre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/menu_postres"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+
+                android:textColor="@color/colorPrimary"
+                android:textStyle="normal|italic" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/textTitletColor" />
+
+            <TextView
+                android:id="@+id/menuPostres"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:clickable="true"
+                android:inputType="textMultiLine"
+                android:text=""
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="15dp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/menuComentarios"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/comments"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+
+                android:textColor="@color/colorPrimary"
+                android:textStyle="normal|italic" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/textTitletColor" />
+
+            <TextView
+                android:id="@+id/menuComentario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:clickable="true"
+                android:inputType="textMultiLine"
+                android:text=""
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="15dp"
+                android:textStyle="italic" />
+        </LinearLayout>
+
+    </ScrollView>
+
+</FrameLayout>

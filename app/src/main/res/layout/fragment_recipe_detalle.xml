@@ -1,0 +1,165 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context="rafaxplayer.micocina.fragments.Detalle_Recipes_Fragment">
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="false"
+        android:padding="15dp">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="@dimen/image_dimen_width"
+                android:layout_height="@dimen/image_dimen_height"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/colorPrimary"
+                android:padding="4dp">
+
+                <ImageView
+                    android:id="@+id/imgRecipedetalle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:cropToPadding="false"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/placeholder_recetas" />
+
+            </FrameLayout>
+
+
+            <TextView
+                android:id="@+id/recipenamedetalle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:capitalize="words"
+                android:ellipsize="end"
+                android:text="@string/recipe_title"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="normal|bold|italic" />
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/textTitletColor" />
+
+            <TextView
+                android:id="@+id/recipecategorydetalle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/recipe_category"
+
+
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorPrimary"
+                android:textIsSelectable="true"
+                android:textStyle="normal|italic" />
+
+
+            <TextView
+                android:id="@+id/titleIngredientes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/recipe_ingredients"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+
+                android:textColor="@color/colorPrimary"
+                android:textStyle="normal|italic" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/textTitletColor" />
+
+            <TextView
+                android:id="@+id/textIngredientes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:text="@string/recipe_ingredients"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="15dp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/titleElaboration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/recipe_elaboration"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+
+                android:textColor="@color/colorPrimary"
+                android:textStyle="normal|italic" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/textTitletColor" />
+
+            <TextView
+                android:id="@+id/textElaboration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:text="Elaboration process"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="15dp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/titleUrl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/recipe_url"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+
+                android:textColor="@color/colorPrimary"
+                android:textStyle="normal|italic" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/textTitletColor" />
+
+            <TextView
+                android:id="@+id/textUrl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:clickable="true"
+                android:inputType="textUri"
+                android:text="http://..."
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="15dp"
+                android:textStyle="italic" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</FrameLayout>

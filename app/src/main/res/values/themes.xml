@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="AppTheme.Base" />
+
+    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:textColorPrimary">@color/textTitletColor</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowBackground">@color/windowBackgroundColor</item>
+        <item name="android:editTextStyle">@style/EditStyle</item>
+        <item name="md_background_color">@color/windowBackgroundColor</item>
+        <item name="md_title_color">@color/colorPrimary</item>
+        <item name="md_content_color">#ff565656</item>
+        <item name="md_positive_color">#ff030101</item>
+        <item name="md_neutral_color">#ff030101</item>
+        <item name="md_negative_color">#ff030101</item>
+        <item name="bs_bottomSheetStyle">@style/BottomSheet.StyleDialog</item>
+    </style>
+
+</resources>

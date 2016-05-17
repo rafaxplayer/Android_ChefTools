@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="imge_menu_width">100dp</dimen>
+    <dimen name="imge_menu_height">100dp</dimen>
+    <dimen name="imge_menu_padding">30dp</dimen>
+    <dimen name="text_menu_size">15sp</dimen>
+    <dimen name="text_menu_margintop">10sp</dimen>
+    <dimen name="item_menu_padding">15dp</dimen>
+    <dimen name="item_menu_margin">20dp</dimen>
+    <dimen name="image_dimen_thumbnail">60dp</dimen>
+    <dimen name="image_dimen_thumbnail_min">40dp</dimen>
+    <dimen name="image_dimen_width">240dp</dimen>
+    <dimen name="image_dimen_height">190dp</dimen>
+    <dimen name="dimen_padding_button">10dp</dimen>
+    <dimen name="dimen_textbuttons">12dp</dimen>
+    <dimen name="text_list_padding_top">2dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="fab_margin_right">0dp</dimen>
+    <dimen name="fab_margin_bottom">0dp</dimen>
+    <dimen name="fab_elevation">5dp</dimen>
+    <dimen name="text_medium">15sp</dimen>
+    <dimen name="icon_list_dimen">30dp</dimen>
+    <dimen name="icon_list_margin">20dp</dimen>
+    <dimen name="icon_list_padding">5dp</dimen>
+    <dimen name="floatbuttonBorder">0dp</dimen>
+    <dimen name="texttitle_width">500dp</dimen>
+    <dimen name="dimen_fabmargin">15dp</dimen>
+    <dimen name="dimen_introtext">35sp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="dimen_gallery_thumbnail_min">150dp</dimen>
+
+</resources>

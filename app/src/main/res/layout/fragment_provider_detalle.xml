@@ -1,0 +1,197 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="false"
+        android:padding="15dp">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/providername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:capitalize="words"
+                android:ellipsize="end"
+                android:text="@string/provider_name"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="normal|bold|italic" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/textTitletColor" />
+
+            <TextView
+                android:id="@+id/titleProviderTelefono"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/phone"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+
+                android:textColor="@color/colorPrimary"
+                android:textStyle="normal|italic" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/textTitletColor" />
+
+            <TextView
+                android:id="@+id/providerTelefono"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_phone"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:background="@android:drawable/list_selector_background"
+                android:textSize="20dp"
+                android:textStyle="italic"
+                android:padding="10dp"
+                android:drawablePadding="7dp"
+                android:clickable="true"
+                android:editable="false"
+
+                />
+
+            <TextView
+                android:id="@+id/titleProviderEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/email"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+
+                android:textColor="@color/colorPrimary"
+                android:textStyle="normal|italic" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/textTitletColor" />
+
+            <TextView
+                android:id="@+id/providerEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_e_mail"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:background="@android:drawable/list_selector_background"
+                android:textSize="20dp"
+                android:textStyle="italic"
+                android:padding="10dp"
+                android:drawablePadding="7dp"
+                android:clickable="true"
+                android:editable="false"
+
+                />
+
+            <TextView
+                android:id="@+id/titleProviderDireccion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/address"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+
+                android:textColor="@color/colorPrimary"
+                android:textStyle="normal|italic" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/textTitletColor" />
+
+            <TextView
+                android:id="@+id/providerDireccion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="15dp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/titleProviderCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/provider_category"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+
+                android:textColor="@color/colorPrimary"
+                android:textStyle="normal|italic" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/textTitletColor" />
+
+            <TextView
+                android:id="@+id/providerCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:clickable="true"
+                android:inputType="textMultiLine"
+                android:text=""
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="15dp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/providerTitleComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/comments"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+
+                android:textColor="@color/colorPrimary"
+                android:textStyle="normal|italic" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/textTitletColor" />
+
+            <TextView
+                android:id="@+id/providerComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:clickable="true"
+                android:inputType="textMultiLine"
+                android:text=""
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="15dp"
+                android:textStyle="italic" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</FrameLayout>
+

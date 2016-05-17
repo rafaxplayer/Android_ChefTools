@@ -1,0 +1,192 @@
+<resources>
+    <string name="app_name">Herramientas para Chefs</string>
+
+    <string-array name="categorys_recipes">
+        <item>Aperitivos</item>
+        <item>Ensaladas</item>
+        <item>Sopas</item>
+        <item>Pasta</item>
+        <item>Legumbres</item>
+        <item>Verduras</item>
+        <item>Carnes</item>
+        <item>Pescados</item>
+        <item>Salsas</item>
+        <item>Postres</item>
+        <item>Otros</item>
+    </string-array>
+
+    <string-array name="categorys_products">
+        <item>Carnes</item>
+        <item>Espécias</item>
+        <item>Frutas</item>
+        <item>Pastas</item>
+        <item>Legumbres</item>
+        <item>Verduras</item>
+        <item>Reposteria</item>
+        <item>Hiervas</item>
+        <item>Quimicos</item>
+        <item>Conservas</item>
+        <item>Pescados</item>
+        <item>Mariscos</item>
+        <item>Lacteos</item>
+        <item>Salsas</item>
+        <item>Bodega</item>
+        <item>Otros</item>
+    </string-array>
+
+    <string-array name="format_products">
+        <item>Unidades</item>
+        <item>Latas</item>
+        <item>Botellas</item>
+        <item>Litros</item>
+        <item>Paquetes</item>
+        <item>.Kg</item>
+        <item>.gr</item>
+        <item>Rollos</item>
+        <item>Bolsas</item>
+        <item>Otros</item>
+    </string-array>
+
+    <string name="action_settings">Ajustes</string>
+    <string name="recipes">Recetas</string>
+    <string name="menus">Menus-Cartas</string>
+    <string name="providers">Proveedores</string>
+    <string name="products">Productos</string>
+    <string name="orders">Pedidos</string>
+    <string name="inventories">Inventarios</string>
+
+    <string name="recipe_title">Título De La Receta</string>
+    <string name="recipe_category">Categoria De La Receta</string>
+    <string name="recipe_time">Tiempo De Elaboración</string>
+    <string name="recipe_ingredients">Ingredientes</string>
+    <string name="recipe_elaboration">Elaboración</string>
+    <string name="recipe_url">Enlace De La Receta</string>
+    <string name="add_image">Añadir Imagen</string>
+    <string name="save">Guardar</string>
+    <string name="searchhint">Texto a Buscar...</string>
+    <string name="done">Echo</string>
+    <string name="cancel">Cancelar</string>
+    <string name="noresults">Sin resultado</string>
+    <string name="deleterecipetitle">Eliminar Recetas</string>
+    <string name="deleterecipesmsg">Deseas eliminar las ### recetas seleccionadas</string>
+    <string name="activity_recipes">Recetas del Chef</string>
+    <string name="activity_newedit">Editar o Crear Receta</string>
+    <string name="activity_detallerecipe">Detalles de la Receta</string>
+    <string name="activity_menuslist">Menus/Cartas</string>
+    <string name="selectpicture">Selecciona Imagen</string>
+    <string name="urlimage">Ecribe la Url de la Imagen</string>
+    <string name="dlgerror_namerecipe">Debes escribir un nombre </string>
+    <string name="dlgsucces_saved">Guardado con exito!</string>
+    <string name="dlgnew_saved">¿Deseas Editar otra ?</string>
+    <string name="yes">Si</string>
+    <string name="not">No</string>
+    <string name="dlgok_update">Actualizado con exito!!</string>
+    <string name="menu_edit_recipe">Editar Receta</string>
+    <string name="menu_delete_recipe">Eliminar Receta</string>
+    <string name="menu_new_recipe">Nueva Receta</string>
+    <string name="menu_image_photo">Desde Foto</string>
+    <string name="menu_image_gallery">Desde Galeria de Imagenes</string>
+    <string name="menu_image_url">Desde Enlace</string>
+    <string name="search">Buscar</string>
+    <string name="refresh">Actualizar</string>
+    <string name="sharerecipe">Compartir Receta</string>
+    <string name="share_recipe_use">Compartir con :</string>
+    <string name="activity_menus">Menus/Cartas</string>
+    <string name="menu_name">Nombre del Menu/Carta</string>
+    <string name="menu_entrantes">Entrantes</string>
+    <string name="menu_primeros">Primeros Platos</string>
+    <string name="menu_segundos">Segundos Platos</string>
+    <string name="menu_postres">Postres</string>
+    <string name="comments">Comentarios</string>
+    <string name="share_menu">Compartir Menu</string>
+    <string name="edit_menu">Editar Menu/Carta</string>
+    <string name="activity_detallemenu">Detalles Menu</string>
+    <string name="activity_neweditmenu">Editar/Nuevo Menu</string>
+    <string name="new_menu">Nuevo menu/Carta</string>
+    <string name="activity_detallesproveedor">Detalle Proveedor</string>
+    <string name="activity_providers">Proveedores</string>
+    <string name="activity_newedit_provider">Editar/Nuevo Proveedor</string>
+    <string name="provider_name">Nombre o Razon Social Proveedor</string>
+    <string name="phone">Numero de Telefono</string>
+    <string name="address">Direcciòn</string>
+    <string name="provider_category">Categoria del Proveedor</string>
+    <string name="menu_edit_provider">Editar Proveedor</string>
+    <string name="menu_new_provider">Nuevo Proveedor</string>
+    <string name="search_recipe_url">Buscar receta en la web ---></string>
+    <string name="menu_edit_Supplier">Editar Datos Proveedor</string>
+    <string name="menu_share_supplier">Compartir Datos del proveedor</string>
+    <string name="email">Direccion De Correo</string>
+    <string name="activity_detalle_orders">Pedidos</string>
+    <string name="activity_newedit_orders">Editar o Crear Lista de Pedidos</string>
+    <string name="activity_orders">Listas De Pedidos</string>
+    <string name="order_title">Nombre De La Lista de Pedido</string>
+    <string name="menu_new_order">Nombre Nueva Lista De Pedidos</string>
+    <string name="new_orderslist">Nueva Lista de Pedidos</string>
+    <string name="new_product">Nuevo Producto</string>
+    <string name="product_name">Nombre del Producto</string>
+    <string name="product_category">Categoria Del Producto</string>
+    <string name="product_supplier">Proveedor del Producto</string>
+    <string name="product_format">Formato del Producto</string>
+    <string name="none">Ninguno</string>
+    <string name="products_list">Listado De Productos</string>
+    <string name="deleteproductmsg">¿Quieres eliminar el producto seleccionado?</string>
+    <string name="deleteproducttitle">Eliminar Producto</string>
+    <string name="newedit_product">Nuevo/Editar Producto</string>
+    <string name="searchforcategory">Busqueda Por categoria</string>
+    <string name="order_list">Lista de Pedido</string>
+    <string name="order_finish">Finalizar Lista </string>
+    <string name="add_product">Añadir Producto a la Lista</string>
+    <string name="enter_product_cant">Intruduce Cantidad De producto</string>
+    <string name="add_provider_lis">Proveedor Para Esta lista</string>
+    <string name="dlgerror_dataexist">Los Datos ya existen</string>
+    <string name="order_delete">Eliminar Lista de pedidos</string>
+    <string name="deleteordermsg">¿Quieres eliminar la lista seleccionada?</string>
+    <string name="menu_share_order">Compartir Lista se pedidos</string>
+    <string name="edit_order">Editar Lista De Pedidos</string>
+    <string name="product_exist">El producto ya existe en esta lista</string>
+
+    <string name="new_category">Nueva Categoria</string>
+    <string name="admin_cat_pro">Categorias de Productos</string>
+    <string name="admin_cat_recipes">Categorias de Recetas</string>
+    <string name="admin_pro_format">Formato de Productos</string>
+    <string name="activity_config">Configuración</string>
+    <string name="activity_stoks">Inventarios</string>
+    <string name="new_stocklist">Nuevo Inventario</string>
+    <string name="name_stock_list">Nombre del inventario</string>
+    <string name="stock_lis">Lista del Inventario </string>
+    <string name="activity_newedit_stocks">Editar/Crear Inventario</string>
+    <string name="menu_new_stock">Nombre nuevo inventario</string>
+    <string name="stock_title">Nombre Inventario</string>
+    <string name="name">Nombre</string>
+    <string name="backups">Copias De Seguridad</string>
+    <string name="restore_backups_summary">Los datos actuales desapreceran y se restaurara la copia seleccionada,crea una copia si quieres conservarlos.</string>
+    <string name="dialog_backup_error">Error al crear copia de seguridad</string>
+    <string name="dialog_backup_ok">Copia de seguridad Creada con exito!</string>
+    <string name="dialog_backup_restore_error">Error al restaurar copia.</string>
+    <string name="dialog_backup_restore_ok">Restauración completada!</string>
+    <string name="dlg_backup_question">¿Quieres crear copia de datos actuales?</string>
+    <string name="actions_backup">Acciones Copia de Seguridad</string>
+    <string name="delete_provider">Eliminar porveedores</string>
+    <string name="menu_delete_backup">Eliminar Copia </string>
+    <string name="menu_restore_backup">Restaurar Copia</string>
+    <string name="delete_backup_question">¿Eliminar Copia?</string>
+    <string name="activity_tools">Herramientas</string>
+    <string name="menu_calendar">Calendario</string>
+    <string name="menu_calculator">Calculadora</string>
+    <string name="menu_internet">Internet</string>
+    <string name="menu_notes">Notas</string>
+    <string name="menu_action_items">Acciones para la entrada</string>
+    <string name="menu_delete_item">Eliminar Entrada</string>
+    <string name="deleteitemmsg">¿Quieres eliminar la entrada seleccionada ### ?</string>
+    <string name="created">Creada el :</string>
+    <string name="supplier">Proveedor</string>
+    <string name="menu_contacts">Contactos</string>
+    <string name="add_new">Añadir Nuevo</string>
+    <string name="menu_edit_stock">Editar Inventario</string>
+    <string name="menu_share_stock">Compartir Inventario</string>
+    <string name="quantity">Cant...</string>
+    <string name="back_exit">Presiona otra vez para salir.</string>
+    <string name="gallery_recipes">Galeria de Imagenes</string>
+    <string name="view_recipe">Ver Detalles Receta</string>
+    <string name="counter_images" formatted="false">( %d de %d )</string>
+</resources>

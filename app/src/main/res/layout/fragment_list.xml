@@ -1,0 +1,74 @@
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipe_refresh_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/layoutempty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:clickable="true"
+            android:focusable="false"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/imgnew"
+                android:layout_width="@dimen/image_dimen_height"
+                android:layout_height="@dimen/image_dimen_height"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/emptyimage" />
+            <TextView
+                android:id="@+id/emptyText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="-15dp"
+                android:inputType="textCapWords"
+                android:text="New Item"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#b06740"
+                android:textIsSelectable="false"
+                android:textSize="30dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list_items"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="5dp"
+            android:scrollbars="vertical" />
+
+        <com.melnykov.fab.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="20dp"
+            android:elevation="5dp"
+            android:src="@drawable/ic_up"
+            fab:fab_colorNormal="@color/colorPrimary"
+            fab:fab_colorPressed="@color/colorPrimaryDark"/>
+
+        <com.melnykov.fab.FloatingActionButton
+            android:id="@+id/fabGallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|right"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="20dp"
+            android:elevation="5dp"
+            android:src="@drawable/ic_gallery_fab"
+            fab:fab_colorNormal="@color/colorPrimary"
+            fab:fab_colorPressed="@color/colorPrimaryDark"
+            android:visibility="gone" />
+    </FrameLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

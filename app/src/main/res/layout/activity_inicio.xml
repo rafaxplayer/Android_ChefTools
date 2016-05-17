@@ -1,0 +1,299 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Menu_Inicio_Activity">
+
+    <include layout="@layout/toolbar" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="20dp"
+            android:orientation="vertical"
+            android:paddingBottom="20dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/recetas_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="@dimen/item_menu_margin"
+
+                    android:clickable="true"
+                    android:onClick="menuClick"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/imge_menu_width"
+                        android:layout_height="@dimen/imge_menu_height"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/button_menu_inicio_selector"
+                        android:padding="@dimen/imge_menu_padding"
+                        android:src="@drawable/recipes" />
+
+                    <rafaxplayer.cheftools.Globalclasses.MyTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="@string/recipes"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/textColorDark"
+                        android:textSize="@dimen/text_menu_size"
+                        android:layout_marginTop="@dimen/text_menu_margintop" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/menus_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+
+                    android:layout_margin="@dimen/item_menu_margin"
+                    android:baselineAligned="false"
+                    android:clickable="true"
+                    android:onClick="menuClick"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/imge_menu_width"
+                        android:layout_height="@dimen/imge_menu_height"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/button_menu_inicio_selector"
+                        android:padding="@dimen/imge_menu_padding"
+                        android:src="@drawable/menus" />
+
+                    <rafaxplayer.cheftools.Globalclasses.MyTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="@string/menus"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/textColorDark"
+                        android:textSize="@dimen/text_menu_size"
+                        android:layout_marginTop="@dimen/text_menu_margintop" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/providers_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_margin="@dimen/item_menu_margin"
+                    android:clickable="true"
+                    android:onClick="menuClick"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/imge_menu_width"
+                        android:layout_height="@dimen/imge_menu_height"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/button_menu_inicio_selector"
+                        android:padding="@dimen/imge_menu_padding"
+                        android:src="@drawable/providers" />
+
+                    <rafaxplayer.cheftools.Globalclasses.MyTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/providers"
+
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/textColorDark"
+                        android:textSize="@dimen/text_menu_size"
+                        android:layout_marginTop="@dimen/text_menu_margintop" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/orders_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_margin="@dimen/item_menu_margin"
+                    android:clickable="true"
+                    android:onClick="menuClick"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/imge_menu_width"
+                        android:layout_height="@dimen/imge_menu_height"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/button_menu_inicio_selector"
+                        android:padding="@dimen/imge_menu_padding"
+                        android:src="@drawable/purchase" />
+
+                    <rafaxplayer.cheftools.Globalclasses.MyTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/orders"
+
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/textColorDark"
+                        android:textSize="@dimen/text_menu_size"
+                        android:layout_marginTop="@dimen/text_menu_margintop" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/products_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_margin="@dimen/item_menu_margin"
+                    android:clickable="true"
+                    android:onClick="menuClick"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/imge_menu_width"
+                        android:layout_height="@dimen/imge_menu_height"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/button_menu_inicio_selector"
+                        android:padding="@dimen/imge_menu_padding"
+                        android:src="@drawable/product" />
+
+                    <rafaxplayer.cheftools.Globalclasses.MyTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/products"
+
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/textColorDark"
+                        android:textSize="@dimen/text_menu_size"
+                        android:layout_marginTop="@dimen/text_menu_margintop"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/inventories_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_margin="@dimen/item_menu_margin"
+                    android:clickable="true"
+                    android:onClick="menuClick"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/imge_menu_width"
+                        android:layout_height="@dimen/imge_menu_height"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/button_menu_inicio_selector"
+                        android:padding="@dimen/imge_menu_padding"
+                        android:src="@drawable/inventory" />
+
+                    <rafaxplayer.cheftools.Globalclasses.MyTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/inventories"
+
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/textColorDark"
+                        android:textSize="@dimen/text_menu_size"
+                        android:layout_marginTop="@dimen/text_menu_margintop"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/settings_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_margin="@dimen/item_menu_margin"
+                    android:clickable="true"
+                    android:onClick="menuClick"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/imge_menu_width"
+                        android:layout_height="@dimen/imge_menu_height"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/button_menu_inicio_selector"
+                        android:padding="@dimen/imge_menu_padding"
+                        android:src="@drawable/config" />
+
+                    <rafaxplayer.cheftools.Globalclasses.MyTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/action_settings"
+
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/textColorDark"
+                        android:textSize="@dimen/text_menu_size"
+                        android:layout_marginTop="@dimen/text_menu_margintop"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tools_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_margin="@dimen/item_menu_margin"
+                    android:clickable="true"
+                    android:onClick="menuClick"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/imge_menu_width"
+                        android:layout_height="@dimen/imge_menu_height"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/button_menu_inicio_selector"
+                        android:padding="@dimen/imge_menu_padding"
+                        android:src="@drawable/tools" />
+
+                    <rafaxplayer.cheftools.Globalclasses.MyTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/activity_tools"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/textColorDark"
+                        android:textSize="@dimen/text_menu_size"
+                        android:layout_marginTop="@dimen/text_menu_margintop"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

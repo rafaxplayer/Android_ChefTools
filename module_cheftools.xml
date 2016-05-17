@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_cheftools" default="compile.module.cheftools">
+  <dirname property="module.cheftools.basedir" file="${ant.file.module_cheftools}"/>
+  
+  <property name="module.jdk.home.cheftools" value="${jdk.home.1.7}"/>
+  <property name="module.jdk.bin.cheftools" value="${jdk.bin.1.7}"/>
+  <property name="module.jdk.classpath.cheftools" value="jdk.classpath.1.7"/>
+  
+  <property name="compiler.args.cheftools" value="-encoding UTF-8 -source 1.7 ${compiler.args}"/>
+  
+  <property name="cheftools.output.dir" value="${module.cheftools.basedir}/build/classes/production/ChefTools"/>
+  <property name="cheftools.testoutput.dir" value="${module.cheftools.basedir}/build/classes/test/ChefTools"/>
+  
+  <path id="cheftools.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="cheftools.module.production.classpath">
+    <path refid="${module.jdk.classpath.cheftools}"/>
+  </path>
+  
+  <path id="cheftools.runtime.production.module.classpath">
+    <pathelement location="${cheftools.output.dir}"/>
+  </path>
+  
+  <path id="cheftools.module.classpath">
+    <path refid="${module.jdk.classpath.cheftools}"/>
+    <pathelement location="${cheftools.output.dir}"/>
+  </path>
+  
+  <path id="cheftools.runtime.module.classpath">
+    <pathelement location="${cheftools.testoutput.dir}"/>
+    <pathelement location="${cheftools.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.cheftools">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.cheftools">
+    <patternset refid="excluded.from.module.cheftools"/>
+  </patternset>
+  
+  
+  <target name="compile.module.cheftools" depends="compile.module.cheftools.production,compile.module.cheftools.tests" description="Compile module ChefTools"/>
+  
+  <target name="compile.module.cheftools.production" depends="register.custom.compilers" description="Compile module ChefTools; production classes"/>
+  
+  <target name="compile.module.cheftools.tests" depends="register.custom.compilers,compile.module.cheftools.production" description="compile module ChefTools; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.cheftools" description="cleanup module">
+    <delete dir="${cheftools.output.dir}"/>
+    <delete dir="${cheftools.testoutput.dir}"/>
+  </target>
+</project>

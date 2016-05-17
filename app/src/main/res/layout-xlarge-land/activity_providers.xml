@@ -1,0 +1,30 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    tools:context=".Recipes_Activity"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="60" />
+
+        <fragment
+            android:id="@+id/detalleprovider"
+            android:name="rafaxplayer.cheftools.providers.fragment.ProviderDetalle_Fragment"
+            tools:layout="@layout/fragment_provider_detalle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="40" />
+    </LinearLayout>
+
+</LinearLayout>

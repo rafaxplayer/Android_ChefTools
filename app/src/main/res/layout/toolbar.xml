@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    >
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/toolbarStyle"
+        app:popupTheme="@style/PopupMenu">
+
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:id="@+id/contenttoolbar"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_toolbar_normal" />
+
+        <rafaxplayer.cheftools.Globalclasses.MyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/app_name"
+            android:id="@+id/texttitle"
+            android:layout_gravity="center_vertical"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textSize="18sp"
+            android:maxWidth="@dimen/texttitle_width"
+            android:textIsSelectable="true"
+            android:textColor="@color/textTitletColor"
+            android:layout_marginTop="-10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
+            android:shadowColor="@color/colorAccent"
+            android:shadowDx="3"
+            android:shadowDy="3"
+            android:shadowRadius="1.5"/>
+    </LinearLayout>
+
+</FrameLayout>
+

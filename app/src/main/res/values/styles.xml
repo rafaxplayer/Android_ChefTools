@@ -1,0 +1,64 @@
+<resources>
+
+    <style name="toolbarStyle" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:textColorSecondary">@color/textTitletColor</item>
+        <item name="android:textColorPrimary">@color/textTitletColor</item>
+        <item name="android:textColor">@color/textTitletColor</item>
+        <item name="android:actionModeStyle">@style/ActionMode</item>
+        <item name="actionModeStyle">@style/ActionMode</item>
+    </style>
+
+    <style name="PopupMenu">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textStyle">bold|italic</item>
+        <item name="android:background">@color/windowBackgroundColor</item>
+        <item name="android:selectableItemBackground">@color/textTitletColor</item>
+    </style>
+
+    <style name="EditStyle" parent="@android:style/Widget.EditText">
+        <item name="android:background">@drawable/backedittext</item>
+    </style>
+
+    <style name="button" parent="@android:style/Widget.Button">
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+        <item name="android:textColor">#ffffffff</item>
+        <item name="android:shadowColor">#FF000000</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">-1</item>
+        <item name="android:shadowRadius">0.2</item>
+        <item name="android:textSize">@dimen/dimen_textbuttons</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@drawable/selector_button</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="BottomSheet.StyleDialog" parent="BottomSheet.Dialog">
+        <item name="android:backgroundDimAmount">0.5</item>
+        <item name="android:windowAnimationStyle">@style/BottomSheet.Animation</item>
+        <item name="android:textColorPrimary">@color/colorPrimary</item>
+        <item name="android:textColorSecondary">@android:color/background_dark</item>
+        <item name="android:textColorHint">#b8915f23</item>
+        <item name="bs_dialogBackground">@color/windowBackgroundColor</item>
+        <item name="bs_dividerColor">@color/colorPrimary</item>
+        <item name="bs_numColumns">4</item>
+        <item name="bs_listStyle">@style/BottomSheet.StyleList</item>
+    </style>
+
+    <style name="BottomSheet.StyleList">
+        <item name="android:listSelector">@drawable/bs_list_selector</item>
+        <item name="android:layoutAnimation">@anim/bs_list_layout_fade_in</item>
+    </style>
+
+    <style name="ActionMode" parent="Widget.AppCompat.ActionMode">
+        <item name="background">@color/colorPrimary</item>
+        <item name="android:background">@color/colorPrimary</item>
+
+
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+</resources>
