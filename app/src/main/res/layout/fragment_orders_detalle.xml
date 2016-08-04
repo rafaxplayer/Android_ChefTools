@@ -1,17 +1,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="10dp"
-    tools:context="rafaxplayer.micocina.fragments.Detalle_Recipes_Fragment">
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/ordernamedetalle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        android:capitalize="words"
         android:ellipsize="end"
         android:text="@string/order_title"
         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -48,7 +44,6 @@
         android:id="@+id/textSupplier"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textCapWords"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -69,11 +64,9 @@
         android:background="@color/textTitletColor" />
 
     <TextView
-
         android:id="@+id/textComment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textMultiLine|textCapWords"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -96,7 +89,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list_items"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"

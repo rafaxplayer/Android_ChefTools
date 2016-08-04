@@ -1,10 +1,7 @@
 package rafaxplayer.cheftools.dlg_fragments;
 
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.pm.ActivityInfo;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -13,13 +10,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rafaxplayer.cheftools.Globalclasses.Categorys_Formats_Adapter;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
 import rafaxplayer.cheftools.R;
@@ -27,12 +24,18 @@ import rafaxplayer.cheftools.database.SqliteWrapper;
 
 
 public class Format_Categories_Formats_dlgs extends DialogFragment {
+    @BindView(R.id.list_items)
+    RecyclerView listItems;
+    @BindView(R.id.editItem)
+    EditText editEntry;
+    @BindView(R.id.addCtegory)
+    ImageButton addCategory;
+    @BindView(R.id.texttitle)
+    TextView texttitle;
     private SqliteWrapper sql;
-    private RecyclerView listItems;
+
     private Categorys_Formats_Adapter adp;
-    private EditText editEntry;
-    private ImageButton addCategory;
-    private TextView texttitle;
+
     private String sqltable;
     private int tittle;
 
@@ -72,10 +75,7 @@ public class Format_Categories_Formats_dlgs extends DialogFragment {
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_dlg_categories_products, container, false);
-        editEntry = (EditText) v.findViewById(R.id.editItem);
-        addCategory = (ImageButton) v.findViewById(R.id.addCtegory);
-        listItems = (RecyclerView) v.findViewById(R.id.list_items);
-        texttitle = (TextView) v.findViewById(R.id.texttitle);
+        ButterKnife.bind(this, v);
         listItems.setHasFixedSize(true);
         listItems.setLayoutManager(new LinearLayoutManager(getActivity()));
         listItems.setItemAnimator(new DefaultItemAnimator());

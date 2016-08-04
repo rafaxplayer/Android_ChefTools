@@ -167,6 +167,43 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:background="@color/textTitletColor" />
+
+            <LinearLayout
+                android:id="@+id/escandallos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:background="@drawable/selector_imagebutton_call"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="menuClick"
+                android:orientation="horizontal"
+                android:padding="@dimen/item_menu_padding">
+
+                <ImageView
+                    android:layout_width="@dimen/fab_size_mini"
+                    android:layout_height="@dimen/fab_size_mini"
+                    android:src="@drawable/cash" />
+
+                <rafaxplayer.cheftools.Globalclasses.MyTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="4dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="@string/activity_escandallos"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/textColorDark"
+                    android:textSize="@dimen/text_menu_size" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:background="@color/textTitletColor" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

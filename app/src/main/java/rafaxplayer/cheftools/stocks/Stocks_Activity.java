@@ -5,9 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
-import rafaxplayer.cheftools.Orders.OrdersDetalle_Activity;
-import rafaxplayer.cheftools.Orders.OrdersNewEdit_Activity;
-import rafaxplayer.cheftools.Orders.fragment.OrdersDetalle_Fragment;
 import rafaxplayer.cheftools.R;
 import rafaxplayer.cheftools.stocks.fragment.StocksDetalle_Fragment;
 import rafaxplayer.cheftools.stocks.fragment.StocksList_Fragment;

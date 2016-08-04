@@ -123,6 +123,7 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
         sql.open();
     }
 
+
     @Override
     public void onResume() {
         super.onResume();

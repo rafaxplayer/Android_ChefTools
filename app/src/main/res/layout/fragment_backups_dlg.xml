@@ -6,7 +6,7 @@
     android:background="@color/windowBackgroundColor"
     android:padding="10dp">
 
-        <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -34,5 +34,5 @@
         fab:fab_colorPressed="@color/colorPrimaryDark"
         android:layout_marginRight="20dp" />
 
-</FrameLayout>
-    </LinearLayout>
+    </FrameLayout>
+</LinearLayout>

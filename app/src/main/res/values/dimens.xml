@@ -21,7 +21,7 @@
     <dimen name="fab_margin_right">0dp</dimen>
     <dimen name="fab_margin_bottom">0dp</dimen>
     <dimen name="fab_elevation">5dp</dimen>
-    <dimen name="text_medium">15sp</dimen>
+
     <dimen name="icon_list_dimen">30dp</dimen>
     <dimen name="icon_list_margin">20dp</dimen>
     <dimen name="icon_list_padding">5dp</dimen>
@@ -31,5 +31,7 @@
     <dimen name="dimen_introtext">35sp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="dimen_gallery_thumbnail_min">150dp</dimen>
+    <dimen name="text_medium">16sp</dimen>
+    <dimen name="text_large">18sp</dimen>
 
 </resources>

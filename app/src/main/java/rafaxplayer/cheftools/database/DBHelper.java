@@ -30,6 +30,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String TABLE_PEDIDOS_LISTAS = "tbl_Pedidos_listas";
     public static final String TABLE_INVENTARIOS_LISTAS = "tbl_Inventarios_listas";
 
+
     //Campos generales...
     public static final String ID = "_id";
     public static final String NAME = "name";
@@ -77,6 +78,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String PRODUCTO_ID = "producto_id";
     public static final String PRODUCTO_CANTIDAD = "producto_cantidad";
     public static final String PROVEEDOR_ID = "proveedor_id";
+
+    // Campos para tabla escandallos.
 
 
     private static final String SqlCreateTable_recetas = "CREATE TABLE IF NOT EXISTS "
@@ -175,12 +178,12 @@ public class DBHelper extends SQLiteOpenHelper {
             + TABLE_RECETAS_CATEGORIA + "(" + ID + " INTEGER PRIMARY KEY,"
             + NAME + " TEXT)";
 
+
     private Context con;
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.con = context;
-
     }
 
     @Override
@@ -201,6 +204,8 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(SqlCreateTable_categoria_recetas);
             db.execSQL(SqlCreateTrigger_OnDeletePedido);
             db.execSQL(SqlCreateTrigger_OnDeleteInventario);
+
+
             int _Length;
 
             String[] arrayCat = res.getStringArray(R.array.categorys_products);
@@ -246,6 +251,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL("drop table if exists " + TABLE_PRODUCTOS_FORMATO);
             db.execSQL("drop table if exists " + TABLE_PRODUCTOS_CATEGORY);
             db.execSQL("drop table if exists " + TABLE_RECETAS_CATEGORIA);
+
             onCreate(db);
 
         } catch (SQLException e) {

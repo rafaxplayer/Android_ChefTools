@@ -43,6 +43,7 @@
             android:textStyle="bold|italic"
             android:ellipsize="end"
             android:singleLine="true"
+            android:textSize="@dimen/text_large"
             android:layout_marginRight="8dp"
             android:layout_gravity="center_vertical"
             android:textColor="@color/textNameColor" />

@@ -530,7 +530,7 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
             // Inflate a menu resource providing context menu items
             MenuInflater inflater = mode.getMenuInflater();
             inflater.inflate(R.menu.menu_action_mode, menu);
-            //((Orders_Activity) getActivity()).getSupportActionBar().hide();
+            //((Escandallos_Activity) getActivity()).getSupportActionBar().hide();
             ((BaseActivity)getActivity()).hideToolbarContent(true);
             adp = (OrdersAdapter) listOrders.getAdapter();
 
@@ -595,7 +595,7 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
             mActionMode = null;
             ((OrdersAdapter) listOrders.getAdapter()).clearSelections();
             ((BaseActivity)getActivity()).hideToolbarContent(false);
-            //((Orders_Activity) getActivity()).getSupportActionBar().show();
+            //((Escandallos_Activity) getActivity()).getSupportActionBar().show();
         }
     };
 }

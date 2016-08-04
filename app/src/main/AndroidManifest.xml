@@ -73,6 +73,9 @@
             android:name=".stocks.StocksDetalle_Activity"
             android:label="@string/activity_stoks" />
         <activity
+            android:name=".escandallos.Escandallos_Activity"
+            android:label="@string/activity_escandallos" />
+        <activity
             android:name=".IntroActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
@@ -86,7 +89,8 @@
             android:name=".recipes.GalleryRecipesActivity"
             android:label="@string/gallery_recipes"
             android:theme="@style/AppTheme" />
-        <activity android:name=".recipes.GalleryDetalle_Activity"></activity>
+        <activity android:name=".recipes.GalleryDetalle_Activity" />
+
     </application>
 
 </manifest>

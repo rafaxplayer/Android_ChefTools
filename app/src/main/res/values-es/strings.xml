@@ -189,4 +189,13 @@
     <string name="gallery_recipes">Galeria de Imagenes</string>
     <string name="view_recipe">Ver Detalles Receta</string>
     <string name="counter_images" formatted="false">( %d de %d )</string>
+    <string name="activity_escandallos">Escandallos</string>
+    <string name="recipe_name">Nombre de la receta</string>
+    <string name="product_cost">Precio por #</string>
+    <string name="escandallo_product">Producto para el escandallo</string>
+    <string name="product_uni">Cantidad de Producto</string>
+    <string name="product_uni_info">(Ejemplo: 300 = 300gr/300cl, 1000 = 1kg/1Ltr)</string>
+    <string name="dlgerror_quantity">Debes establecer una cantidad de producto</string>
+    <string name="dlgerror_costuni">Debes especificar el precio del producto</string>
+    <string name="cost_total">Coste Total : </string>
 </resources>

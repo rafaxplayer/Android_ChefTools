@@ -191,5 +191,15 @@
     <string name="gallery_recipes">Gallery Recipes</string>
     <string name="view_recipe">Show Details Recipe</string>
     <string name="counter_images" formatted="false">( %d off %d )</string>
+    <string name="activity_escandallos">Cost Evaluations</string>
+    <string name="recipe_name">Recipe Name</string>
+    <string name="product_cost">Price for #</string>
+    <string name="escandallo_product">Product for cost evaluate</string>
+    <string name="product_uni">Product Quantity</string>
+    <string name="product_uni_info">(Eixample: 0.300 = 300gr/300cl, 1000 = 1kg/1Ltr)</string>
+    <string name="dlgerror_quantity">You must set a quantity of product</string>
+    <string name="dlgerror_costuni">You must specify the price of the product</string>
+    <string name="cost_total">Total Cost : </string>
+
 
 </resources>

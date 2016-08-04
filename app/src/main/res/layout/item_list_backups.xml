@@ -40,6 +40,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textStyle="bold|italic"
             android:ellipsize="end"
+            android:textSize="@dimen/text_large"
             android:singleLine="true"
             android:textColor="@color/textNameColor" />
 

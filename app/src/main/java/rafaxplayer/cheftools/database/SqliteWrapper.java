@@ -5,25 +5,21 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 import rafaxplayer.cheftools.Globalclasses.ImageGalleryModel;
 import rafaxplayer.cheftools.Globalclasses.Menu;
 import rafaxplayer.cheftools.Globalclasses.Order_Product;
 import rafaxplayer.cheftools.Globalclasses.Orders;
 import rafaxplayer.cheftools.Globalclasses.Product;
-import rafaxplayer.cheftools.Globalclasses.Stock_Product;
-import rafaxplayer.cheftools.Globalclasses.Supplier;
 import rafaxplayer.cheftools.Globalclasses.Recipe;
+import rafaxplayer.cheftools.Globalclasses.Stock_Product;
 import rafaxplayer.cheftools.Globalclasses.Stocks;
+import rafaxplayer.cheftools.Globalclasses.Supplier;
 import rafaxplayer.cheftools.R;
 
 
@@ -478,6 +474,20 @@ public class SqliteWrapper {
             ex.printStackTrace();
         }
         return id;
+
+    }
+
+    public long UpdateSimpleData(String Table, String value, long id) {
+        long count = 0;
+        ContentValues values = new ContentValues();
+        try {
+            values.put(DBHelper.NAME, value);
+            count = db.update(Table, values, DBHelper.ID + " = ?",
+                    new String[]{String.valueOf(id)});
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return count;
 
     }
 

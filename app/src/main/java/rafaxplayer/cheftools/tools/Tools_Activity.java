@@ -5,18 +5,14 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Contacts;
 import android.provider.ContactsContract;
-import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.widget.Toast;
 
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
 import rafaxplayer.cheftools.R;
-import rafaxplayer.cheftools.database.DBHelper;
-import rafaxplayer.cheftools.dlg_fragments.Format_Categories_Formats_dlgs;
-import rafaxplayer.cheftools.dlg_fragments.Fragment_backups_dlg;
+import rafaxplayer.cheftools.escandallos.Escandallos_Activity;
 
 
 public class Tools_Activity extends BaseActivity {
@@ -84,6 +80,9 @@ public class Tools_Activity extends BaseActivity {
                 myIntent.setAction(Intent.ACTION_VIEW);
                 myIntent.setData(ContactsContract.Contacts.CONTENT_URI);
                 startActivity(myIntent);
+                break;
+            case R.id.escandallos:
+                startActivity(new Intent(this, Escandallos_Activity.class));
                 break;
             default:
                 break;

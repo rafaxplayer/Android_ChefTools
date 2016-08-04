@@ -42,6 +42,7 @@
             android:textStyle="bold|italic"
             android:ellipsize="end"
             android:singleLine="true"
+            android:textSize="@dimen/text_large"
             android:layout_marginBottom="5dp"
             android:textColor="@color/textNameColor" />
 
