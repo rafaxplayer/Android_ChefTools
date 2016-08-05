@@ -29,13 +29,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
-import rafaxplayer.cheftools.database.DBHelper;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
 import rafaxplayer.cheftools.Globalclasses.Order_Product;
 import rafaxplayer.cheftools.Globalclasses.Product;
+import rafaxplayer.cheftools.R;
+import rafaxplayer.cheftools.database.DBHelper;
 import rafaxplayer.cheftools.database.SqliteWrapper;
 import rafaxplayer.cheftools.products.fragments.ProductosMannager_Fragment;
-import rafaxplayer.cheftools.R;
 import rafaxplayer.cheftools.providers.ProviderNewEdit_Activity;
 
 public class OrdersNewEdit_Fragment extends Fragment {

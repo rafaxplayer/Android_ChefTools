@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,14 +17,17 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import rafaxplayer.cheftools.database.DBHelper;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
 import rafaxplayer.cheftools.Globalclasses.Order_Product;
 import rafaxplayer.cheftools.Globalclasses.Orders;
-import rafaxplayer.cheftools.database.SqliteWrapper;
 import rafaxplayer.cheftools.Orders.OrdersDetalle_Activity;
 import rafaxplayer.cheftools.Orders.Orders_Activity;
 import rafaxplayer.cheftools.R;
+import rafaxplayer.cheftools.database.DBHelper;
+import rafaxplayer.cheftools.database.SqliteWrapper;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -31,11 +35,24 @@ import rafaxplayer.cheftools.R;
 public class OrdersDetalle_Fragment extends Fragment {
     private SqliteWrapper sql;
     private int ID;
-    private TextView orderName;
-    private TextView orderComment;
-    private TextView orderSupplier;
-    private RecyclerView listOrder;
+    private String supplierTlf = "";
+    @BindView(R.id.ordernamedetalle)
+    TextView orderName;
+    @BindView(R.id.textComment)
+    TextView orderComment;
+    @BindView(R.id.textSupplier)
+    TextView orderSupplier;
+    @BindView(R.id.list_items)
+    RecyclerView listOrder;
+    @BindView(R.id.buttonProviderCall)
+    ImageButton buttonCall;
 
+    @OnClick(R.id.buttonProviderCall)
+    public void submit() {
+        if (!TextUtils.isEmpty(supplierTlf)) {
+            GlobalUttilities.call(getActivity(), supplierTlf);
+        }
+    }
 
     public static OrdersDetalle_Fragment newInstance(int id) {
         OrdersDetalle_Fragment fr = new OrdersDetalle_Fragment();
@@ -49,11 +66,8 @@ public class OrdersDetalle_Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v=inflater.inflate(R.layout.fragment_orders_detalle, container, false);
-        orderName =(TextView)v.findViewById(R.id.ordernamedetalle);
-        orderComment=(TextView)v.findViewById(R.id.textComment);
-        orderSupplier=(TextView)v.findViewById(R.id.textSupplier);
-        listOrder=(RecyclerView)v.findViewById(R.id.list_items);
+        View v = inflater.inflate(R.layout.fragment_orders_detalle, container, false);
+        ButterKnife.bind(this, v);
         listOrder.setHasFixedSize(true);
         listOrder.setLayoutManager(new LinearLayoutManager(getActivity()));
         listOrder.setItemAnimator(new DefaultItemAnimator());
@@ -84,19 +98,20 @@ public class OrdersDetalle_Fragment extends Fragment {
         }
         setHasOptionsMenu(!(this.ID == 0));
     }
+
     @Override
     public void onCreateOptionsMenu(android.view.Menu menu, MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
         inflater.inflate(R.menu.menu_detalle, menu);
-        MenuItem share=menu.findItem(R.id.share);
-        MenuItem edit=menu.findItem(R.id.edit);
+        MenuItem share = menu.findItem(R.id.share);
+        MenuItem edit = menu.findItem(R.id.edit);
         share.setTitle(R.string.menu_share_order);
         edit.setTitle(R.string.edit_order);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.edit:
                 if (ID != 0) {
                     Boolean islayout = (getActivity().getSupportFragmentManager().findFragmentById(R.id.detalleorders) != null);
@@ -114,7 +129,7 @@ public class OrdersDetalle_Fragment extends Fragment {
                     sql.open();
                 }
                 if (ID != 0) {
-                    Orders ord = (Orders)sql.SelectWithId("Orders", DBHelper.TABLE_PEDIDOS, ID);
+                    Orders ord = (Orders) sql.SelectWithId("Orders", DBHelper.TABLE_PEDIDOS, ID);
 
                     String sharedStr = GlobalUttilities.shareDataText(getActivity(), ord);
                     Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -132,23 +147,25 @@ public class OrdersDetalle_Fragment extends Fragment {
 
         return super.onOptionsItemSelected(item);
     }
-    public void displayWithId(int id){
+
+    public void displayWithId(int id) {
 
         if (!sql.IsOpen()) {
             sql.open();
         }
 
-        Orders ord = (Orders)sql.SelectWithId("Orders", DBHelper.TABLE_PEDIDOS,id);
+        Orders ord = (Orders) sql.SelectWithId("Orders", DBHelper.TABLE_PEDIDOS, id);
         if (ord != null) {
 
             orderName.setText(ord.getName());
             orderComment.setText(ord.getComentario());
-            orderSupplier.setText(sql.getSimpleData(ord.getSupplierid(), DBHelper.NAME,DBHelper.TABLE_PROVEEDORES));
+            String supplierName = sql.getSimpleData(ord.getSupplierid(), DBHelper.NAME, DBHelper.TABLE_PROVEEDORES);
+            buttonCall.setVisibility(TextUtils.isEmpty(supplierName) ? View.GONE : View.VISIBLE);
+            orderSupplier.setVisibility(TextUtils.isEmpty(supplierName) ? View.GONE : View.VISIBLE);
+            this.supplierTlf = sql.getSimpleData(ord.getSupplierid(), DBHelper.PROVEEDOR_TELEFONO, DBHelper.TABLE_PROVEEDORES);
+            orderSupplier.setText(supplierName);
             ArrayList<Order_Product> listProducts = sql.getProductListOrder(id);
             listOrder.setAdapter(new RecyclerAdapter(listProducts));
-
-
-
 
         }
         this.ID = id;
@@ -159,7 +176,7 @@ public class OrdersDetalle_Fragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        if(sql.IsOpen()){
+        if (sql.IsOpen()) {
             sql.close();
         }
     }
@@ -208,7 +225,7 @@ public class OrdersDetalle_Fragment extends Fragment {
 
             public ViewHolder(View v) {
                 super(v);
-                delbut=(ImageButton)v.findViewById(R.id.ButtonDeleteProduct);
+                delbut = (ImageButton) v.findViewById(R.id.ButtonDeleteProduct);
                 txtProd = (TextView) v.findViewById(R.id.text1);
                 txtCantidad = (TextView) v.findViewById(R.id.text2);
                 txtFormat = (TextView) v.findViewById(R.id.text3);

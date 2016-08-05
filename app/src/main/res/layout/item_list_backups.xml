@@ -11,7 +11,7 @@
         android:layout_width="@dimen/image_dimen_thumbnail"
         android:layout_height="@dimen/image_dimen_thumbnail"
         android:layout_gravity="center_vertical"
-        android:background="#ffb8860b"
+        android:background="@drawable/icon_list_backgrounfd"
         android:padding="1dp">
 
         <ImageView

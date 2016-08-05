@@ -16,26 +16,35 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
-import rafaxplayer.cheftools.database.DBHelper;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
 import rafaxplayer.cheftools.Globalclasses.Supplier;
-import rafaxplayer.cheftools.database.SqliteWrapper;
 import rafaxplayer.cheftools.R;
+import rafaxplayer.cheftools.database.DBHelper;
+import rafaxplayer.cheftools.database.SqliteWrapper;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class ProviderNewEdit_Fragment extends Fragment {
     private SqliteWrapper sql;
-    private EditText Nametxt;
-    private EditText Telefonotxt;
-    private EditText Emailtxt;
-    private EditText Direcciontxt;
-    private EditText Categoriatxt;
 
-    private EditText Comentariostxt;
-    private Button save;
+    @BindView(R.id.editnameprovider)
+    EditText Nametxt;
+    @BindView(R.id.editTelefono)
+    EditText Telefonotxt;
+    @BindView(R.id.editEmail)
+    EditText Emailtxt;
+    @BindView(R.id.editDireccion)
+    EditText Direcciontxt;
+    @BindView(R.id.editCategoria)
+    EditText Categoriatxt;
+    @BindView(R.id.editcomment)
+    EditText Comentariostxt;
+    @BindView(R.id.buttonSave)
+    Button save;
     private int ID;
 
     public static ProviderNewEdit_Fragment newInstance(int id) {
@@ -52,14 +61,8 @@ public class ProviderNewEdit_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_provider_new_edit, container, false);
-        Nametxt = (EditText) v.findViewById(R.id.editnameprovider);
-        Telefonotxt = (EditText) v.findViewById(R.id.editTelefono);
-        Emailtxt=(EditText) v.findViewById(R.id.editEmail);
-        Direcciontxt = (EditText) v.findViewById(R.id.editDireccion);
-        Categoriatxt = (EditText) v.findViewById(R.id.editCategoria);
+        ButterKnife.bind(this, v);
 
-        Comentariostxt = (EditText) v.findViewById(R.id.editcomment);
-        save = (Button) v.findViewById(R.id.buttonSave);
         return v;
     }
 
@@ -69,7 +72,6 @@ public class ProviderNewEdit_Fragment extends Fragment {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 save();
             }
         });
@@ -145,10 +147,10 @@ public class ProviderNewEdit_Fragment extends Fragment {
             if (TextUtils.isEmpty(Nametxt.getText())) {
 
                 Toast.makeText(getActivity(), getString(R.string.dlgerror_namerecipe), Toast.LENGTH_LONG).show();
-                GlobalUttilities.animateView(getActivity(),Nametxt);
+                GlobalUttilities.animateView(getActivity(), Nametxt);
                 return;
             }
-            if(sql.CheckIsDataAlreadyInDBorNot(DBHelper.TABLE_PROVEEDORES,DBHelper.NAME,Nametxt.getText().toString())){
+            if (sql.CheckIsDataAlreadyInDBorNot(DBHelper.TABLE_PROVEEDORES, DBHelper.NAME, Nametxt.getText().toString())) {
 
                 Toast.makeText(getActivity(), getString(R.string.dlgerror_dataexist), Toast.LENGTH_LONG).show();
                 GlobalUttilities.animateView(getActivity(), Nametxt);
@@ -197,9 +199,9 @@ public class ProviderNewEdit_Fragment extends Fragment {
         sql.close();
     }
 
-    public void displayWithId(int id){
+    public void displayWithId(int id) {
 
-        if (!sql.IsOpen()){
+        if (!sql.IsOpen()) {
             sql.open();
         }
 

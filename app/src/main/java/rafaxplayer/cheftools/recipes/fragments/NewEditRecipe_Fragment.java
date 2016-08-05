@@ -31,36 +31,51 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
-import rafaxplayer.cheftools.database.DBHelper;
-import rafaxplayer.cheftools.R;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
 import rafaxplayer.cheftools.Globalclasses.IconizedMenu;
 import rafaxplayer.cheftools.Globalclasses.Recipe;
+import rafaxplayer.cheftools.R;
+import rafaxplayer.cheftools.database.DBHelper;
 import rafaxplayer.cheftools.database.SqliteWrapper;
 import rafaxplayer.cheftools.recipes.NewEditRecipe_Activity;
 
 
 public class NewEditRecipe_Fragment extends Fragment {
-    private Spinner cats;
+    @BindView(R.id.categorys)
+    Spinner cats;
+    @BindView(R.id.addimage)
+    Button addImage;
+    @BindView(R.id.imgRecipe)
+    ImageView img;
+    @BindView(R.id.editname)
+    EditText nametxt;
+    @BindView(R.id.buttonSave)
+    Button save;
+    @BindView(R.id.editurl)
+    EditText url;
+    @BindView(R.id.editingredients)
+    EditText ingtxt;
+    @BindView(R.id.editelaboracion)
+    EditText elatxt;
+    @BindView(R.id.scrollView)
+    ScrollView scroll;
+    @BindView(R.id.imageButtonSearch)
+    ImageButton search;
+
     private IconizedMenu popup;
-    private Button addImage;
-    private Button save;
     private String urlImage;
-    private ImageView img;
-    private EditText nametxt;
-    private EditText ingtxt;
-    private EditText elatxt;
-    private EditText url;
     private Uri imgUri;
     private int ID;
     private Boolean edit;
     private SqliteWrapper sql;
     private SimpleCursorAdapter genreSpinnerAdapter;
     private ArrayList<String> my_array;
-    private ScrollView scroll;
-    private ImageButton search;
+
     private ArrayList<HashMap<String, Object>> catsarr;
+
 
     public static NewEditRecipe_Fragment newInstance(int recipeid) {
         NewEditRecipe_Fragment f = new NewEditRecipe_Fragment();
@@ -78,16 +93,8 @@ public class NewEditRecipe_Fragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_recipe_new_edit, container, false);
         if (v != null) {
-            cats = (Spinner) v.findViewById(R.id.categorys);
-            addImage = (Button) v.findViewById(R.id.addimage);
-            img = (ImageView) v.findViewById(R.id.imgRecipe);
-            nametxt = (EditText) v.findViewById(R.id.editname);
-            save = (Button) v.findViewById(R.id.buttonSave);
-            url = (EditText) v.findViewById(R.id.editurl);
-            ingtxt = (EditText) v.findViewById(R.id.editingredients);
-            elatxt = (EditText) v.findViewById(R.id.editelaboracion);
-            scroll = (ScrollView) v.findViewById(R.id.scrollView);
-            search = (ImageButton) v.findViewById(R.id.imageButtonSearch);
+            ButterKnife.bind(this, v);
+
         }
         return v;
     }

@@ -9,8 +9,9 @@ import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
 import rafaxplayer.cheftools.Orders.fragment.OrdersDetalle_Fragment;
 import rafaxplayer.cheftools.Orders.fragment.OrdersNewEdit_Fragment;
 import rafaxplayer.cheftools.R;
+import rafaxplayer.cheftools.products.fragments.ProductosMannager_Fragment;
 
-public class OrdersDetalle_Activity extends BaseActivity {
+public class OrdersDetalle_Activity extends BaseActivity implements ProductosMannager_Fragment.OnSelectedCallback {
     private int ID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +50,15 @@ public class OrdersDetalle_Activity extends BaseActivity {
         ft.addToBackStack(null);
         ft.commit();
 
-
     }
 
 
+    @Override
+    public void onSelect(int pid) {
+        OrdersNewEdit_Fragment fr = (OrdersNewEdit_Fragment) getSupportFragmentManager().findFragmentByTag("neweditorder");
+        if (fr != null) {
+            fr.displayProductWithId(pid);
 
-
+        }
+    }
 }

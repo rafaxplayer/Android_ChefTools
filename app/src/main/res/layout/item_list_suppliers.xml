@@ -11,7 +11,8 @@
         android:layout_width="@dimen/image_dimen_thumbnail"
         android:layout_height="@dimen/image_dimen_thumbnail"
         android:layout_gravity="center_vertical"
-        android:background="#ffb8860b"
+        android:background="@drawable/icon_list_backgrounfd"
+        android:layout_margin="4dp"
         android:padding="1dp">
 
         <ImageView
@@ -19,8 +20,9 @@
             android:layout_width="@dimen/image_dimen_thumbnail"
             android:layout_height="@dimen/image_dimen_thumbnail"
             android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:src="@drawable/item_image_placeholder" />
+
+            android:padding="8dp"
+            android:src="@drawable/providers" />
     </FrameLayout>
 
 
@@ -64,5 +66,5 @@
         android:layout_gravity="center_vertical"
         android:layout_marginRight="@dimen/icon_list_margin"
         android:background="@drawable/selector_imagebutton_call"
-        android:padding="15dp" />
+        android:padding="@dimen/item_menu_padding" />
 </LinearLayout>

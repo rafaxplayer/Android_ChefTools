@@ -11,37 +11,40 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import rafaxplayer.cheftools.Globalclasses.Supplier;
-import rafaxplayer.cheftools.database.DBHelper;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
-import rafaxplayer.cheftools.Globalclasses.IconizedMenu;
-import rafaxplayer.cheftools.R;
 import rafaxplayer.cheftools.Globalclasses.Recipe;
+import rafaxplayer.cheftools.R;
+import rafaxplayer.cheftools.database.DBHelper;
 import rafaxplayer.cheftools.database.SqliteWrapper;
-import rafaxplayer.cheftools.providers.ProviderDetalle_Activity;
-import rafaxplayer.cheftools.providers.Providers_Activity;
 import rafaxplayer.cheftools.recipes.DetalleRecipes_Activity;
 import rafaxplayer.cheftools.recipes.Recipes_Activity;
 
 public class DetalleRecipes_Fragment extends Fragment {
     private int ID;
     private SqliteWrapper sql;
-    private ImageView imageDetalle;
-    private TextView textNamedetalle;
-    private TextView titleUrl;
-    private TextView texttitlepreview;
-    private TextView textCategorydetalle;
-    private TextView textTimeEladetalle;
-    private TextView textIngredientsdetalle;
-    private TextView textTEladetalle;
-    private TextView textUrldetalle;
+    @BindView(R.id.imgRecipedetalle)
+    ImageView imageDetalle;
+    @BindView(R.id.recipenamedetalle)
+    TextView textNamedetalle;
+    @BindView(R.id.titleUrl)
+    TextView titleUrl;
+    @BindView(R.id.recipecategorydetalle)
+    TextView textCategorydetalle;
+    @BindView(R.id.textIngredientes)
+    TextView textIngredientsdetalle;
+    @BindView(R.id.textElaboration)
+    TextView textTEladetalle;
+    @BindView(R.id.textUrl)
+    TextView textUrldetalle;
+
     private String img = "";
 
     public DetalleRecipes_Fragment() {
@@ -62,13 +65,9 @@ public class DetalleRecipes_Fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_recipe_detalle, container, false);
-        imageDetalle = (ImageView) v.findViewById(R.id.imgRecipedetalle);
+        ButterKnife.bind(this, v);
 
-        textNamedetalle = (TextView) v.findViewById(R.id.recipenamedetalle);
-        textCategorydetalle = (TextView) v.findViewById(R.id.recipecategorydetalle);
-        titleUrl = (TextView) v.findViewById(R.id.titleUrl);
-        textIngredientsdetalle = (TextView) v.findViewById(R.id.textIngredientes);
-        textTEladetalle = (TextView) v.findViewById(R.id.textElaboration);
+
         textUrldetalle = (TextView) v.findViewById(R.id.textUrl);
         return v;
     }

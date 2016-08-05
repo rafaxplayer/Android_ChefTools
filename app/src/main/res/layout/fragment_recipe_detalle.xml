@@ -1,9 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
-    tools:context="rafaxplayer.micocina.fragments.Detalle_Recipes_Fragment">
+    android:padding="10dp">
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -58,17 +56,19 @@
 
             <TextView
                 android:id="@+id/recipecategorydetalle"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
                 android:text="@string/recipe_category"
-
-
+                android:background="@drawable/backgroun_text_oval"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/colorPrimary"
-                android:textIsSelectable="true"
-                android:textStyle="normal|italic" />
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_medium"
+                android:textStyle="normal|italic"
+                android:paddingLeft="@dimen/fab_margin"
+                android:paddingRight="@dimen/fab_margin"
+                android:paddingTop="@dimen/icon_list_padding"
+                android:paddingBottom="@dimen/icon_list_padding" />
 
 
             <TextView

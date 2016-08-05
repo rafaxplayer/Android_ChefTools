@@ -38,6 +38,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
 import rafaxplayer.cheftools.Globalclasses.Orders;
 import rafaxplayer.cheftools.Orders.OrdersNewEdit_Activity;
@@ -48,15 +50,22 @@ import rafaxplayer.cheftools.database.SqliteWrapper;
 
 
 public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
-    private RecyclerView listOrders;
-    private LinearLayout empty;
-    private TextView emptytxt;
+    @BindView(R.id.list_items)
+    RecyclerView listOrders;
+    @BindView(R.id.layoutempty)
+    LinearLayout empty;
+    @BindView(R.id.emptyText)
+    TextView emptytxt;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
+
     private OnSelectedCallback mCallback;
     private ActionMode mActionMode;
-    private FloatingActionButton fab;
     private SqliteWrapper sql;
     private Boolean itemsFound;
-    private SwipeRefreshLayout swipeRefreshLayout;
+
 
     public OrdersList_Fragment() {
     }
@@ -65,8 +74,7 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_list, container, false);
-        empty = (LinearLayout) v.findViewById(R.id.layoutempty);
-        emptytxt = (TextView) v.findViewById(R.id.emptyText);
+        ButterKnife.bind(this, v);
         emptytxt.setText(getString(R.string.new_orderslist));
         empty.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +86,7 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
                 startActivity(in);
             }
         });
-        swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh_layout);
+
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.post(new Runnable() {
                                     @Override
@@ -88,11 +96,11 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
                                     }
                                 }
         );
-        listOrders = (RecyclerView) v.findViewById(R.id.list_items);
+
         listOrders.setHasFixedSize(true);
         listOrders.setLayoutManager(new LinearLayoutManager(getActivity()));
         listOrders.setItemAnimator(new DefaultItemAnimator());
-        fab = (FloatingActionButton) v.findViewById(R.id.fab);
+
         fab.hide();
         fab.attachToRecyclerView(listOrders, new ScrollDirectionListener() {
             @Override
