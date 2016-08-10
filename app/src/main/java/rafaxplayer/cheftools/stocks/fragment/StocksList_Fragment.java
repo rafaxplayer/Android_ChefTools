@@ -4,6 +4,7 @@ package rafaxplayer.cheftools.stocks.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -30,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.melnykov.fab.FloatingActionButton;
@@ -39,6 +41,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
 import rafaxplayer.cheftools.Globalclasses.Stocks;
 import rafaxplayer.cheftools.R;
@@ -50,16 +54,22 @@ import rafaxplayer.cheftools.stocks.Stocks_Activity;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
-    private RecyclerView listStocks;
-    private LinearLayout empty;
-    private TextView emptytxt;
+public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+    @BindView(R.id.list_items)
+    RecyclerView listStocks;
+    @BindView(R.id.layoutempty)
+    LinearLayout empty;
+    @BindView(R.id.emptyText)
+    TextView emptytxt;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
+
     private OnSelectedCallback mCallback;
     private ActionMode mActionMode;
-    private FloatingActionButton fab;
     private SqliteWrapper sql;
     private Boolean itemsFound;
     private SwipeRefreshLayout swipeRefreshLayout;
+
     public StocksList_Fragment() {
         // Required empty public constructor
     }
@@ -69,8 +79,7 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_list, container, false);
-        empty = (LinearLayout) v.findViewById(R.id.layoutempty);
-        emptytxt = (TextView) v.findViewById(R.id.emptyText);
+        ButterKnife.bind(this, v);
         emptytxt.setText(getString(R.string.new_stocklist));
         empty.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +91,7 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
                 startActivity(in);
             }
         });
-        listStocks = (RecyclerView) v.findViewById(R.id.list_items);
+
         listStocks.setHasFixedSize(true);
         listStocks.setLayoutManager(new LinearLayoutManager(getActivity()));
         listStocks.setItemAnimator(new DefaultItemAnimator());
@@ -96,7 +105,7 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
                                     }
                                 }
         );
-        fab = (FloatingActionButton) v.findViewById(R.id.fab);
+
         fab.hide();
         fab.attachToRecyclerView(listStocks, new ScrollDirectionListener() {
             @Override
@@ -238,7 +247,7 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
 
 
     public interface OnSelectedCallback {
-        public void onSelect(int id);
+        void onSelect(int id);
     }
 
     private List<Stocks> loadValues(String order) {
@@ -335,7 +344,7 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
                 sb.append("\n------------------------------\n");
             for (int i = itemspos.size() - 1; i >= 0; i--) {
 
-                sb.append(((Stocks) mDataset.get(itemspos.get(i))).getName());
+                sb.append((mDataset.get(itemspos.get(i))).getName());
                 sb.append("\n");
 
             }
@@ -368,11 +377,11 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             Picasso.with(getActivity()).load(R.drawable.inventory).into(holder.img);
-            holder.sName.setText(((Stocks) mDataset.get(position)).getName());
-            holder.sDate.setText(((Stocks) mDataset.get(position)).getFecha());
-            boolean state=selectedItems.get(position, false);
+            holder.sName.setText((mDataset.get(position)).getName());
+            holder.sDate.setText((mDataset.get(position)).getFecha());
+            boolean state = selectedItems.get(position, false);
             holder.itemView.setSelected(state);
-            if(mActionMode!=null) {
+            if (mActionMode != null) {
                 if (state) {
                     Picasso.with(getActivity())
                             .load(R.drawable.checked).placeholder(R.drawable.item_image_placeholder)
@@ -436,15 +445,17 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
                             .theme(Theme.LIGHT)
                             .positiveText(R.string.yes)
                             .negativeText(R.string.not)
-                            .callback(new MaterialDialog.ButtonCallback() {
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
                                 @Override
-                                public void onPositive(MaterialDialog dialog) {
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     deleteItem(ViewHolder.this.getLayoutPosition());
                                     dialog.dismiss();
                                 }
+                            })
 
+                            .onNegative(new MaterialDialog.SingleButtonCallback() {
                                 @Override
-                                public void onNegative(MaterialDialog dialog) {
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     dialog.dismiss();
                                 }
                             })
@@ -546,8 +557,8 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
             // Inflate a menu resource providing context menu items
             MenuInflater inflater = mode.getMenuInflater();
             inflater.inflate(R.menu.menu_action_mode, menu);
-            //((Stocks_Activity) getActivity()).getSupportActionBar().hide();
-            ((BaseActivity)getActivity()).hideToolbarContent(true);
+
+            ((BaseActivity) getActivity()).hideToolbarContent(true);
             adp = (StocksAdapter) listStocks.getAdapter();
 
             return true;
@@ -594,7 +605,7 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
                 case R.id.action_edit:
                     if (adp.getSelectedItemCount() > 0) {
                         int pos = adp.getSelectedItems().get(0);
-                        ((Stocks_Activity) getActivity()).showMenuEdit(((Stocks) adp.mDataset.get(pos)).getId());
+                        ((Stocks_Activity) getActivity()).showMenuEdit((adp.mDataset.get(pos)).getId());
 
                     }
                     mode.finish();
@@ -610,8 +621,8 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
         public void onDestroyActionMode(ActionMode mode) {
             mActionMode = null;
             ((StocksAdapter) listStocks.getAdapter()).clearSelections();
-            ((BaseActivity)getActivity()).hideToolbarContent(false);
-            //((Stocks_Activity) getActivity()).getSupportActionBar().show();
+            ((BaseActivity) getActivity()).hideToolbarContent(false);
+
         }
     };
 }

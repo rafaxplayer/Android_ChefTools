@@ -2,6 +2,7 @@ package rafaxplayer.cheftools.stocks.fragment;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -21,11 +22,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
 import rafaxplayer.cheftools.Globalclasses.Product;
@@ -36,16 +40,24 @@ import rafaxplayer.cheftools.database.SqliteWrapper;
 import rafaxplayer.cheftools.products.fragments.ProductosMannager_Fragment;
 
 public class StocksNewEdit_Fragment extends Fragment {
+
+    @BindView(R.id.textNameOrder)
+    TextView NameStock;
+    @BindView(R.id.editnameproduct)
+    EditText NameProduct;
+    @BindView(R.id.editCantidad)
+    EditText Cantidadtxt;
+    @BindView(R.id.ButtonAddProduct)
+    ImageButton addProduct;
+    @BindView(R.id.ButtonSaveProduct)
+    ImageButton saveProduct;
+    @BindView(R.id.list_items)
+    RecyclerView StocksList;
+
     private SqliteWrapper sql;
     private Menu menu;
-    private EditText NameProduct;
     private EditText Formattxt;
-    private EditText Cantidadtxt;
-    private TextView NameStock;
     private TextView newlisttxt;
-    private ImageButton addProduct;
-    private ImageButton saveProduct;
-    private RecyclerView StocksList;
     private EditText name;
     private EditText Comentariostxt;
     private LinearLayout providerPannel;
@@ -67,12 +79,7 @@ public class StocksNewEdit_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_stocks_new_edit, container, false);
-        NameStock = (TextView) v.findViewById(R.id.textNameOrder);
-        NameProduct = (EditText) v.findViewById(R.id.editnameproduct);
-        Cantidadtxt = (EditText) v.findViewById(R.id.editCantidad);
-        addProduct = (ImageButton) v.findViewById(R.id.ButtonAddProduct);
-        saveProduct = (ImageButton) v.findViewById(R.id.ButtonSaveProduct);
-        StocksList = (RecyclerView) v.findViewById(R.id.list_items);
+        ButterKnife.bind(this, v);
         StocksList.setHasFixedSize(true);
         StocksList.setLayoutManager(new LinearLayoutManager(getActivity()));
         StocksList.setItemAnimator(new DefaultItemAnimator());
@@ -97,11 +104,9 @@ public class StocksNewEdit_Fragment extends Fragment {
                         providerPannel.setVisibility(View.GONE);
                     }
                 })
-
-                .callback(new MaterialDialog.ButtonCallback() {
-
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onPositive(MaterialDialog dialog) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         if (!sql.IsOpen()) {
                             sql.open();
                         }
@@ -132,13 +137,11 @@ public class StocksNewEdit_Fragment extends Fragment {
                         } else {
                             Toast.makeText(getActivity(), getString(R.string.dlgerror_namerecipe), Toast.LENGTH_LONG).show();
                         }
-
-
                     }
-
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onNegative(MaterialDialog dialog) {
-
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         dialog.dismiss();
                         getActivity().onBackPressed();
                     }
@@ -168,7 +171,7 @@ public class StocksNewEdit_Fragment extends Fragment {
 
                     return;
                 }
-                if (TextUtils.isEmpty(NameProduct.getText())){
+                if (TextUtils.isEmpty(NameProduct.getText())) {
                     Toast.makeText(getActivity(), "Debes buscar un producto", Toast.LENGTH_LONG).show();
                     GlobalUttilities.animateView(getActivity(), addProduct);
                     return;

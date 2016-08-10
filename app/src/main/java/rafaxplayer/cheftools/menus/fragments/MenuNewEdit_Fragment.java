@@ -1,8 +1,8 @@
 package rafaxplayer.cheftools.menus.fragments;
 
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,12 +15,11 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
-import rafaxplayer.cheftools.database.DBHelper;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
-
 import rafaxplayer.cheftools.Globalclasses.Menu;
-import rafaxplayer.cheftools.database.SqliteWrapper;
 import rafaxplayer.cheftools.R;
+import rafaxplayer.cheftools.database.DBHelper;
+import rafaxplayer.cheftools.database.SqliteWrapper;
 import rafaxplayer.cheftools.recipes.fragments.DetalleRecipes_Fragment;
 
 

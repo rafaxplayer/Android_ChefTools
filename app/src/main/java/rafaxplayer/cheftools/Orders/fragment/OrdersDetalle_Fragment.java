@@ -28,6 +28,7 @@ import rafaxplayer.cheftools.Orders.Orders_Activity;
 import rafaxplayer.cheftools.R;
 import rafaxplayer.cheftools.database.DBHelper;
 import rafaxplayer.cheftools.database.SqliteWrapper;
+import rafaxplayer.cheftools.providers.ProviderDetalle_Activity;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -46,6 +47,20 @@ public class OrdersDetalle_Fragment extends Fragment {
     RecyclerView listOrder;
     @BindView(R.id.buttonProviderCall)
     ImageButton buttonCall;
+
+    @OnClick(R.id.textSupplier)
+    public void view(TextView tv) {
+        if (tv.getVisibility() == View.VISIBLE) {
+            if (!sql.IsOpen()) {
+                sql.open();
+            }
+            int idSuplier = Integer.valueOf(sql.getSimpleData(ID, DBHelper.PROVEEDOR_ID, DBHelper.TABLE_PEDIDOS));
+            Intent in = new Intent(getActivity(), ProviderDetalle_Activity.class);
+            in.putExtra("id", idSuplier);
+            getActivity().startActivity(in);
+        }
+
+    }
 
     @OnClick(R.id.buttonProviderCall)
     public void submit() {

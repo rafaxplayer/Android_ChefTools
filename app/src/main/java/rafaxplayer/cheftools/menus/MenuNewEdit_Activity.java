@@ -1,7 +1,7 @@
 package rafaxplayer.cheftools.menus;
 
-import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
 import rafaxplayer.cheftools.R;
@@ -28,6 +28,7 @@ public class MenuNewEdit_Activity extends BaseActivity {
 
         return R.layout.activity_template_for_all;
     }
+
     @Override
     protected String getCustomTitle() {
 

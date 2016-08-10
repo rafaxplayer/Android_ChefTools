@@ -1,8 +1,4 @@
 package rafaxplayer.cheftools.Globalclasses;
-
-/**
- * Created by rafaxplayer on 08/06/2015.
- */
 public class Menu {
     int id;
     String name;
@@ -14,11 +10,11 @@ public class Menu {
     String Fecha;
 
 
-    public Menu(){
+    public Menu() {
 
     }
 
-    public Menu(String name, String entrantes, String primeros, String segundos, String postre, String comentario,String fecha) {
+    public Menu(String name, String entrantes, String primeros, String segundos, String postre, String comentario, String fecha) {
 
         this.name = name;
         this.Entrantes = entrantes;
@@ -26,7 +22,7 @@ public class Menu {
         this.Segundos = segundos;
         this.Postre = postre;
         this.Comentario = comentario;
-        this.Fecha=fecha;
+        this.Fecha = fecha;
 
     }
 
@@ -85,6 +81,7 @@ public class Menu {
     public void setComentario(String comentario) {
         Comentario = comentario;
     }
+
     public String getFecha() {
         return Fecha;
     }

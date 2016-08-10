@@ -44,18 +44,18 @@ public class Tools_Activity extends BaseActivity {
                 try {
 
                     intent.setComponent(new ComponentName(
-                        GlobalUttilities.CALCULATOR_PACKAGE,
-                        GlobalUttilities.CALCULATOR_CLASS));
+                            GlobalUttilities.CALCULATOR_PACKAGE,
+                            GlobalUttilities.CALCULATOR_CLASS));
 
                     this.startActivity(intent);
-                } catch (ActivityNotFoundException noSuchActivity){
+                } catch (ActivityNotFoundException noSuchActivity) {
                     intent.setComponent(new ComponentName(
                             GlobalUttilities.CALCULATOR_PACKAGE_2,
                             GlobalUttilities.CALCULATOR_CLASS_2));
 
                     this.startActivity(intent);
                     //
-                }catch (Exception ex){
+                } catch (Exception ex) {
                     Toast.makeText(getApplicationContext(), "Tu dispositivo no tiene calculadora de android estandar", Toast.LENGTH_LONG).show();
                 }
 
@@ -65,7 +65,7 @@ public class Tools_Activity extends BaseActivity {
                 try {
                     i.setData(Uri.parse("content://com.android.calendar/time"));
                     startActivity(i);
-                }catch (Exception ex){
+                } catch (Exception ex) {
                     i.setData(Uri.parse("content://calendar/time"));
                     startActivity(i);
                 }
@@ -76,7 +76,7 @@ public class Tools_Activity extends BaseActivity {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com")));
                 break;
             case R.id.contacts:
-                Intent myIntent=new Intent();
+                Intent myIntent = new Intent();
                 myIntent.setAction(Intent.ACTION_VIEW);
                 myIntent.setData(ContactsContract.Contacts.CONTENT_URI);
                 startActivity(myIntent);

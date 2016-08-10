@@ -2,13 +2,8 @@ package rafaxplayer.cheftools;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
-import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Toast;
-
-import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.io.File;
 
@@ -30,7 +25,7 @@ public class Inicio_Activity extends BaseActivity implements ProductosMannager_F
 
     String inFileName = "/data/data/rafaxplayer.cheftools/databases/" + DBHelper.DATABASE_NAME;
     private static long back_pressed;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,10 +92,9 @@ public class Inicio_Activity extends BaseActivity implements ProductosMannager_F
     @Override
     public void onBackPressed() {
 
-        if (back_pressed + 2000 > System.currentTimeMillis()){
+        if (back_pressed + 2000 > System.currentTimeMillis()) {
             super.onBackPressed();
-        }
-        else{
+        } else {
             Toast.makeText(getBaseContext(), getString(R.string.back_exit), Toast.LENGTH_SHORT).show();
             back_pressed = System.currentTimeMillis();
         }

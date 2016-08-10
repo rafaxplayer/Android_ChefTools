@@ -40,6 +40,9 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
 import rafaxplayer.cheftools.Globalclasses.Supplier;
@@ -50,16 +53,25 @@ import rafaxplayer.cheftools.providers.ProviderNewEdit_Activity;
 import rafaxplayer.cheftools.providers.Providers_Activity;
 
 
-public class ProvidersList_Fragment extends DialogFragment implements SwipeRefreshLayout.OnRefreshListener{
-    private RecyclerView listProviders;
-    private LinearLayout empty;
-    private TextView emptytxt;
+public class ProvidersList_Fragment extends DialogFragment implements SwipeRefreshLayout.OnRefreshListener {
+
+    @BindView(R.id.list_items)
+    RecyclerView listProviders;
+    @BindView(R.id.layoutempty)
+    LinearLayout empty;
+    @BindView(R.id.emptyText)
+    TextView emptytxt;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
+
     private OnSelectedCallback mCallback;
     private ActionMode mActionMode;
-    private FloatingActionButton fab;
+
     private SqliteWrapper sql;
     private Boolean itemsFound;
-    private SwipeRefreshLayout swipeRefreshLayout;
+
     public ProvidersList_Fragment() {
     }
 
@@ -67,8 +79,8 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_list, container, false);
-        empty = (LinearLayout) v.findViewById(R.id.layoutempty);
-        emptytxt = (TextView) v.findViewById(R.id.emptyText);
+        ButterKnife.bind(this, v);
+
         emptytxt.setText(getString(R.string.menu_new_provider));
         empty.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,11 +92,11 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
                 startActivity(in);
             }
         });
-        listProviders = (RecyclerView) v.findViewById(R.id.list_items);
+
         listProviders.setHasFixedSize(true);
         listProviders.setLayoutManager(new LinearLayoutManager(getActivity()));
         listProviders.setItemAnimator(new DefaultItemAnimator());
-        swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh_layout);
+
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.post(new Runnable() {
                                     @Override
@@ -94,7 +106,7 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
                                     }
                                 }
         );
-        fab = (FloatingActionButton) v.findViewById(R.id.fab);
+
         fab.hide();
         fab.attachToRecyclerView(listProviders, new ScrollDirectionListener() {
             @Override
@@ -341,14 +353,10 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
         @Override
         public ProvidersAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                               int viewType) {
-            // Create a new view by inflating the row item xml.
             View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_list_suppliers, parent, false);
 
-            // Set the view to the ViewHolder
             ViewHolder holder = new ViewHolder(v);
-
-
             return holder;
         }
 
@@ -394,27 +402,26 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
 
         }
 
-        // Create the ViewHolder class to keep references to your views
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-            public ImageView img;
-            public ImageButton sCall;
-            public TextView sName;
-            public TextView sCat;
+            @BindView(R.id.imageList)
+            ImageView img;
+            @BindView(R.id.ButtonCall)
+            ImageButton sCall;
+            @BindView(R.id.text1)
+            TextView sName;
+            @BindView(R.id.text2)
+            TextView sCat;
+
+            @OnClick(R.id.ButtonCall)
+            public void onClik() {
+                GlobalUttilities.call(getActivity(), mDataset.get(ViewHolder.this.getLayoutPosition()).getTelefono());
+            }
 
             int ID;
 
             public ViewHolder(View v) {
                 super(v);
-                img = (ImageView) v.findViewById(R.id.imageList);
-                sName = (TextView) v.findViewById(R.id.text1);
-                sCat = (TextView) v.findViewById(R.id.text2);
-                sCall = (ImageButton) v.findViewById(R.id.ButtonCall);
-                sCall.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        GlobalUttilities.call(getActivity(), mDataset.get(ViewHolder.this.getLayoutPosition()).getTelefono());
-                    }
-                });
+                ButterKnife.bind(this, v);
                 v.setOnClickListener(this);
                 v.setOnLongClickListener(this);
 
@@ -513,7 +520,7 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
             MenuInflater inflater = mode.getMenuInflater();
             inflater.inflate(R.menu.menu_action_mode, menu);
             //((Providers_Activity) getActivity()).getSupportActionBar().hide();
-            ((BaseActivity)getActivity()).hideToolbarContent(true);
+            ((BaseActivity) getActivity()).hideToolbarContent(true);
             adp = (ProvidersAdapter) listProviders.getAdapter();
 
             return true;
@@ -580,7 +587,7 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
             ((ProvidersAdapter) listProviders.getAdapter()).clearSelections();
 
             //((Providers_Activity) getActivity()).getSupportActionBar().show();
-            ((BaseActivity)getActivity()).hideToolbarContent(false);
+            ((BaseActivity) getActivity()).hideToolbarContent(false);
         }
     };
 }

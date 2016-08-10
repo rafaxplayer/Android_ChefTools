@@ -2,7 +2,6 @@ package rafaxplayer.cheftools.Globalclasses;
 
 import android.content.Context;
 import android.support.v7.view.SupportMenuInflater;
-
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.view.menu.MenuPresenter;
@@ -43,8 +42,8 @@ public class IconizedMenu implements MenuBuilder.Callback, MenuPresenter.Callbac
      * Construct a new PopupMenu.
      *
      * @param context Context for the PopupMenu.
-     * @param anchor Anchor view for this popup. The popup will appear below the anchor if there
-     *               is room, or above it if there is not.
+     * @param anchor  Anchor view for this popup. The popup will appear below the anchor if there
+     *                is room, or above it if there is not.
      */
     public IconizedMenu(Context context, View anchor) {
         mContext = context;
@@ -59,7 +58,6 @@ public class IconizedMenu implements MenuBuilder.Callback, MenuPresenter.Callbac
     /**
      * @return the {@link android.view.Menu} associated with this popup. Populate the returned Menu with
      * items before calling {@link #show()}.
-     *
      * @see #show()
      * @see #getMenuInflater()
      */
@@ -70,7 +68,6 @@ public class IconizedMenu implements MenuBuilder.Callback, MenuPresenter.Callbac
     /**
      * @return a {@link android.view.MenuInflater} that can be used to inflate menu items from XML into the
      * menu returned by {@link #getMenu()}.
-     *
      * @see #getMenu()
      */
     public MenuInflater getMenuInflater() {
@@ -80,6 +77,7 @@ public class IconizedMenu implements MenuBuilder.Callback, MenuPresenter.Callbac
     /**
      * Inflate a menu resource into this PopupMenu. This is equivalent to calling
      * popupMenu.getMenuInflater().inflate(menuRes, popupMenu.getMenu()).
+     *
      * @param menuRes Menu resource to inflate
      */
     public void inflate(int menuRes) {
@@ -88,6 +86,7 @@ public class IconizedMenu implements MenuBuilder.Callback, MenuPresenter.Callbac
 
     /**
      * Show the menu popup anchored to the view specified during construction.
+     *
      * @see #dismiss()
      */
     public void show() {
@@ -96,6 +95,7 @@ public class IconizedMenu implements MenuBuilder.Callback, MenuPresenter.Callbac
 
     /**
      * Dismiss the menu popup.
+     *
      * @see #show()
      */
     public void dismiss() {

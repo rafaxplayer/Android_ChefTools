@@ -1,11 +1,11 @@
 package rafaxplayer.cheftools.recipes;
+
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,19 +18,20 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
 import rafaxplayer.cheftools.Globalclasses.ImageGalleryModel;
 import rafaxplayer.cheftools.R;
 
 
 public class GalleryDetalle_Activity extends BaseActivity {
-
+    @BindView(R.id.pager)
+    ViewPager mViewPager;
     private int pos;
     private List<ImageGalleryModel> data;
-    private ViewPager mViewPager;
-    private CustomPagerAdapter mCustomPagerAdapter;
     private int id;
-
 
     @Override
     protected int getLayoutResourceId() {
@@ -47,9 +48,9 @@ public class GalleryDetalle_Activity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ButterKnife.bind(this);
         data = getIntent().getParcelableArrayListExtra("data");
         pos = getIntent().getIntExtra("pos", 0);
-        mViewPager = (ViewPager) findViewById(R.id.pager);
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -60,7 +61,7 @@ public class GalleryDetalle_Activity extends BaseActivity {
             @Override
             public void onPageSelected(int position) {
                 setTittleDinamic(((ImageGalleryModel) data.get(position)).Title);
-                id=((ImageGalleryModel) data.get(position)).ID;
+                id = ((ImageGalleryModel) data.get(position)).ID;
 
             }
 
@@ -79,19 +80,21 @@ public class GalleryDetalle_Activity extends BaseActivity {
         mViewPager.setCurrentItem(pos);
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_detalle_gallery, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.view:
-                Intent intent = new Intent(this,DetalleRecipes_Activity.class);
-                intent.putExtra("id",id);
+                Intent intent = new Intent(this, DetalleRecipes_Activity.class);
+                intent.putExtra("id", id);
                 startActivity(intent);
                 return true;
 
@@ -99,15 +102,16 @@ public class GalleryDetalle_Activity extends BaseActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
     class CustomPagerAdapter extends PagerAdapter {
 
         Context mContext;
         LayoutInflater mLayoutInflater;
         List<ImageGalleryModel> data;
 
-        public CustomPagerAdapter(Context context,List<ImageGalleryModel> dat) {
+        public CustomPagerAdapter(Context context, List<ImageGalleryModel> dat) {
             mContext = context;
-            data=dat;
+            data = dat;
             mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
@@ -125,14 +129,11 @@ public class GalleryDetalle_Activity extends BaseActivity {
         public Object instantiateItem(ViewGroup container, int position) {
 
             View itemView = mLayoutInflater.inflate(R.layout.pager_item, container, false);
-
-            ImageView imageView = (ImageView) itemView.findViewById(R.id.imagePager);
-            TextView textView = (TextView) itemView.findViewById(R.id.textImage);
-            final String path=((ImageGalleryModel)data.get(position)).ImagePath;
-            final String title=((ImageGalleryModel) data.get(position)).Title;
-
+            ImageView imageView = ButterKnife.findById(itemView, R.id.imagePager);
+            TextView textView = ButterKnife.findById(itemView, R.id.textImage);
+            final String path = ((ImageGalleryModel) data.get(position)).ImagePath;
+            final String title = ((ImageGalleryModel) data.get(position)).Title;
             textView.setText(title);
-
             imageView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {

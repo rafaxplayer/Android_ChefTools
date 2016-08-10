@@ -1,8 +1,5 @@
 package rafaxplayer.cheftools.Globalclasses;
 
-/**
- * Created by rafaxplayer on 10/06/2015.
- */
 public class Supplier {
     int id;
     String Name;
@@ -21,14 +18,14 @@ public class Supplier {
 
     String Categoria;
 
-    public Supplier(){
+    public Supplier() {
 
     }
 
     public Supplier(String name, String telefono, String email, String direccion, String comentario, String categoria) {
         Name = name;
         Telefono = telefono;
-        Email=email;
+        Email = email;
         Direccion = direccion;
         Comentario = comentario;
         Categoria = categoria;
@@ -82,7 +79,6 @@ public class Supplier {
     public void setCategoria(String categoria) {
         Categoria = categoria;
     }
-
 
 
 }

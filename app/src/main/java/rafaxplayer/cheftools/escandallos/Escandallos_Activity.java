@@ -2,6 +2,7 @@ package rafaxplayer.cheftools.escandallos;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +19,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,16 +37,17 @@ import rafaxplayer.cheftools.R;
 
 public class Escandallos_Activity extends BaseActivity {
     @BindView(R.id.list_items)
-    protected RecyclerView listProducts;
+    RecyclerView listProducts;
     @BindView(R.id.texttotal)
-    protected TextView texttotal;
+    TextView texttotal;
     @BindString(R.string.product_cost)
     String productCost;
     @BindString(R.string.cost_total)
     String costTotal;
     @BindView(R.id.fab)
-    protected com.melnykov.fab.FloatingActionButton fab;
-
+    FloatingActionButton fab;
+    @BindView(R.id.escandalloRecipe)
+    EditText editnameRecipe;
     @OnClick(R.id.fab)
     public void submit(View view) {
         if (TextUtils.isEmpty(editnameRecipe.getText())) {
@@ -54,8 +58,7 @@ public class Escandallos_Activity extends BaseActivity {
         }
     }
 
-    @BindView(R.id.escandalloRecipe)
-    EditText editnameRecipe;
+
 
     private MaterialDialog dialogNewProduct;
     private EditText editnameProduct;
@@ -157,12 +160,9 @@ public class Escandallos_Activity extends BaseActivity {
                         textCosteProducto.setText(costTotal);
                     }
                 })
-
-                .callback(new MaterialDialog.ButtonCallback() {
-
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onPositive(final MaterialDialog dialog) {
-
+                    public void onClick(@NonNull final MaterialDialog dialog, @NonNull DialogAction which) {
                         if (TextUtils.isEmpty(editnameProduct.getText().toString())) {
                             Toast.makeText(getApplicationContext(), getString(R.string.dlgerror_namerecipe), Toast.LENGTH_LONG).show();
                             return;
@@ -211,17 +211,16 @@ public class Escandallos_Activity extends BaseActivity {
                         } catch (Exception e) {
                             Log.e("Error : ", e.getMessage());
                         }
-
                     }
-
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onNegative(MaterialDialog dialog) {
-
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         dialog.dismiss();
                         onBackPressed();
-
                     }
-                }).build();
+                })
+                .build();
 
     }
 

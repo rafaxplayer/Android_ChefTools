@@ -6,11 +6,9 @@
     <item
         android:id="@+id/action_restore"
         android:title="@string/menu_restore_backup"
-        android:icon="@drawable/ic_restorebackup"
-       />
+        android:icon="@drawable/ic_restorebackup" />
     <item
         android:id="@+id/action_delete"
         android:title="@string/menu_delete_backup"
-        android:icon="@drawable/ic_deletebackup"
-        />
+        android:icon="@drawable/ic_deletebackup" />
 </menu>

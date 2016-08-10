@@ -292,8 +292,8 @@ public class NewEditRecipe_Fragment extends Fragment {
             if (count > 0) {
 
                 Toast.makeText(getActivity(), getString(R.string.dlgok_update), Toast.LENGTH_LONG).show();
-                if (((DetalleRecipes_Fragment) getActivity().getSupportFragmentManager().findFragmentByTag("detalle")) != null) {
-                    ((DetalleRecipes_Fragment) getActivity().getSupportFragmentManager().findFragmentByTag("detalle")).onResume();
+                if ((getActivity().getSupportFragmentManager().findFragmentByTag("detalle")) != null) {
+                    (getActivity().getSupportFragmentManager().findFragmentByTag("detalle")).onResume();
                 }
                 getActivity().onBackPressed();
             }

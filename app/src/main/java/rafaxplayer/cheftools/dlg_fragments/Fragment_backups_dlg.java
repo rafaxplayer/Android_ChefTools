@@ -3,21 +3,16 @@ package rafaxplayer.cheftools.dlg_fragments;
 
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
@@ -32,20 +27,19 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
 import rafaxplayer.cheftools.R;
-import rafaxplayer.cheftools.database.SqliteWrapper;
 
 
 public class Fragment_backups_dlg extends DialogFragment {
-    private RecyclerView listItems;
-    private LinearLayout empty;
-    private TextView emptytxt;
-    private TextView texttile;
-    private ActionMode mActionMode;
-    private FloatingActionButton fab;
-    private SqliteWrapper sql;
-    private Boolean itemsFound;
+    @BindView(R.id.list_items)
+    RecyclerView listItems;
+    @BindView(R.id.texttitle)
+    TextView texttile;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
 
     public Fragment_backups_dlg() {
 
@@ -56,14 +50,12 @@ public class Fragment_backups_dlg extends DialogFragment {
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_backups_dlg, container, false);
-        texttile = (TextView) v.findViewById(R.id.texttitle);
-
+        ButterKnife.bind(this, v);
         texttile.setTextColor(getActivity().getResources().getColor(R.color.textTitletColor));
-        listItems = (RecyclerView) v.findViewById(R.id.list_items);
+
         listItems.setHasFixedSize(true);
         listItems.setLayoutManager(new LinearLayoutManager(getActivity()));
         listItems.setItemAnimator(new DefaultItemAnimator());
-        fab = (FloatingActionButton) v.findViewById(R.id.fab);
 
         fab.attachToRecyclerView(listItems, new ScrollDirectionListener() {
             @Override

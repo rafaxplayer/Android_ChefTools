@@ -2,14 +2,14 @@ package rafaxplayer.cheftools.recipes;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 
-import rafaxplayer.cheftools.R;
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
-import rafaxplayer.cheftools.recipes.fragments.NewEditRecipe_Fragment;
+import rafaxplayer.cheftools.R;
 import rafaxplayer.cheftools.Web_Fragment;
+import rafaxplayer.cheftools.recipes.fragments.NewEditRecipe_Fragment;
 
 
 public class NewEditRecipe_Activity extends BaseActivity {
@@ -28,11 +28,13 @@ public class NewEditRecipe_Activity extends BaseActivity {
         }
 
     }
+
     @Override
     protected int getLayoutResourceId() {
 
         return R.layout.activity_template_for_all;
     }
+
     @Override
     protected String getCustomTitle() {
 
@@ -43,10 +45,11 @@ public class NewEditRecipe_Activity extends BaseActivity {
     public void showWebfRm() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.container, new Web_Fragment(), "web");
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.addToBackStack(null);
         ft.commit();
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

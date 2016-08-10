@@ -9,7 +9,6 @@ public class ImageGalleryModel implements Parcelable {
     public String ImagePath;
     public int ID;
 
-
     public ImageGalleryModel() {
 
     }

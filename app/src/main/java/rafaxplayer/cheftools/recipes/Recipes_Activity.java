@@ -1,21 +1,21 @@
 package rafaxplayer.cheftools.recipes;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 
-import rafaxplayer.cheftools.R;
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
+import rafaxplayer.cheftools.R;
 import rafaxplayer.cheftools.recipes.fragments.DetalleRecipes_Fragment;
 import rafaxplayer.cheftools.recipes.fragments.RecipesList_Fragment;
 
 
-public class Recipes_Activity extends BaseActivity implements RecipesList_Fragment.OnSelectedrecipeCallback{
+public class Recipes_Activity extends BaseActivity implements RecipesList_Fragment.OnSelectedrecipeCallback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(savedInstanceState==null){
+        if (savedInstanceState == null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.container, new RecipesList_Fragment(), "listrecipes");
             ft.commit();
@@ -25,13 +25,14 @@ public class Recipes_Activity extends BaseActivity implements RecipesList_Fragme
 
     @Override
     protected int getLayoutResourceId() {
-        if(getResources().getBoolean(R.bool.dual_pane)){
+        if (getResources().getBoolean(R.bool.dual_pane)) {
             return R.layout.activity_recipes;
-        }else{
+        } else {
             return R.layout.activity_template_for_all;
         }
 
     }
+
     @Override
     protected String getCustomTitle() {
 

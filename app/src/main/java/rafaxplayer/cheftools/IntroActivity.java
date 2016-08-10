@@ -9,24 +9,28 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 public class IntroActivity extends AppCompatActivity {
-    private TextView textIntro1;
-    private TextView textIntro2;
-    private TextView textIntro3;
+    @BindView(R.id.textIntro1)
+    TextView textIntro1;
+    @BindView(R.id.textIntro2)
+    TextView textIntro2;
+    @BindView(R.id.textpro)
+    TextView textIntro3;
+
     private final int DURACION_SPLASH = 3000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
-
-        textIntro1=(TextView)findViewById(R.id.textIntro1);
-        textIntro2=(TextView)findViewById(R.id.textIntro2);
-        textIntro3=(TextView)findViewById(R.id.textpro);
-
-        ObjectAnimator translateX1 = ObjectAnimator.ofFloat(textIntro1, "translationX",-100,0);
-        ObjectAnimator translateX2 = ObjectAnimator.ofFloat(textIntro2, "translationX",100,0);
-        final ObjectAnimator fadeout = ObjectAnimator.ofFloat(textIntro3, "Alpha",0.0f,1.0f);
+        ButterKnife.bind(this);
+        ObjectAnimator translateX1 = ObjectAnimator.ofFloat(textIntro1, "translationX", -100, 0);
+        ObjectAnimator translateX2 = ObjectAnimator.ofFloat(textIntro2, "translationX", 100, 0);
+        final ObjectAnimator fadeout = ObjectAnimator.ofFloat(textIntro3, "Alpha", 0.0f, 1.0f);
         fadeout.setDuration(1000).addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {

@@ -3,6 +3,7 @@ package rafaxplayer.cheftools.recipes.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -26,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.melnykov.fab.FloatingActionButton;
@@ -35,6 +37,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
 import rafaxplayer.cheftools.Globalclasses.Recipe;
 import rafaxplayer.cheftools.R;
@@ -45,16 +49,104 @@ import rafaxplayer.cheftools.recipes.NewEditRecipe_Activity;
 import rafaxplayer.cheftools.recipes.Recipes_Activity;
 
 public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
-    private RecyclerView listRecipes;
-    private LinearLayout empty;
-    private TextView emptytxt;
+    @BindView(R.id.list_items)
+    RecyclerView listRecipes;
+    @BindView(R.id.layoutempty)
+    LinearLayout empty;
+    @BindView(R.id.emptyText)
+    TextView emptytxt;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
+    @BindView(R.id.fabGallery)
+    FloatingActionButton fabGallery;
+
     private OnSelectedrecipeCallback mCallback;
     private ActionMode mActionMode;
-    private FloatingActionButton fab;
-    private FloatingActionButton fabGallery;
+
     private SqliteWrapper sql;
     private Boolean recipesFound;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+
+        NewsAdapter adp;
+
+        // Called when the action mode is created; startActionMode() was called
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            // Inflate a menu resource providing context menu items
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.menu_action_mode, menu);
+            ((BaseActivity) getActivity()).hideToolbarContent(true);
+            //((Recipes_Activity) getActivity()).getSupportActionBar().hide();
+
+            adp = (NewsAdapter) listRecipes.getAdapter();
+
+            return true;
+        }
+
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false; // Return false if nothing is done
+        }
+
+        // Called when the user selects a contextual menu item
+        @Override
+        public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.action_delete:
+                    int items = ((NewsAdapter) listRecipes.getAdapter()).getSelectedItemCount();
+                    if (items > 0) {
+
+                        new MaterialDialog.Builder(getActivity())
+                                .title(R.string.deleterecipetitle)
+                                .content(getString(R.string.deleterecipesmsg).replace("###", String.valueOf(items)))
+                                .theme(Theme.LIGHT)
+                                .positiveText(R.string.yes)
+                                .negativeText(R.string.cancel)
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        adp.deleteSelectedItems();
+                                        mode.finish();
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .show();
+                    }
+
+                    return true;
+
+                case R.id.action_edit:
+                    if (adp.getSelectedItemCount() > 0) {
+                        int pos = adp.getSelectedItems().get(0);
+                        ((Recipes_Activity) getActivity()).showRecipeEdit((adp.mDataset.get(pos)).getId());
+
+                    }
+                    mode.finish();
+                    return true;
+                default:
+                    mode.finish();
+                    return false;
+            }
+        }
+
+        // Called when the user exits the action mode
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            mActionMode = null;
+            ((NewsAdapter) listRecipes.getAdapter()).clearSelections();
+            ((BaseActivity) getActivity()).hideToolbarContent(false);
+
+
+        }
+    };
 
     public RecipesList_Fragment() {
 
@@ -64,8 +156,7 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_list, container, false);
-        empty = (LinearLayout) v.findViewById(R.id.layoutempty);
-        emptytxt = (TextView) v.findViewById(R.id.emptyText);
+        ButterKnife.bind(this, v);
         emptytxt.setText(getString(R.string.menu_new_recipe));
         empty.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +169,6 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
             }
         });
 
-        listRecipes = (RecyclerView) v.findViewById(R.id.list_items);
         listRecipes.setHasFixedSize(true);
         listRecipes.setLayoutManager(new LinearLayoutManager(getActivity()));
         listRecipes.setItemAnimator(new DefaultItemAnimator());
@@ -92,8 +182,7 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
                                     }
                                 }
         );
-        fab = (FloatingActionButton) v.findViewById(R.id.fab);
-        fabGallery = (FloatingActionButton) v.findViewById(R.id.fabGallery);
+
         fabGallery.setVisibility(View.VISIBLE);
         fab.hide();
         fab.attachToRecyclerView(listRecipes, new ScrollDirectionListener() {
@@ -110,7 +199,7 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
         fabGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(),GalleryRecipesActivity.class));
+                startActivity(new Intent(getActivity(), GalleryRecipesActivity.class));
             }
         });
         fab.setOnClickListener(new View.OnClickListener() {
@@ -157,7 +246,6 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
 
                 new MaterialDialog.Builder(getActivity())
                         .title(R.string.search)
-
                         .inputType(InputType.TYPE_CLASS_TEXT)
                         .input("Text to search...", "", new MaterialDialog.InputCallback() {
                             @Override
@@ -260,7 +348,7 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
 
             if (selectedItems.get(pos, false)) {
                 selectedItems.delete(pos);
-                Picasso.with(getActivity()).load(((Recipe) mDataset.get(pos)).getImg()).placeholder(R.drawable.item_image_placeholder).into(img);
+                Picasso.with(getActivity()).load((mDataset.get(pos)).getImg()).placeholder(R.drawable.item_image_placeholder).into(img);
 
             } else {
                 selectedItems.put(pos, true);
@@ -281,7 +369,7 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
 
         public void deleteItem(int pos) {
 
-            int count = sql.DeleteWithId(((Recipe) mDataset.get(pos)).getId(), DBHelper.TABLE_RECETAS);
+            int count = sql.DeleteWithId((mDataset.get(pos)).getId(), DBHelper.TABLE_RECETAS);
 
             if (count > 0) {
                 mDataset.remove(pos);
@@ -340,11 +428,11 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
 
-            Picasso.with(getActivity()).load(((Recipe) mDataset.get(position)).getImg())
+            Picasso.with(getActivity()).load((mDataset.get(position)).getImg())
                     .resize(getResources().getDimensionPixelOffset(R.dimen.image_dimen_thumbnail), getResources().getDimensionPixelOffset(R.dimen.image_dimen_thumbnail))
                     .placeholder(R.drawable.item_image_placeholder).into(holder.img);
-            holder.sName.setText(((Recipe) mDataset.get(position)).getName());
-            holder.sCategory.setText(((Recipe) mDataset.get(position)).getCategoty());
+            holder.sName.setText((mDataset.get(position)).getName());
+            holder.sCategory.setText((mDataset.get(position)).getCategoty());
             boolean state = selectedItems.get(position, false);
             holder.itemView.setSelected(state);
             if (mActionMode != null) {
@@ -354,7 +442,7 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
                             .into(holder.img);
                 } else {
                     Picasso.with(getActivity())
-                            .load(((Recipe) mDataset.get(position)).getImg())
+                            .load((mDataset.get(position)).getImg())
                             .resize(getResources().getDimensionPixelOffset(R.dimen.image_dimen_thumbnail), getResources().getDimensionPixelOffset(R.dimen.image_dimen_thumbnail))
                             .placeholder(R.drawable.item_image_placeholder)
                             .into(holder.img);
@@ -382,22 +470,19 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
 
         // Create the ViewHolder class to keep references to your views
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-            public ImageView img;
-            public TextView sName;
-            public TextView sCategory;
-
+            @BindView(R.id.imageList)
+            ImageView img;
+            @BindView(R.id.text1)
+            TextView sName;
+            @BindView(R.id.text2)
+            TextView sCategory;
             int ID;
 
             public ViewHolder(View v) {
                 super(v);
-                img = (ImageView) v.findViewById(R.id.imageList);
-                sName = (TextView) v.findViewById(R.id.text1);
-                sCategory = (TextView) v.findViewById(R.id.text2);
-
+                ButterKnife.bind(this, v);
                 v.setOnClickListener(this);
                 v.setOnLongClickListener(this);
-
-
             }
 
             @Override
@@ -408,7 +493,7 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
                     toggleSelection(ViewHolder.this.getLayoutPosition(), img);
                     if (getResources().getBoolean(R.bool.dual_pane)) {
                         if (mCallback != null) {
-                            mCallback.onSelectRecipe(((Recipe) mDataset.get(ViewHolder.this.getLayoutPosition())).getId());
+                            mCallback.onSelectRecipe((mDataset.get(ViewHolder.this.getLayoutPosition())).getId());
                         }
                     }
 
@@ -418,7 +503,7 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
                     toggleSelection(ViewHolder.this.getLayoutPosition(), img);
                     v.setSelected(true);
                     if (mCallback != null) {
-                        mCallback.onSelectRecipe(((Recipe) mDataset.get(ViewHolder.this.getLayoutPosition())).getId());
+                        mCallback.onSelectRecipe((mDataset.get(ViewHolder.this.getLayoutPosition())).getId());
                     }
 
                 }
@@ -433,7 +518,6 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
                 }
                 clearSelections();
                 mActionMode = getActivity().startActionMode(mActionModeCallback);
-
                 v.setSelected(!v.isSelected());
                 toggleSelection(ViewHolder.this.getLayoutPosition(), img);
                 return true;
@@ -482,85 +566,4 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
             }
         }
     }
-
-    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
-
-        NewsAdapter adp;
-
-        // Called when the action mode is created; startActionMode() was called
-        @Override
-        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            // Inflate a menu resource providing context menu items
-            MenuInflater inflater = mode.getMenuInflater();
-            inflater.inflate(R.menu.menu_action_mode, menu);
-            ((BaseActivity) getActivity()).hideToolbarContent(true);
-            //((Recipes_Activity) getActivity()).getSupportActionBar().hide();
-
-            adp = (NewsAdapter) listRecipes.getAdapter();
-
-            return true;
-        }
-
-
-        @Override
-        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            return false; // Return false if nothing is done
-        }
-
-        // Called when the user selects a contextual menu item
-        @Override
-        public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.action_delete:
-                    int items = ((NewsAdapter) listRecipes.getAdapter()).getSelectedItemCount();
-                    if (items > 0) {
-
-                        new MaterialDialog.Builder(getActivity())
-                                .title(R.string.deleterecipetitle)
-                                .content(getString(R.string.deleterecipesmsg).replace("###", String.valueOf(items)))
-                                .theme(Theme.LIGHT)
-                                .positiveText(R.string.yes)
-                                .negativeText(R.string.cancel)
-                                .callback(new MaterialDialog.ButtonCallback() {
-                                    @Override
-                                    public void onPositive(MaterialDialog dialog) {
-                                        adp.deleteSelectedItems();
-                                        mode.finish();
-                                        dialog.dismiss();
-                                    }
-
-                                    @Override
-                                    public void onNegative(MaterialDialog dialog) {
-                                        dialog.dismiss();
-                                    }
-                                })
-                                .show();
-                    }
-
-                    return true;
-
-                case R.id.action_edit:
-                    if (adp.getSelectedItemCount() > 0) {
-                        int pos = adp.getSelectedItems().get(0);
-                        ((Recipes_Activity) getActivity()).showRecipeEdit(((Recipe) adp.mDataset.get(pos)).getId());
-
-                    }
-                    mode.finish();
-                    return true;
-                default:
-                    mode.finish();
-                    return false;
-            }
-        }
-
-        // Called when the user exits the action mode
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-            mActionMode = null;
-            ((NewsAdapter) listRecipes.getAdapter()).clearSelections();
-            ((BaseActivity) getActivity()).hideToolbarContent(false);
-            //((Recipes_Activity) getActivity()).getSupportActionBar().show();
-
-        }
-    };
 }

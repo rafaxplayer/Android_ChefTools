@@ -1,7 +1,7 @@
 package rafaxplayer.cheftools.providers;
 
-import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
 import rafaxplayer.cheftools.R;
@@ -22,6 +22,7 @@ public class ProviderNewEdit_Activity extends BaseActivity {
 
         }
     }
+
     @Override
     protected int getLayoutResourceId() {
 

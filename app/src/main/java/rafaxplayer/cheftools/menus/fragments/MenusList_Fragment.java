@@ -1,13 +1,10 @@
 package rafaxplayer.cheftools.menus.fragments;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.annotation.Nullable;
-
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,26 +37,33 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
-import rafaxplayer.cheftools.database.DBHelper;
-
 import rafaxplayer.cheftools.Globalclasses.Menu;
-import rafaxplayer.cheftools.database.SqliteWrapper;
 import rafaxplayer.cheftools.R;
+import rafaxplayer.cheftools.database.DBHelper;
+import rafaxplayer.cheftools.database.SqliteWrapper;
 import rafaxplayer.cheftools.menus.MenuNewEdit_Activity;
 import rafaxplayer.cheftools.menus.Menus_Activity;
 
 
-public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
-    private RecyclerView listMenus;
-    private LinearLayout empty;
-    private TextView emptytxt;
+public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+    @BindView(R.id.list_items)
+    RecyclerView listMenus;
+    @BindView(R.id.layoutempty)
+    LinearLayout empty;
+    @BindView(R.id.emptyText)
+    TextView emptytxt;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
+
     private OnSelectedCallback mCallback;
     private ActionMode mActionMode;
-    private FloatingActionButton fab;
     private SqliteWrapper sql;
     private Boolean menusFound;
     private SwipeRefreshLayout swipeRefreshLayout;
+
     public MenusList_Fragment() {
     }
 
@@ -67,8 +71,7 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_list, container, false);
-        empty = (LinearLayout) v.findViewById(R.id.layoutempty);
-        emptytxt = (TextView) v.findViewById(R.id.emptyText);
+        ButterKnife.bind(this, v);
         emptytxt.setText(getString(R.string.new_menu));
         empty.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +83,7 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
                 startActivity(in);
             }
         });
-        listMenus = (RecyclerView) v.findViewById(R.id.list_items);
+
         listMenus.setHasFixedSize(true);
         listMenus.setLayoutManager(new LinearLayoutManager(getActivity()));
         listMenus.setItemAnimator(new DefaultItemAnimator());
@@ -94,7 +97,7 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
                                     }
                                 }
         );
-        fab = (FloatingActionButton) v.findViewById(R.id.fab);
+
         fab.hide();
         fab.attachToRecyclerView(listMenus, new ScrollDirectionListener() {
             @Override
@@ -139,17 +142,19 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
         listMenus.setAdapter(new MenusAdapter(lstMenuss));
         swipeRefreshLayout.setRefreshing(false);
     }
+
     @Override
     public void onCreateOptionsMenu(android.view.Menu menu, MenuInflater inflater) {
 
         inflater.inflate(R.menu.menu_menus_list, menu);
 
-        if(!menusFound){
+        if (!menusFound) {
 
             menu.findItem(R.id.search).setVisible(false);
         }
 
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -204,6 +209,7 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
         }
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -235,7 +241,7 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
 
     private List<Menu> loadMenus(String order) {
 
-        return (List<Menu>)(Object)sql.getAllObjects("Menu",order);
+        return (List<Menu>) (Object) sql.getAllObjects("Menu", order);
 
     }
 
@@ -321,7 +327,6 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
         }
 
 
-
         public List<Integer> getSelectedItems() {
             List<Integer> items =
                     new ArrayList<Integer>(selectedItems.size());
@@ -349,9 +354,9 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
             Picasso.with(getActivity()).load(R.drawable.menus).into(holder.img);
             holder.sName.setText(((Menu) mDataset.get(position)).getName());
             holder.sDate.setText(((Menu) mDataset.get(position)).getFecha());
-            boolean state=selectedItems.get(position, false);
+            boolean state = selectedItems.get(position, false);
             holder.itemView.setSelected(state);
-            if(mActionMode!=null) {
+            if (mActionMode != null) {
                 if (state) {
                     Picasso.with(getActivity())
                             .load(R.drawable.checked).placeholder(R.drawable.item_image_placeholder)
@@ -495,7 +500,7 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
             MenuInflater inflater = mode.getMenuInflater();
             inflater.inflate(R.menu.menu_action_mode, menu);
             //((Menus_Activity) getActivity()).getSupportActionBar().hide();
-            ((BaseActivity)getActivity()).hideToolbarContent(true);
+            ((BaseActivity) getActivity()).hideToolbarContent(true);
             adp = (MenusAdapter) listMenus.getAdapter();
 
             return true;
@@ -559,7 +564,7 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
         public void onDestroyActionMode(ActionMode mode) {
             mActionMode = null;
             ((MenusAdapter) listMenus.getAdapter()).clearSelections();
-            ((BaseActivity)getActivity()).hideToolbarContent(false);
+            ((BaseActivity) getActivity()).hideToolbarContent(false);
             //((Menus_Activity) getActivity()).getSupportActionBar().show();
         }
     };

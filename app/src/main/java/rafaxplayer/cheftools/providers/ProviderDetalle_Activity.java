@@ -1,7 +1,8 @@
 package rafaxplayer.cheftools.providers;
 
-import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
 import rafaxplayer.cheftools.R;
@@ -10,12 +11,13 @@ import rafaxplayer.cheftools.providers.fragment.ProviderNewEdit_Fragment;
 
 public class ProviderDetalle_Activity extends BaseActivity {
     private int ID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ID= getIntent().getExtras().getInt("id");
-
+        ID = getIntent().getExtras().getInt("id");
+        Log.e("ID", String.valueOf(ID));
         if (savedInstanceState == null) {
 
             getSupportFragmentManager().beginTransaction()
@@ -24,11 +26,13 @@ public class ProviderDetalle_Activity extends BaseActivity {
                     .commit();
         }
     }
+
     @Override
     protected int getLayoutResourceId() {
 
         return R.layout.activity_template_for_all;
     }
+
     @Override
     protected String getCustomTitle() {
 
@@ -45,8 +49,6 @@ public class ProviderDetalle_Activity extends BaseActivity {
 
 
     }
-
-
 
 
 }

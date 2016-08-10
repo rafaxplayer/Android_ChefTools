@@ -114,7 +114,7 @@ public class Format_Categories_Formats_dlgs extends DialogFragment {
     public void onStart() {
         super.onStart();
 
-        if (getDialog() == null){
+        if (getDialog() == null) {
             return;
         }
         GlobalUttilities.setDialogFragmentSize(this);

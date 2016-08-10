@@ -3,18 +3,16 @@
 
     <item android:state_pressed="true">
         <shape>
-            <padding android:bottom="@dimen/dimen_padding_button"
-                android:top="@dimen/dimen_padding_button"/>
+            <padding android:bottom="@dimen/dimen_padding_button" android:top="@dimen/dimen_padding_button" />
             <solid android:color="@color/textTitletColor" />
         </shape>
     </item>
-    <item android:state_focused="true" >
+    <item android:state_focused="true">
         <shape>
-            <padding android:bottom="@dimen/dimen_padding_button"
-                android:top="@dimen/dimen_padding_button"/>
+            <padding android:bottom="@dimen/dimen_padding_button" android:top="@dimen/dimen_padding_button" />
             <solid android:color="#77000000" />
         </shape>
     </item>
-<item android:drawable="@android:color/transparent"/>
+    <item android:drawable="@android:color/transparent" />
 
 </selector>

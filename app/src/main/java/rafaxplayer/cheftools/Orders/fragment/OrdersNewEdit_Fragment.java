@@ -2,6 +2,7 @@ package rafaxplayer.cheftools.Orders.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -23,11 +24,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
 import rafaxplayer.cheftools.Globalclasses.Order_Product;
@@ -41,14 +45,21 @@ import rafaxplayer.cheftools.providers.ProviderNewEdit_Activity;
 public class OrdersNewEdit_Fragment extends Fragment {
     private SqliteWrapper sql;
     private Menu menu;
-    private EditText NameProduct;
-    private EditText Cantidadtxt;
-    private TextView NameOrder;
+    @BindView(R.id.editnameproduct)
+    EditText NameProduct;
+    @BindView(R.id.editCantidad)
+    EditText Cantidadtxt;
+    @BindView(R.id.textNameOrder)
+    TextView NameOrder;
+    @BindView(R.id.ButtonAddProduct)
+    ImageButton addProduct;
+    @BindView(R.id.ButtonSaveProduct)
+    ImageButton saveProduct;
+    @BindView(R.id.list_items)
+    RecyclerView OrdersList;
+
     private ImageButton addSupplierOrder;
-    private ImageButton addProduct;
-    private ImageButton saveProduct;
     private Spinner suppliersSpinner;
-    private RecyclerView OrdersList;
     private EditText name;
     private EditText Comentariostxt;
     private MaterialDialog dialogNewOrder;
@@ -70,17 +81,7 @@ public class OrdersNewEdit_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_orders_new_edit, container, false);
-        NameOrder = (TextView) v.findViewById(R.id.textNameOrder);
-
-        NameProduct = (EditText) v.findViewById(R.id.editnameproduct);
-
-        Cantidadtxt = (EditText) v.findViewById(R.id.editCantidad);
-
-        addProduct = (ImageButton) v.findViewById(R.id.ButtonAddProduct);
-
-        saveProduct = (ImageButton) v.findViewById(R.id.ButtonSaveProduct);
-
-        OrdersList = (RecyclerView) v.findViewById(R.id.list_items);
+        ButterKnife.bind(this, v);
         OrdersList.setHasFixedSize(true);
         OrdersList.setLayoutManager(new LinearLayoutManager(getActivity()));
         OrdersList.setItemAnimator(new DefaultItemAnimator());
@@ -96,14 +97,13 @@ public class OrdersNewEdit_Fragment extends Fragment {
                 .customView(R.layout.new_list_order_dlg, true)
                 .positiveText(R.string.done)
                 .negativeText(R.string.cancel)
-                .callback(new MaterialDialog.ButtonCallback() {
-
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onPositive(MaterialDialog dialog) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         if (!sql.IsOpen()) {
                             sql.open();
                         }
-                        name = (EditText) dialog.getCustomView().findViewById(R.id.editnameorder);
+                        name = ButterKnife.findById(dialog.getCustomView(), R.id.editnameorder);
                         if (sql.CheckIsDataAlreadyInDBorNot(DBHelper.TABLE_PEDIDOS, DBHelper.NAME, name.getText().toString())) {
 
                             Toast.makeText(getActivity(), getString(R.string.dlgerror_dataexist), Toast.LENGTH_LONG).show();
@@ -118,7 +118,7 @@ public class OrdersNewEdit_Fragment extends Fragment {
                             GlobalUttilities.animateView(getActivity(), name);
                             return;
                         }
-                        Comentariostxt = (EditText) dialog.getCustomView().findViewById(R.id.editcomment);
+                        Comentariostxt = ButterKnife.findById(dialog.getCustomView(), R.id.editcomment);
                         long ret = sql.newOrdersListName(name.getText().toString(), supplierId, Comentariostxt.getText().toString());
                         if (ret != -1) {
                             ID = (int) ret;
@@ -129,21 +129,20 @@ public class OrdersNewEdit_Fragment extends Fragment {
                         } else {
                             Toast.makeText(getActivity(), getString(R.string.dlgerror_namerecipe), Toast.LENGTH_LONG).show();
                         }
-
-
                     }
+                })
 
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onNegative(MaterialDialog dialog) {
-
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         dialog.dismiss();
                         getActivity().onBackPressed();
                     }
                 })
                 .build();
 
-        suppliersSpinner = (Spinner) dialogNewOrder.getCustomView().findViewById(R.id.spinnerSuppliers);
-        addSupplierOrder = (ImageButton) dialogNewOrder.getCustomView().findViewById(R.id.ButtonAddSupplier);
+        suppliersSpinner = ButterKnife.findById(dialogNewOrder.getCustomView(), R.id.spinnerSuppliers);
+        addSupplierOrder = ButterKnife.findById(dialogNewOrder.getCustomView(), R.id.ButtonAddSupplier);
         suppliersSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -422,17 +421,19 @@ public class OrdersNewEdit_Fragment extends Fragment {
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-            public ImageButton delButton;
-            public TextView txtProd;
-            public TextView txtCantidad;
-            public TextView txtFormat;
+            @BindView(R.id.ButtonDeleteProduct)
+            ImageButton delButton;
+            @BindView(R.id.text1)
+            TextView txtProd;
+            @BindView(R.id.text2)
+            TextView txtCantidad;
+            @BindView(R.id.text3)
+            TextView txtFormat;
 
             public ViewHolder(View v) {
                 super(v);
-                delButton = (ImageButton) v.findViewById(R.id.ButtonDeleteProduct);
-                txtProd = (TextView) v.findViewById(R.id.text1);
-                txtCantidad = (TextView) v.findViewById(R.id.text2);
-                txtFormat = (TextView) v.findViewById(R.id.text3);
+                ButterKnife.bind(this, v);
+
                 delButton.setOnClickListener(this);
             }
 

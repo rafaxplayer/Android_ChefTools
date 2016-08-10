@@ -1,13 +1,5 @@
 package rafaxplayer.cheftools.Globalclasses;
 
-
-import android.os.Parcel;
-import android.os.Parcelable;
-
-/**
- * Created by exhowi on 06/02/2015.
- */
-
 public class Recipe {
     int id;
     String name;
@@ -18,19 +10,18 @@ public class Recipe {
     String url;
 
 
-
-    public Recipe(){
+    public Recipe() {
 
     }
 
-    public Recipe(String name, String img, String ingredients, String elaboration,  String url, String categoty) {
+    public Recipe(String name, String img, String ingredients, String elaboration, String url, String categoty) {
         this.name = name;
         this.img = img;
 
         this.Ingredients = ingredients;
         this.Elaboration = elaboration;
 
-        this.url=url;
+        this.url = url;
 
         this.Categoty = categoty;
 
@@ -59,7 +50,6 @@ public class Recipe {
     public void setCategoty(String categoty) {
         Categoty = categoty;
     }
-
 
 
     public String getElaboration() {

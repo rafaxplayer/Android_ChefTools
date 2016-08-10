@@ -7,10 +7,10 @@ import android.support.v4.app.FragmentTransaction;
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
 import rafaxplayer.cheftools.Orders.fragment.OrdersNewEdit_Fragment;
-import rafaxplayer.cheftools.products.fragments.ProductosMannager_Fragment;
 import rafaxplayer.cheftools.R;
+import rafaxplayer.cheftools.products.fragments.ProductosMannager_Fragment;
 
-public class OrdersNewEdit_Activity extends BaseActivity  implements ProductosMannager_Fragment.OnSelectedCallback{
+public class OrdersNewEdit_Activity extends BaseActivity implements ProductosMannager_Fragment.OnSelectedCallback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,11 +23,12 @@ public class OrdersNewEdit_Activity extends BaseActivity  implements ProductosMa
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit();
         }
-        if(!GlobalUttilities.isScreenLarge(getApplicationContext())) {
+        if (!GlobalUttilities.isScreenLarge(getApplicationContext())) {
 
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
     }
+
     @Override
     protected int getLayoutResourceId() {
 
@@ -43,8 +44,8 @@ public class OrdersNewEdit_Activity extends BaseActivity  implements ProductosMa
 
     @Override
     public void onSelect(int pid) {
-        OrdersNewEdit_Fragment fr = (OrdersNewEdit_Fragment)getSupportFragmentManager().findFragmentByTag("neweditorder");
-        if(fr!=null){
+        OrdersNewEdit_Fragment fr = (OrdersNewEdit_Fragment) getSupportFragmentManager().findFragmentByTag("neweditorder");
+        if (fr != null) {
             fr.displayProductWithId(pid);
             //onBackPressed();
         }

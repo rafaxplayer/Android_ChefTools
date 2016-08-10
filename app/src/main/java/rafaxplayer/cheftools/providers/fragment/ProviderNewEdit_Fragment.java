@@ -1,6 +1,7 @@
 package rafaxplayer.cheftools.providers.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import butterknife.BindView;
@@ -163,19 +165,19 @@ public class ProviderNewEdit_Fragment extends Fragment {
                         .title(R.string.dlgsucces_saved)
                         .content(R.string.dlgnew_saved)
                         .positiveText(R.string.yes)
-
                         .negativeText(R.string.not)
-
-                        .callback(new MaterialDialog.ButtonCallback() {
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
-                            public void onPositive(MaterialDialog dialog) {
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 refresh();
                                 Nametxt.requestFocus();
                                 dialog.dismiss();
                             }
+                        })
 
+                        .onNegative(new MaterialDialog.SingleButtonCallback() {
                             @Override
-                            public void onNegative(MaterialDialog dialog) {
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 getActivity().onBackPressed();
                                 dialog.dismiss();
                             }

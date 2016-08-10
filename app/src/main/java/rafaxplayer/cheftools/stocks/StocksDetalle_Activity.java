@@ -6,19 +6,18 @@ import android.support.v4.app.FragmentTransaction;
 
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
-import rafaxplayer.cheftools.Orders.fragment.OrdersDetalle_Fragment;
-import rafaxplayer.cheftools.Orders.fragment.OrdersNewEdit_Fragment;
 import rafaxplayer.cheftools.R;
 import rafaxplayer.cheftools.stocks.fragment.StocksDetalle_Fragment;
 import rafaxplayer.cheftools.stocks.fragment.StocksNewEdit_Fragment;
 
 public class StocksDetalle_Activity extends BaseActivity {
     private int ID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ID= getIntent().getExtras().getInt("id");
+        ID = getIntent().getExtras().getInt("id");
 
         if (savedInstanceState == null) {
 
@@ -27,16 +26,18 @@ public class StocksDetalle_Activity extends BaseActivity {
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit();
         }
-        if(!GlobalUttilities.isScreenLarge(getApplicationContext())) {
+        if (!GlobalUttilities.isScreenLarge(getApplicationContext())) {
 
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
     }
+
     @Override
     protected int getLayoutResourceId() {
 
         return R.layout.activity_template_for_all;
     }
+
     @Override
     protected String getCustomTitle() {
 
@@ -53,8 +54,6 @@ public class StocksDetalle_Activity extends BaseActivity {
 
 
     }
-
-
 
 
 }

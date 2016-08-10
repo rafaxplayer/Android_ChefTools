@@ -42,8 +42,8 @@ public class GlobalUttilities {
     public static final int WEBURL_MODE_SEARCHRECIPE = 2;
     public static final String CALCULATOR_PACKAGE_2 = "com.sec.android.app.popupcalculator";
     public static final String CALCULATOR_CLASS_2 = "com.sec.android.app.popupcalculator.Calculator";
-    public static final String CALCULATOR_PACKAGE ="com.android.calculator2";
-    public static final String CALCULATOR_CLASS ="com.android.calculator2.Calculator";
+    public static final String CALCULATOR_PACKAGE = "com.android.calculator2";
+    public static final String CALCULATOR_CLASS = "com.android.calculator2.Calculator";
 
     public static Boolean backup(Context con) {
         Boolean ret = false;
@@ -89,7 +89,8 @@ public class GlobalUttilities {
 
         return ret;
     }
-    public static Boolean backupRestore(Context con,String filename) {
+
+    public static Boolean backupRestore(Context con, String filename) {
         Boolean ret = false;
         try {
 
@@ -239,16 +240,16 @@ public class GlobalUttilities {
             str.append("\n");
             str.append("--------------------");
             str.append("\n");
-            SqliteWrapper sql= new SqliteWrapper(con);
+            SqliteWrapper sql = new SqliteWrapper(con);
             sql.open();
 
-            String products=sql.getProductListToString(((Orders) obj).getId(), DBHelper.TABLE_PEDIDOS_LISTAS, DBHelper.PEDIDO_ID);
+            String products = sql.getProductListToString(((Orders) obj).getId(), DBHelper.TABLE_PEDIDOS_LISTAS, DBHelper.PEDIDO_ID);
             //Log.e("tostring",products);
             str.append(products);
 
             str.append("\n");
 
-        }else if (obj instanceof Stocks) {
+        } else if (obj instanceof Stocks) {
             str.append(((Stocks) obj).getName());
             str.append("\n");
             str.append("-=-=-=-=-=-=-=-=-=-=");
@@ -270,10 +271,10 @@ public class GlobalUttilities {
             str.append("\n");
             str.append("--------------------");
             str.append("\n");
-            SqliteWrapper sql= new SqliteWrapper(con);
+            SqliteWrapper sql = new SqliteWrapper(con);
             sql.open();
 
-            String products=sql.getProductListToString(((Stocks) obj).getId(), DBHelper.TABLE_INVENTARIOS_LISTAS, DBHelper.INVENTARIO_ID);
+            String products = sql.getProductListToString(((Stocks) obj).getId(), DBHelper.TABLE_INVENTARIOS_LISTAS, DBHelper.INVENTARIO_ID);
 
             str.append(products);
 
@@ -294,7 +295,8 @@ public class GlobalUttilities {
         Date date = new Date();
         return dateFormat.format(date);
     }
-    public static void setDialogFragmentSize(DialogFragment dlg){
+
+    public static void setDialogFragmentSize(DialogFragment dlg) {
         Rect displayRectangle = new Rect();
         Window window = dlg.getDialog().getWindow();
         window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
@@ -302,6 +304,7 @@ public class GlobalUttilities {
         int dialogHeight = LinearLayout.LayoutParams.WRAP_CONTENT;
         dlg.getDialog().getWindow().setLayout(dialogWidth, dialogHeight);
     }
+
     public static void call(Context con, String telf) {
 
         Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + telf));
@@ -334,14 +337,16 @@ public class GlobalUttilities {
         imm.hideSoftInputFromWindow(ed.getWindowToken(), 0);
     }
 
-    public static void animateView(Context con,View v){
+    public static void animateView(Context con, View v) {
         Animation animAlpha = AnimationUtils.loadAnimation(con, R.anim.anim_fadeout);
         animAlpha.setRepeatMode(Animation.REVERSE);
         v.startAnimation(animAlpha);
     }
-    public static Typeface getfont(Context con,String font){
-        return Typeface.createFromAsset(con.getAssets(),"fonts/"+font);
+
+    public static Typeface getfont(Context con, String font) {
+        return Typeface.createFromAsset(con.getAssets(), "fonts/" + font);
     }
+
     public static boolean isScreenLarge(Context con) {
         final int screenSize = con.getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK;

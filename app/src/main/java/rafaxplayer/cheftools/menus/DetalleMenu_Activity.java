@@ -1,7 +1,7 @@
 package rafaxplayer.cheftools.menus;
 
-import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
 import rafaxplayer.cheftools.R;
@@ -9,11 +9,12 @@ import rafaxplayer.cheftools.menus.fragments.DetalleMenu_Fragment;
 import rafaxplayer.cheftools.menus.fragments.MenuNewEdit_Fragment;
 
 public class DetalleMenu_Activity extends BaseActivity {
-private int ID;
+    private int ID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ID= getIntent().getExtras().getInt("id");
+        ID = getIntent().getExtras().getInt("id");
 
         if (savedInstanceState == null) {
 
@@ -23,11 +24,13 @@ private int ID;
                     .commit();
         }
     }
+
     @Override
     protected int getLayoutResourceId() {
 
         return R.layout.activity_template_for_all;
     }
+
     @Override
     protected String getCustomTitle() {
 

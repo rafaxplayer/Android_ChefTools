@@ -16,12 +16,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
-
 import rafaxplayer.cheftools.Globalclasses.Stock_Product;
 import rafaxplayer.cheftools.Globalclasses.Stocks;
-import rafaxplayer.cheftools.Orders.OrdersDetalle_Activity;
-import rafaxplayer.cheftools.Orders.Orders_Activity;
 import rafaxplayer.cheftools.R;
 import rafaxplayer.cheftools.database.DBHelper;
 import rafaxplayer.cheftools.database.SqliteWrapper;
@@ -34,9 +33,12 @@ import rafaxplayer.cheftools.stocks.Stocks_Activity;
 public class StocksDetalle_Fragment extends Fragment {
     private SqliteWrapper sql;
     private int ID;
-    private TextView stockName;
-    private TextView stockComment;
-    private RecyclerView listStock;
+    @BindView(R.id.stocknamedetalle)
+    TextView stockName;
+    @BindView(R.id.textComment)
+    TextView stockComment;
+    @BindView(R.id.list_items)
+    RecyclerView listStock;
 
 
     public static StocksDetalle_Fragment newInstance(int id) {
@@ -51,10 +53,8 @@ public class StocksDetalle_Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v=inflater.inflate(R.layout.fragment_stocks_detalle, container, false);
-        stockName =(TextView)v.findViewById(R.id.stocknamedetalle);
-        stockComment =(TextView)v.findViewById(R.id.textComment);
-        listStock =(RecyclerView)v.findViewById(R.id.list_items);
+        View v = inflater.inflate(R.layout.fragment_stocks_detalle, container, false);
+        ButterKnife.bind(this, v);
         listStock.setHasFixedSize(true);
         listStock.setLayoutManager(new LinearLayoutManager(getActivity()));
         listStock.setItemAnimator(new DefaultItemAnimator());
@@ -85,19 +85,20 @@ public class StocksDetalle_Fragment extends Fragment {
         }
         setHasOptionsMenu(!(this.ID == 0));
     }
+
     @Override
     public void onCreateOptionsMenu(android.view.Menu menu, MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
         inflater.inflate(R.menu.menu_detalle, menu);
-        MenuItem share=menu.findItem(R.id.share);
-        MenuItem edit=menu.findItem(R.id.edit);
+        MenuItem share = menu.findItem(R.id.share);
+        MenuItem edit = menu.findItem(R.id.edit);
         share.setTitle(R.string.menu_share_stock);
         edit.setTitle(R.string.menu_edit_stock);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.edit:
                 if (ID != 0) {
                     Boolean islayout = (getActivity().getSupportFragmentManager().findFragmentById(R.id.detallestocks) != null);
@@ -115,7 +116,7 @@ public class StocksDetalle_Fragment extends Fragment {
                     sql.open();
                 }
                 if (ID != 0) {
-                    Stocks stock = (Stocks)sql.SelectWithId("Stocks", DBHelper.TABLE_INVENTARIOS, ID);
+                    Stocks stock = (Stocks) sql.SelectWithId("Stocks", DBHelper.TABLE_INVENTARIOS, ID);
 
                     String sharedStr = GlobalUttilities.shareDataText(getActivity(), stock);
                     Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -133,13 +134,14 @@ public class StocksDetalle_Fragment extends Fragment {
 
         return super.onOptionsItemSelected(item);
     }
-    public void displayWithId(int id){
+
+    public void displayWithId(int id) {
 
         if (!sql.IsOpen()) {
             sql.open();
         }
 
-        Stocks ord = (Stocks)sql.SelectWithId("Stocks", DBHelper.TABLE_INVENTARIOS,id);
+        Stocks ord = (Stocks) sql.SelectWithId("Stocks", DBHelper.TABLE_INVENTARIOS, id);
         if (ord != null) {
 
             stockName.setText(ord.getName());
@@ -147,8 +149,6 @@ public class StocksDetalle_Fragment extends Fragment {
             ArrayList<Stock_Product> listProducts = sql.getProductListStock(id);
 
             listStock.setAdapter(new RecyclerAdapter(listProducts));
-
-
 
 
         }
@@ -160,7 +160,7 @@ public class StocksDetalle_Fragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        if(sql.IsOpen()){
+        if (sql.IsOpen()) {
             sql.close();
         }
     }
@@ -209,7 +209,7 @@ public class StocksDetalle_Fragment extends Fragment {
 
             public ViewHolder(View v) {
                 super(v);
-                delbut=(ImageButton)v.findViewById(R.id.ButtonDeleteProduct);
+                delbut = (ImageButton) v.findViewById(R.id.ButtonDeleteProduct);
                 txtProd = (TextView) v.findViewById(R.id.text1);
                 txtCantidad = (TextView) v.findViewById(R.id.text2);
                 txtFormat = (TextView) v.findViewById(R.id.text3);

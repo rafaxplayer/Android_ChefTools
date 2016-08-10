@@ -40,7 +40,7 @@ public class Categorys_Formats_Adapter extends RecyclerView.Adapter<Categorys_Fo
         this.mDataset.remove(0);
         this.Table = sTable;
         this.con = con;
-        this.act=con;
+        this.act = con;
         sql = sqlite;
 
     }
@@ -106,7 +106,7 @@ public class Categorys_Formats_Adapter extends RecyclerView.Adapter<Categorys_Fo
 
         public ViewHolder(View v) {
             super(v);
-            imglist =(ImageView)v.findViewById(R.id.imageList);
+            imglist = (ImageView) v.findViewById(R.id.imageList);
             mTextView = (TextView) v.findViewById(R.id.text1);
             mTextView2 = (TextView) v.findViewById(R.id.text2);
             mTextView3 = (TextView) v.findViewById(R.id.text3);
@@ -125,7 +125,7 @@ public class Categorys_Formats_Adapter extends RecyclerView.Adapter<Categorys_Fo
                         case R.id.action_delete:
                             new MaterialDialog.Builder(con)
                                     .title(R.string.menu_delete_item)
-                                    .content(con.getString(R.string.deleteitemmsg).replace("###",mDataset.get(ViewHolder.this.getLayoutPosition()).get("Name").toString()))
+                                    .content(con.getString(R.string.deleteitemmsg).replace("###", mDataset.get(ViewHolder.this.getLayoutPosition()).get("Name").toString()))
                                     .theme(Theme.LIGHT)
                                     .positiveText("Ok")
                                     .negativeText(R.string.cancel)

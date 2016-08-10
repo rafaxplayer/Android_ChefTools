@@ -1,8 +1,8 @@
 package rafaxplayer.cheftools.providers.fragment;
 
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -10,11 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import rafaxplayer.cheftools.database.DBHelper;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
 import rafaxplayer.cheftools.Globalclasses.Supplier;
-import rafaxplayer.cheftools.database.SqliteWrapper;
 import rafaxplayer.cheftools.R;
+import rafaxplayer.cheftools.database.DBHelper;
+import rafaxplayer.cheftools.database.SqliteWrapper;
 import rafaxplayer.cheftools.providers.ProviderDetalle_Activity;
 import rafaxplayer.cheftools.providers.Providers_Activity;
 
@@ -24,12 +26,18 @@ import rafaxplayer.cheftools.providers.Providers_Activity;
 public class ProviderDetalle_Fragment extends Fragment {
     private SqliteWrapper sql;
     private int ID;
-    private TextView proName;
-    private TextView proTelefono;
-    private TextView proEmail;
-    private TextView proDireccion;
-    private TextView proCategoria;
-    private TextView proCommentario;
+    @BindView(R.id.providername)
+    TextView proName;
+    @BindView(R.id.providerTelefono)
+    TextView proTelefono;
+    @BindView(R.id.providerEmail)
+    TextView proEmail;
+    @BindView(R.id.providerDireccion)
+    TextView proDireccion;
+    @BindView(R.id.providerCategory)
+    TextView proCategoria;
+    @BindView(R.id.providerComment)
+    TextView proCommentario;
 
     public static ProviderDetalle_Fragment newInstance(int id) {
         ProviderDetalle_Fragment fr = new ProviderDetalle_Fragment();
@@ -43,13 +51,8 @@ public class ProviderDetalle_Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v=inflater.inflate(R.layout.fragment_provider_detalle, container, false);
-        proName=(TextView)v.findViewById(R.id.providername);
-        proTelefono=(TextView)v.findViewById(R.id.providerTelefono);
-        proEmail=(TextView) v.findViewById(R.id.providerEmail);
-        proDireccion=(TextView)v.findViewById(R.id.providerDireccion);
-        proCategoria=(TextView)v.findViewById(R.id.providerCategory);
-        proCommentario=(TextView)v.findViewById(R.id.providerComment);
+        View v = inflater.inflate(R.layout.fragment_provider_detalle, container, false);
+        ButterKnife.bind(this, v);
         return v;
     }
 
@@ -95,19 +98,20 @@ public class ProviderDetalle_Fragment extends Fragment {
         }
         setHasOptionsMenu(!(this.ID == 0));
     }
+
     @Override
     public void onCreateOptionsMenu(android.view.Menu menu, MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
         inflater.inflate(R.menu.menu_detalle, menu);
-        MenuItem share=menu.findItem(R.id.share);
-        MenuItem edit=menu.findItem(R.id.edit);
+        MenuItem share = menu.findItem(R.id.share);
+        MenuItem edit = menu.findItem(R.id.edit);
         share.setTitle(R.string.menu_share_supplier);
         edit.setTitle(R.string.menu_edit_provider);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.edit:
                 if (ID != 0) {
                     Boolean islayout = (getActivity().getSupportFragmentManager().findFragmentById(R.id.detalleprovider) != null);
@@ -125,7 +129,7 @@ public class ProviderDetalle_Fragment extends Fragment {
                     sql.open();
                 }
                 if (ID != 0) {
-                    Supplier pro = (Supplier)sql.SelectWithId("Provider", DBHelper.TABLE_PROVEEDORES, ID);
+                    Supplier pro = (Supplier) sql.SelectWithId("Provider", DBHelper.TABLE_PROVEEDORES, ID);
                     String sharedStr = GlobalUttilities.shareDataText(getActivity(), pro);
                     Intent shareIntent = new Intent(Intent.ACTION_SEND);
                     shareIntent.setType("*/*");
@@ -142,11 +146,12 @@ public class ProviderDetalle_Fragment extends Fragment {
 
         return super.onOptionsItemSelected(item);
     }
-    public void displayWithId(int id){
+
+    public void displayWithId(int id) {
         if (!sql.IsOpen()) {
             sql.open();
         }
-        Supplier pro = (Supplier)sql.SelectWithId("Provider", DBHelper.TABLE_PROVEEDORES,id);
+        Supplier pro = (Supplier) sql.SelectWithId("Provider", DBHelper.TABLE_PROVEEDORES, id);
         if (pro != null) {
 
             proName.setText(pro.getName());

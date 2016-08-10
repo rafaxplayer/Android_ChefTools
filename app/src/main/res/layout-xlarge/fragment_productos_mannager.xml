@@ -39,8 +39,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:text="@string/searchforcategory"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            />
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <Spinner
             android:id="@+id/spinnerCategory2"

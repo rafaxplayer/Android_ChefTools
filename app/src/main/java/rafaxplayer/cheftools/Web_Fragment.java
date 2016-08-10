@@ -14,17 +14,18 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
 import rafaxplayer.cheftools.recipes.fragments.NewEditRecipe_Fragment;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class Web_Fragment extends Fragment {
-    private WebView web;
-    private Button save;
-    private Button cancel;
+    @BindView(R.id.webView)
+    WebView web;
+    @BindView(R.id.buttonsaveurl)
+    Button save;
+    @BindView(R.id.buttonCancelurl)
+    Button cancel;
     private String url;
     private String urlimage = "http://www.google.com/advanced_image_search";
     private String urlgoogle = "https://www.google.com/";
@@ -39,9 +40,7 @@ public class Web_Fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_web, container, false);
-        web = (WebView) v.findViewById(R.id.webView);
-        save = (Button) v.findViewById(R.id.buttonsaveurl);
-        cancel = (Button) v.findViewById(R.id.buttonCancelurl);
+        ButterKnife.bind(this, v);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -2,21 +2,16 @@ package rafaxplayer.cheftools.products.fragments;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
 import android.text.InputType;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,7 +20,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Filter;
@@ -37,28 +31,32 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import rafaxplayer.cheftools.Orders.fragment.OrdersNewEdit_Fragment;
-import rafaxplayer.cheftools.database.DBHelper;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
 import rafaxplayer.cheftools.Globalclasses.Product;
-import rafaxplayer.cheftools.database.SqliteWrapper;
 import rafaxplayer.cheftools.R;
-import rafaxplayer.cheftools.recipes.NewEditRecipe_Activity;
+import rafaxplayer.cheftools.database.DBHelper;
+import rafaxplayer.cheftools.database.SqliteWrapper;
 
 
 public class ProductosMannager_Fragment extends DialogFragment {
+    @BindView(R.id.list_items)
+    RecyclerView ListProducts;
+    @BindView(R.id.spinnerCategory2)
+    Spinner catsSpinner2;
+    @BindView(R.id.newproduct)
+    FloatingActionButton addNewProduct;
 
     private OnSelectedCallback mCallback;
-    private RecyclerView ListProducts;
-    private FloatingActionButton addNewProduct;
     private Spinner catsSpinner;
-    private Spinner catsSpinner2;
     private Spinner formatsSpinner;
     private Spinner provSpinner;
     private SqliteWrapper sql;
@@ -78,6 +76,7 @@ public class ProductosMannager_Fragment extends DialogFragment {
     private boolean firstShowSpinner;
     private MaterialDialog dialogNewProduct;
     private static String TAG = ProductosMannager_Fragment.class.getSimpleName();
+
     public static ProductosMannager_Fragment newInstance(int id, boolean modeSelect) {
         ProductosMannager_Fragment f = new ProductosMannager_Fragment();
         Bundle args = new Bundle();
@@ -97,7 +96,7 @@ public class ProductosMannager_Fragment extends DialogFragment {
         ID = 0;
         formatId = 0;
         provId = 0;
-        firstShowSpinner=true;
+        firstShowSpinner = true;
         if (getArguments() != null) {
 
             this.productID = getArguments().getInt("id");
@@ -111,14 +110,12 @@ public class ProductosMannager_Fragment extends DialogFragment {
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_productos_mannager, container, false);
+        ButterKnife.bind(this, v);
 
-
-        ListProducts = (RecyclerView) v.findViewById(R.id.list_items);
         ListProducts.setHasFixedSize(true);
         ListProducts.setLayoutManager(new LinearLayoutManager(getActivity()));
         ListProducts.setItemAnimator(new DefaultItemAnimator());
-        catsSpinner2 = (Spinner) v.findViewById(R.id.spinnerCategory2);
-        addNewProduct = (FloatingActionButton) v.findViewById(R.id.newproduct);
+
 
         return v;
     }
@@ -140,10 +137,9 @@ public class ProductosMannager_Fragment extends DialogFragment {
                         GlobalUttilities.ocultateclado(getActivity(), editName);
                     }
                 })
-                .callback(new MaterialDialog.ButtonCallback() {
-
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onPositive(MaterialDialog dialog) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         if (!sql.IsOpen()) {
                             sql.open();
                         }
@@ -200,22 +196,20 @@ public class ProductosMannager_Fragment extends DialogFragment {
 
                         }
                         GlobalUttilities.ocultateclado(getActivity(), editName);
-
-
-                    }
-
-                    @Override
-                    public void onNegative(MaterialDialog dialog) {
-
-                        dialog.dismiss();
-
                     }
                 })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                })
+
                 .build();
-        editName = (EditText) dialogNewProduct.getCustomView().findViewById(R.id.editnameproduct);
-        catsSpinner = (Spinner) dialogNewProduct.getCustomView().findViewById(R.id.spinnerCategory);
-        provSpinner = (Spinner) dialogNewProduct.getCustomView().findViewById(R.id.spinnerSupplier);
-        formatsSpinner = (Spinner) dialogNewProduct.getCustomView().findViewById(R.id.spinnerFormat);
+        editName = ButterKnife.findById(dialogNewProduct.getCustomView(), R.id.editnameproduct);
+        catsSpinner = ButterKnife.findById(dialogNewProduct.getCustomView(), R.id.spinnerCategory);
+        provSpinner = ButterKnife.findById(dialogNewProduct.getCustomView(), R.id.spinnerSupplier);
+        formatsSpinner = ButterKnife.findById(dialogNewProduct.getCustomView(), R.id.spinnerFormat);
         addNewProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -228,7 +222,7 @@ public class ProductosMannager_Fragment extends DialogFragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (view != null || firstShowSpinner) {
-                    String cat=((TextView) view.findViewById(R.id.spinnertext)).getText().toString();
+                    String cat = ((TextView) view.findViewById(R.id.spinnertext)).getText().toString();
                     ProductsAdapter.FilesFilter f = ((ProductsAdapter.FilesFilter) ((ProductsAdapter) ListProducts.getAdapter()).getFilter());
                     f.addtype(TYPECATEGORY);
                     f.filter(cat);
@@ -298,9 +292,7 @@ public class ProductosMannager_Fragment extends DialogFragment {
                                     ProductsAdapter.FilesFilter f = ((ProductsAdapter.FilesFilter) ((ProductsAdapter) ListProducts.getAdapter()).getFilter());
                                     f.addtype(TYPENAME);
                                     f.filter(input.toString());
-
                                 }
-
 
                                 getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                                 dialog.dismiss();
@@ -319,7 +311,7 @@ public class ProductosMannager_Fragment extends DialogFragment {
         if (!sql.IsOpen()) {
             sql.open();
         }
-        firstShowSpinner=false;
+        firstShowSpinner = false;
         arrCats = sql.getFormatsOrCategorysData(DBHelper.TABLE_PRODUCTOS_CATEGORY);
         SimpleAdapter Adaptercats = new SimpleAdapter(getActivity(), arrCats, R.layout.spinnerrow, new String[]{"ID", "Name"}, new int[]{R.id.iddata, R.id.spinnertext});
         catsSpinner.setAdapter(Adaptercats);

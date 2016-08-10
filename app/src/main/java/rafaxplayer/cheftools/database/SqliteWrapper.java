@@ -529,9 +529,9 @@ public class SqliteWrapper {
         if (cursor.moveToFirst()) {
             do {
                 ImageGalleryModel imgModel = new ImageGalleryModel();
-                imgModel.ID=Integer.parseInt(cursor.getString(0));
-                imgModel.Title=cursor.getString(1);
-                imgModel.ImagePath=cursor.getString(2);
+                imgModel.ID = Integer.parseInt(cursor.getString(0));
+                imgModel.Title = cursor.getString(1);
+                imgModel.ImagePath = cursor.getString(2);
                 list.add(imgModel);
 
             } while (cursor.moveToNext());

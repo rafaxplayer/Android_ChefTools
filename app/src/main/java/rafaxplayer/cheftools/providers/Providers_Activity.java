@@ -1,8 +1,8 @@
 package rafaxplayer.cheftools.providers;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
 import rafaxplayer.cheftools.R;
@@ -15,21 +15,23 @@ public class Providers_Activity extends BaseActivity implements ProvidersList_Fr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(savedInstanceState==null){
+        if (savedInstanceState == null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.container, new ProvidersList_Fragment(), "listprovider");
             ft.commit();
         }
     }
+
     @Override
     protected int getLayoutResourceId() {
-        if(getResources().getBoolean(R.bool.dual_pane)){
+        if (getResources().getBoolean(R.bool.dual_pane)) {
             return R.layout.activity_providers;
-        }else{
+        } else {
             return R.layout.activity_template_for_all;
         }
 
     }
+
     @Override
     protected String getCustomTitle() {
 

@@ -44,23 +44,25 @@
                 android:layout_marginBottom="4dp"
                 android:text="@string/product_name"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/editnameproduct"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#89c7aa80"
-                android:editable="true"
 
-                android:inputType="textCapWords"
-                android:padding="10dp"
-                android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="#ff4c4c48"
-                android:textColorHint="@color/textTitletColor"
-                android:textStyle="italic" />
+                <EditText
+                    android:id="@+id/editnameproduct"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#89c7aa80"
+                    android:editable="true"
+
+                    android:inputType="textCapWords"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="#ff4c4c48"
+                    android:textColorHint="@color/textTitletColor"
+                    android:textStyle="italic" />
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
 

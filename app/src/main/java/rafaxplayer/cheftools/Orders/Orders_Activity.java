@@ -15,21 +15,23 @@ public class Orders_Activity extends BaseActivity implements OrdersList_Fragment
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(savedInstanceState==null){
+        if (savedInstanceState == null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.container, new OrdersList_Fragment(), "listorders");
             ft.commit();
         }
     }
+
     @Override
     protected int getLayoutResourceId() {
-        if(getResources().getBoolean(R.bool.dual_pane)){
+        if (getResources().getBoolean(R.bool.dual_pane)) {
             return R.layout.activity_orders;
-        }else{
+        } else {
             return R.layout.activity_template_for_all;
         }
 
     }
+
     @Override
     protected String getCustomTitle() {
 

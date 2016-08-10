@@ -3,6 +3,7 @@ package rafaxplayer.cheftools.Orders.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -29,6 +30,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.melnykov.fab.FloatingActionButton;
@@ -49,7 +51,7 @@ import rafaxplayer.cheftools.database.DBHelper;
 import rafaxplayer.cheftools.database.SqliteWrapper;
 
 
-public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
+public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     @BindView(R.id.list_items)
     RecyclerView listOrders;
     @BindView(R.id.layoutempty)
@@ -127,13 +129,13 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
         super.onCreate(savedInstanceState);
         sql = new SqliteWrapper(getActivity());
         sql.open();
-        itemsFound=false;
+        itemsFound = false;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (!sql.IsOpen()){
+        if (!sql.IsOpen()) {
             sql.open();
         }
 
@@ -199,8 +201,8 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
                 new MaterialDialog.Builder(getActivity())
                         .title(R.string.search)
 
-                        .inputType(InputType.TYPE_CLASS_TEXT )
-                        .input("Text to search...","", new MaterialDialog.InputCallback() {
+                        .inputType(InputType.TYPE_CLASS_TEXT)
+                        .input("Text to search...", "", new MaterialDialog.InputCallback() {
                             @Override
                             public void onInput(MaterialDialog dialog, CharSequence input) {
                                 ((OrdersAdapter) listOrders.getAdapter()).getFilter().filter(input);
@@ -246,7 +248,7 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
 
     private List<Orders> loadValues(String order) {
 
-        return (List<Orders>)(Object) sql.getAllObjects("Orders", order);
+        return (List<Orders>) (Object) sql.getAllObjects("Orders", order);
 
     }
 
@@ -316,7 +318,6 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
         }
 
 
-
         public int getSelectedItemCount() {
             return selectedItems.size();
         }
@@ -343,7 +344,7 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
 
         @Override
         public OrdersAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                              int viewType) {
+                                                           int viewType) {
             // Create a new view by inflating the row item xml.
             View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_list_orders_stocks, parent, false);
@@ -360,9 +361,9 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
             Picasso.with(getActivity()).load(R.drawable.purchase).into(holder.img);
             holder.sName.setText(((Orders) mDataset.get(position)).getName());
             holder.sDate.setText(((Orders) mDataset.get(position)).getFecha());
-            boolean state=selectedItems.get(position, false);
+            boolean state = selectedItems.get(position, false);
             holder.itemView.setSelected(state);
-            if(mActionMode!=null) {
+            if (mActionMode != null) {
                 if (state) {
                     Picasso.with(getActivity())
                             .load(R.drawable.checked).placeholder(R.drawable.item_image_placeholder)
@@ -396,21 +397,22 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
 
         // Create the ViewHolder class to keep references to your views
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-            public ImageView img;
-            public ImageButton edit;
-            private ImageButton del;
-            public TextView sName;
-            public TextView sDate;
+            @BindView(R.id.imageList)
+            ImageView img;
+            @BindView(R.id.ButtonEdit)
+            ImageButton edit;
+            @BindView(R.id.ButtonDelete)
+            ImageButton del;
+            @BindView(R.id.text1)
+            TextView sName;
+            @BindView(R.id.text2)
+            TextView sDate;
 
             int ID;
 
             public ViewHolder(View v) {
                 super(v);
-                img = (ImageView) v.findViewById(R.id.imageList);
-                sName = (TextView) v.findViewById(R.id.text1);
-                sDate = (TextView) v.findViewById(R.id.text2);
-                edit=(ImageButton) v.findViewById(R.id.ButtonEdit);
-                del=(ImageButton) v.findViewById(R.id.ButtonDelete);
+                ButterKnife.bind(this, v);
                 v.setOnClickListener(this);
                 v.setOnLongClickListener(this);
                 edit.setOnClickListener(this);
@@ -421,32 +423,36 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
             public void onClick(View v) {
 
 
-                if(v.getId()==R.id.ButtonDelete){
+                if (v.getId() == R.id.ButtonDelete) {
                     new MaterialDialog.Builder(getActivity())
                             .title(R.string.order_delete)
                             .content(R.string.deleteordermsg)
                             .theme(Theme.LIGHT)
                             .positiveText(R.string.yes)
                             .negativeText(R.string.not)
-                            .callback(new MaterialDialog.ButtonCallback() {
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
                                 @Override
-                                public void onPositive(MaterialDialog dialog) {
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     deleteItem(ViewHolder.this.getLayoutPosition());
                                     dialog.dismiss();
                                 }
+                            })
 
+                            .onNegative(new MaterialDialog.SingleButtonCallback() {
                                 @Override
-                                public void onNegative(MaterialDialog dialog) {
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
                                     dialog.dismiss();
                                 }
                             })
+
                             .show();
                     return;
-                }else if(v.getId()==R.id.ButtonEdit){
-                    Intent in = new Intent(getActivity(),OrdersNewEdit_Activity.class);
-                    in.putExtra("id",((Orders) mDataset.get(ViewHolder.this.getLayoutPosition())).getId());
+                } else if (v.getId() == R.id.ButtonEdit) {
+                    Intent in = new Intent(getActivity(), OrdersNewEdit_Activity.class);
+                    in.putExtra("id", ((Orders) mDataset.get(ViewHolder.this.getLayoutPosition())).getId());
                     getActivity().startActivity(in);
-                }else{
+                } else {
                     if (mActionMode != null) {
                         v.setSelected(!v.isSelected());
                         toggleSelection(ViewHolder.this.getLayoutPosition(), img);
@@ -539,7 +545,7 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
             MenuInflater inflater = mode.getMenuInflater();
             inflater.inflate(R.menu.menu_action_mode, menu);
             //((Escandallos_Activity) getActivity()).getSupportActionBar().hide();
-            ((BaseActivity)getActivity()).hideToolbarContent(true);
+            ((BaseActivity) getActivity()).hideToolbarContent(true);
             adp = (OrdersAdapter) listOrders.getAdapter();
 
             return true;
@@ -602,7 +608,7 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
         public void onDestroyActionMode(ActionMode mode) {
             mActionMode = null;
             ((OrdersAdapter) listOrders.getAdapter()).clearSelections();
-            ((BaseActivity)getActivity()).hideToolbarContent(false);
+            ((BaseActivity) getActivity()).hideToolbarContent(false);
             //((Escandallos_Activity) getActivity()).getSupportActionBar().show();
         }
     };

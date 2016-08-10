@@ -11,8 +11,8 @@
         android:padding="15dp">
 
         <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <FrameLayout
@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:capitalize="words"
+
                 android:ellipsize="end"
                 android:text="@string/recipe_title"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -93,10 +93,9 @@
                 android:id="@+id/textIngredientes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
                 android:text="@string/recipe_ingredients"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:textStyle="italic" />
 
             <TextView
@@ -121,10 +120,9 @@
                 android:id="@+id/textElaboration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
                 android:text="Elaboration process"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:textStyle="italic" />
 
             <TextView
@@ -151,7 +149,6 @@
                 android:layout_height="wrap_content"
                 android:autoLink="web"
                 android:clickable="true"
-                android:inputType="textUri"
                 android:text="http://..."
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textSize="15dp"

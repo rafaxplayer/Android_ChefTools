@@ -105,7 +105,7 @@ public class GalleryRecipesActivity extends BaseActivity {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context,GalleryDetalle_Activity.class);
+                Intent intent = new Intent(context, GalleryDetalle_Activity.class);
                 intent.putParcelableArrayListExtra("data", (ArrayList<? extends Parcelable>) listImages);
                 intent.putExtra("pos", ViewHolder.this.getAdapterPosition());
 
