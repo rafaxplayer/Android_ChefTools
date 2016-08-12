@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
 import rafaxplayer.cheftools.Globalclasses.Menu;
@@ -24,14 +26,22 @@ import rafaxplayer.cheftools.recipes.fragments.DetalleRecipes_Fragment;
 
 
 public class MenuNewEdit_Fragment extends Fragment {
+
+    @BindView(R.id.editnamemenu)
+    EditText Nametxt;
+    @BindView(R.id.editEntrantes)
+    EditText Entrantestxt;
+    @BindView(R.id.editPrimeros)
+    EditText Primerostxt;
+    @BindView(R.id.editsegundos)
+    EditText Segundostxt;
+    @BindView(R.id.editpostres)
+    EditText Postrestxt;
+    @BindView(R.id.editcomment)
+    EditText Comentariostxt;
+    @BindView(R.id.buttonSave)
+    Button save;
     private SqliteWrapper sql;
-    private EditText Nametxt;
-    private EditText Entrantestxt;
-    private EditText Primerostxt;
-    private EditText Segundostxt;
-    private EditText Postrestxt;
-    private EditText Comentariostxt;
-    private Button save;
     private int ID;
 
     public static MenuNewEdit_Fragment newInstance(int id) {
@@ -48,13 +58,7 @@ public class MenuNewEdit_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_menu_new_edit, container, false);
-        Nametxt = (EditText) v.findViewById(R.id.editnamemenu);
-        Entrantestxt = (EditText) v.findViewById(R.id.editEntrantes);
-        Primerostxt = (EditText) v.findViewById(R.id.editPrimeros);
-        Segundostxt = (EditText) v.findViewById(R.id.editsegundos);
-        Postrestxt = (EditText) v.findViewById(R.id.editpostres);
-        Comentariostxt = (EditText) v.findViewById(R.id.editcomment);
-        save = (Button) v.findViewById(R.id.buttonSave);
+        ButterKnife.bind(this, v);
         return v;
     }
 

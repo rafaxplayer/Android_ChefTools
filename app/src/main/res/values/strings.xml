@@ -200,6 +200,8 @@
     <string name="dlgerror_quantity">You must set a quantity of product</string>
     <string name="dlgerror_costuni">You must specify the price of the product</string>
     <string name="cost_total">Total Cost : </string>
+    <string name="product_cost2">Product Cost :</string>
+    <string name="format_placeholder">KG</string>
 
 
 </resources>

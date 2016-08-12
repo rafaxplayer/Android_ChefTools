@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="module_cheftools" default="compile.module.cheftools">
-    <dirname property="module.cheftools.basedir" file="${ant.file.module_cheftools}" />
+    <dirname file="${ant.file.module_cheftools}" property="module.cheftools.basedir" />
 
     <property name="module.jdk.home.cheftools" value="${jdk.home.1.7}" />
     <property name="module.jdk.bin.cheftools" value="${jdk.bin.1.7}" />

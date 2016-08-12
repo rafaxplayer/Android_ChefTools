@@ -24,8 +24,6 @@ import rafaxplayer.cheftools.providers.Providers_Activity;
  * A placeholder fragment containing a simple view.
  */
 public class ProviderDetalle_Fragment extends Fragment {
-    private SqliteWrapper sql;
-    private int ID;
     @BindView(R.id.providername)
     TextView proName;
     @BindView(R.id.providerTelefono)
@@ -38,6 +36,8 @@ public class ProviderDetalle_Fragment extends Fragment {
     TextView proCategoria;
     @BindView(R.id.providerComment)
     TextView proCommentario;
+    private SqliteWrapper sql;
+    private int ID;
 
     public static ProviderDetalle_Fragment newInstance(int id) {
         ProviderDetalle_Fragment fr = new ProviderDetalle_Fragment();

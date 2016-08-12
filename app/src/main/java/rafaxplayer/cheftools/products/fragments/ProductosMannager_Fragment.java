@@ -48,13 +48,13 @@ import rafaxplayer.cheftools.database.SqliteWrapper;
 
 
 public class ProductosMannager_Fragment extends DialogFragment {
+    private static String TAG = ProductosMannager_Fragment.class.getSimpleName();
     @BindView(R.id.list_items)
     RecyclerView ListProducts;
     @BindView(R.id.spinnerCategory2)
     Spinner catsSpinner2;
     @BindView(R.id.newproduct)
     FloatingActionButton addNewProduct;
-
     private OnSelectedCallback mCallback;
     private Spinner catsSpinner;
     private Spinner formatsSpinner;
@@ -70,12 +70,10 @@ public class ProductosMannager_Fragment extends DialogFragment {
     private ArrayList<HashMap<String, Object>> arrFormats;
     private ArrayList<HashMap<String, Object>> arrSuppliers;
     private boolean modeSelect;
-
     private int TYPECATEGORY = 1;
     private int TYPENAME = 2;
     private boolean firstShowSpinner;
     private MaterialDialog dialogNewProduct;
-    private static String TAG = ProductosMannager_Fragment.class.getSimpleName();
 
     public static ProductosMannager_Fragment newInstance(int id, boolean modeSelect) {
         ProductosMannager_Fragment f = new ProductosMannager_Fragment();
@@ -382,10 +380,6 @@ public class ProductosMannager_Fragment extends DialogFragment {
 
     }
 
-    public interface OnSelectedCallback {
-        public void onSelect(int pid);
-    }
-
     @Override
     public void onDetach() {
         super.onDetach();
@@ -397,6 +391,10 @@ public class ProductosMannager_Fragment extends DialogFragment {
         super.onPause();
         sql.close();
         modeSelect = false;
+    }
+
+    public interface OnSelectedCallback {
+        public void onSelect(int pid);
     }
 
     public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHolder> implements Filterable {

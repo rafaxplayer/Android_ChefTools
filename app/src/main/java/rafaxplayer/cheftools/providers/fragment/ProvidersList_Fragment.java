@@ -71,6 +71,87 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
 
     private SqliteWrapper sql;
     private Boolean itemsFound;
+    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+
+        ProvidersAdapter adp;
+
+        // Called when the action mode is created; startActionMode() was called
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, android.view.Menu menu) {
+            // Inflate a menu resource providing context menu items
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.menu_action_mode, menu);
+            //((Providers_Activity) getActivity()).getSupportActionBar().hide();
+            ((BaseActivity) getActivity()).hideToolbarContent(true);
+            adp = (ProvidersAdapter) listProviders.getAdapter();
+
+            return true;
+        }
+
+        // Called each time the action mode is shown. Always called after onCreateActionMode, but
+        // may be called multiple times if the mode is invalidated.
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, android.view.Menu menu) {
+            return false; // Return false if nothing is done
+        }
+
+        // Called when the user selects a contextual menu item
+        @Override
+        public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.action_delete:
+                    int items = ((ProvidersAdapter) listProviders.getAdapter()).getSelectedItemCount();
+                    if (items > 0) {
+
+                        new MaterialDialog.Builder(getActivity())
+                                .title(R.string.delete_provider)
+                                .content(getString(R.string.deleterecipesmsg).replace("###", String.valueOf(items)))
+                                .theme(Theme.LIGHT)
+                                .positiveText(R.string.yes)
+                                .negativeText(R.string.cancel)
+                                .callback(new MaterialDialog.ButtonCallback() {
+                                    @Override
+                                    public void onPositive(MaterialDialog dialog) {
+                                        adp.deleteSelectedItems();
+                                        mode.finish();
+                                        dialog.dismiss();
+                                    }
+
+                                    @Override
+                                    public void onNegative(MaterialDialog dialog) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .show();
+
+                    }
+
+                    return true;
+
+                case R.id.action_edit:
+                    if (adp.getSelectedItemCount() > 0) {
+                        int pos = adp.getSelectedItems().get(0);
+                        ((Providers_Activity) getActivity()).showMenuEdit(((Supplier) adp.mDataset.get(pos)).getId());
+
+                    }
+                    mode.finish();
+                    return true;
+                default:
+                    mode.finish();
+                    return false;
+            }
+        }
+
+        // Called when the user exits the action mode
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            mActionMode = null;
+            ((ProvidersAdapter) listProviders.getAdapter()).clearSelections();
+
+            //((Providers_Activity) getActivity()).getSupportActionBar().show();
+            ((BaseActivity) getActivity()).hideToolbarContent(false);
+        }
+    };
 
     public ProvidersList_Fragment() {
     }
@@ -135,7 +216,6 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
         sql.open();
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
@@ -149,6 +229,7 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
         } else {
             itemsFound = false;
             empty.setVisibility(View.VISIBLE);
+            empty.bringToFront();
         }
         //Log.e("listproviders size",String.valueOf(lstProv.size()));
         listProviders.setAdapter(new ProvidersAdapter(lstProv));
@@ -250,10 +331,6 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
         onResume();
     }
 
-    public interface OnSelectedCallback {
-        public void onSelect(int id);
-    }
-
     private List<Supplier> loadValues(String order) {
 
         return (List<Supplier>) (Object) sql.getAllObjects("Provider", order);
@@ -271,6 +348,10 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
         super.onDetach();
         mCallback = null;
         setHasOptionsMenu(true);
+    }
+
+    public interface OnSelectedCallback {
+        public void onSelect(int id);
     }
 
     public class ProvidersAdapter extends RecyclerView.Adapter<ProvidersAdapter.ViewHolder> implements Filterable {
@@ -411,12 +492,6 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
             TextView sName;
             @BindView(R.id.text2)
             TextView sCat;
-
-            @OnClick(R.id.ButtonCall)
-            public void onClik() {
-                GlobalUttilities.call(getActivity(), mDataset.get(ViewHolder.this.getLayoutPosition()).getTelefono());
-            }
-
             int ID;
 
             public ViewHolder(View v) {
@@ -425,6 +500,11 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
                 v.setOnClickListener(this);
                 v.setOnLongClickListener(this);
 
+            }
+
+            @OnClick(R.id.ButtonCall)
+            public void onClik() {
+                GlobalUttilities.call(getActivity(), mDataset.get(ViewHolder.this.getLayoutPosition()).getTelefono());
             }
 
             @Override
@@ -508,86 +588,4 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
             }
         }
     }
-
-    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
-
-        ProvidersAdapter adp;
-
-        // Called when the action mode is created; startActionMode() was called
-        @Override
-        public boolean onCreateActionMode(ActionMode mode, android.view.Menu menu) {
-            // Inflate a menu resource providing context menu items
-            MenuInflater inflater = mode.getMenuInflater();
-            inflater.inflate(R.menu.menu_action_mode, menu);
-            //((Providers_Activity) getActivity()).getSupportActionBar().hide();
-            ((BaseActivity) getActivity()).hideToolbarContent(true);
-            adp = (ProvidersAdapter) listProviders.getAdapter();
-
-            return true;
-        }
-
-        // Called each time the action mode is shown. Always called after onCreateActionMode, but
-        // may be called multiple times if the mode is invalidated.
-        @Override
-        public boolean onPrepareActionMode(ActionMode mode, android.view.Menu menu) {
-            return false; // Return false if nothing is done
-        }
-
-        // Called when the user selects a contextual menu item
-        @Override
-        public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.action_delete:
-                    int items = ((ProvidersAdapter) listProviders.getAdapter()).getSelectedItemCount();
-                    if (items > 0) {
-
-                        new MaterialDialog.Builder(getActivity())
-                                .title(R.string.delete_provider)
-                                .content(getString(R.string.deleterecipesmsg).replace("###", String.valueOf(items)))
-                                .theme(Theme.LIGHT)
-                                .positiveText(R.string.yes)
-                                .negativeText(R.string.cancel)
-                                .callback(new MaterialDialog.ButtonCallback() {
-                                    @Override
-                                    public void onPositive(MaterialDialog dialog) {
-                                        adp.deleteSelectedItems();
-                                        mode.finish();
-                                        dialog.dismiss();
-                                    }
-
-                                    @Override
-                                    public void onNegative(MaterialDialog dialog) {
-                                        dialog.dismiss();
-                                    }
-                                })
-                                .show();
-
-                    }
-
-                    return true;
-
-                case R.id.action_edit:
-                    if (adp.getSelectedItemCount() > 0) {
-                        int pos = adp.getSelectedItems().get(0);
-                        ((Providers_Activity) getActivity()).showMenuEdit(((Supplier) adp.mDataset.get(pos)).getId());
-
-                    }
-                    mode.finish();
-                    return true;
-                default:
-                    mode.finish();
-                    return false;
-            }
-        }
-
-        // Called when the user exits the action mode
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-            mActionMode = null;
-            ((ProvidersAdapter) listProviders.getAdapter()).clearSelections();
-
-            //((Providers_Activity) getActivity()).getSupportActionBar().show();
-            ((BaseActivity) getActivity()).hideToolbarContent(false);
-        }
-    };
 }

@@ -31,8 +31,6 @@ import rafaxplayer.cheftools.database.SqliteWrapper;
  * A placeholder fragment containing a simple view.
  */
 public class ProviderNewEdit_Fragment extends Fragment {
-    private SqliteWrapper sql;
-
     @BindView(R.id.editnameprovider)
     EditText Nametxt;
     @BindView(R.id.editTelefono)
@@ -47,6 +45,7 @@ public class ProviderNewEdit_Fragment extends Fragment {
     EditText Comentariostxt;
     @BindView(R.id.buttonSave)
     Button save;
+    private SqliteWrapper sql;
     private int ID;
 
     public static ProviderNewEdit_Fragment newInstance(int id) {

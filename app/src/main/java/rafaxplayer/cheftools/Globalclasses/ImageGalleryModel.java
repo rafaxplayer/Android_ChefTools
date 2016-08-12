@@ -5,18 +5,6 @@ import android.os.Parcelable;
 
 public class ImageGalleryModel implements Parcelable {
 
-    public String Title;
-    public String ImagePath;
-    public int ID;
-
-    public ImageGalleryModel() {
-
-    }
-
-    public ImageGalleryModel(Parcel in) {
-        readToParcel(in);
-    }
-
     public static final Creator<ImageGalleryModel> CREATOR = new Creator<ImageGalleryModel>() {
         @Override
         public ImageGalleryModel createFromParcel(Parcel in) {
@@ -28,6 +16,17 @@ public class ImageGalleryModel implements Parcelable {
             return new ImageGalleryModel[size];
         }
     };
+    public String Title;
+    public String ImagePath;
+    public int ID;
+
+    public ImageGalleryModel() {
+
+    }
+
+    public ImageGalleryModel(Parcel in) {
+        readToParcel(in);
+    }
 
     @Override
     public int describeContents() {

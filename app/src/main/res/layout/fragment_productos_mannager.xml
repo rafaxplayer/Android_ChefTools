@@ -20,8 +20,8 @@
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        android:background="@color/windowBackgroundColor">
+        android:background="@color/windowBackgroundColor"
+        android:fitsSystemWindows="true">
 
         <!-- Collapser -->
         <android.support.design.widget.CollapsingToolbarLayout

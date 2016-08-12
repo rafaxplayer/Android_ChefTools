@@ -287,6 +287,7 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
         } else {
             recipesFound = false;
             empty.setVisibility(View.VISIBLE);
+            empty.bringToFront();
         }
         listRecipes.setAdapter(new NewsAdapter(lstRecipes));
         swipeRefreshLayout.setRefreshing(false);

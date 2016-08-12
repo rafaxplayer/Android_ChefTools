@@ -31,15 +31,14 @@ import rafaxplayer.cheftools.stocks.Stocks_Activity;
  * A placeholder fragment containing a simple view.
  */
 public class StocksDetalle_Fragment extends Fragment {
-    private SqliteWrapper sql;
-    private int ID;
     @BindView(R.id.stocknamedetalle)
     TextView stockName;
     @BindView(R.id.textComment)
     TextView stockComment;
     @BindView(R.id.list_items)
     RecyclerView listStock;
-
+    private SqliteWrapper sql;
+    private int ID;
 
     public static StocksDetalle_Fragment newInstance(int id) {
         StocksDetalle_Fragment fr = new StocksDetalle_Fragment();

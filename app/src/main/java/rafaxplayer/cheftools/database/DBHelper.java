@@ -12,11 +12,8 @@ import rafaxplayer.cheftools.R;
 
 
 public class DBHelper extends SQLiteOpenHelper {
-    //database version
-    private static final int DATABASE_VERSION = 1;
     //database name
     public static final String DATABASE_NAME = "ChefToolsDB";
-
     //Tablas nombres...
     public static final String TABLE_RECETAS = "tbl_Recetas";
     public static final String TABLE_MENUSCARTAS = "tbl_Menus_Cartas";
@@ -29,14 +26,11 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String TABLE_RECETAS_CATEGORIA = "tbl_Recetas_categoria";
     public static final String TABLE_PEDIDOS_LISTAS = "tbl_Pedidos_listas";
     public static final String TABLE_INVENTARIOS_LISTAS = "tbl_Inventarios_listas";
-
-
     //Campos generales...
     public static final String ID = "_id";
     public static final String NAME = "name";
     public static final String FECHA = "date";
     public static final String COMENTARIO = "comentario";
-
     //Campos recetas tabla
     //ID y NAME generales
     public static final String RECETA_INGREDIENTES = "ingredientes";
@@ -44,23 +38,19 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String RECETA_IMG = "img";
     public static final String RECETA_CATEGORIA = "categoria";
     public static final String RECETA_URL = "url";
-
     //Campos Menus Cartas tabla
     //ID ,FECHA y NAME generales
     public static final String MENUS_CARTAS_ENTRANTES = "mc_entrantes";
     public static final String MENUS_CARTAS_PRIMEROS = "mc_primeros";
     public static final String MENUS_CARTAS_SEGUNDOS = "mc_segundos";
     public static final String MENUS_CARTAS_POSTRES = "mc_postres";
+    public static final String PROVEEDOR_CATEGORIA = "prov_categoria";
 
     //Campos Proveedores tabla
     //ID y NAME generales
-
-    public static final String PROVEEDOR_CATEGORIA = "prov_categoria";
     public static final String PROVEEDOR_TELEFONO = "prov_telefono";
     public static final String PROVEEDOR_DIRECCION = "prov_direccion";
     public static final String PROVEEDOR_EMAIL = "prov_email";
-
-
     //Campos Productos tabla
     //ID y NAME generales
     public static final String PRODUCTO_PROVEEDOR_ID = "product_provider_id";
@@ -69,19 +59,18 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String PRODUCTO_FORMATO_NAME = "product_formato_name";
     public static final String PRODUCTO_CATEGORIA_NAME_ = "product_categoria_name";
     public static final String PRODUCTO_PROVEEDOR_NAME = "product_proveedor_name";
+    public static final String INVENTARIO_ID = "inventario_id";
 
     //Campos Pedidos e inventarios listas tabla
     // PRODUCTO_CATEGORIA_ID PRODUCTO_FORMATO_ID tambien
-
-    public static final String INVENTARIO_ID = "inventario_id";
     public static final String PEDIDO_ID = "pedido_id";
     public static final String PRODUCTO_ID = "producto_id";
     public static final String PRODUCTO_CANTIDAD = "producto_cantidad";
     public static final String PROVEEDOR_ID = "proveedor_id";
+    //database version
+    private static final int DATABASE_VERSION = 1;
 
     // Campos para tabla escandallos.
-
-
     private static final String SqlCreateTable_recetas = "CREATE TABLE IF NOT EXISTS "
             + TABLE_RECETAS + "(" + ID + " INTEGER PRIMARY KEY,"
             + NAME + " TEXT, "

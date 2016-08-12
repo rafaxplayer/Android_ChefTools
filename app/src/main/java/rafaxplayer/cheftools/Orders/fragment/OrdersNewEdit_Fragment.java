@@ -43,8 +43,6 @@ import rafaxplayer.cheftools.products.fragments.ProductosMannager_Fragment;
 import rafaxplayer.cheftools.providers.ProviderNewEdit_Activity;
 
 public class OrdersNewEdit_Fragment extends Fragment {
-    private SqliteWrapper sql;
-    private Menu menu;
     @BindView(R.id.editnameproduct)
     EditText NameProduct;
     @BindView(R.id.editCantidad)
@@ -57,7 +55,8 @@ public class OrdersNewEdit_Fragment extends Fragment {
     ImageButton saveProduct;
     @BindView(R.id.list_items)
     RecyclerView OrdersList;
-
+    private SqliteWrapper sql;
+    private Menu menu;
     private ImageButton addSupplierOrder;
     private Spinner suppliersSpinner;
     private EditText name;

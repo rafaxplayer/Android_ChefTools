@@ -21,7 +21,6 @@
                 android:layout_width="@dimen/image_dimen_width"
                 android:layout_height="@dimen/image_dimen_height"
                 android:layout_gravity="center_horizontal"
-
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_weight="0.20"
@@ -89,14 +88,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.20"
-
-                    android:editable="true"
-
                     android:imeOptions="actionNext"
                     android:inputType="textCapWords"
                     android:padding="10dp"
                     android:singleLine="false"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="#ff4c4c48"
                     android:textColorHint="@color/textTitletColor"
                     android:textStyle="italic" />
@@ -128,18 +124,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.20"
-
-                    android:capitalize="words"
-                    android:editable="true"
                     android:gravity="top|left"
-
                     android:imeOptions="actionNext"
                     android:inputType="textMultiLine"
                     android:lines="8"
                     android:maxLines="10"
                     android:minLines="5"
                     android:padding="10dp"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="#ff4c4c48"
                     android:textColorHint="@color/textTitletColor"
                     android:textStyle="italic" />
@@ -172,18 +164,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.20"
-
-                    android:capitalize="words"
-                    android:editable="true"
                     android:gravity="top|left"
-
                     android:imeOptions="actionNext"
                     android:inputType="textMultiLine"
                     android:lines="8"
                     android:maxLines="10"
                     android:minLines="5"
                     android:padding="10dp"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="#ff4c4c48"
                     android:textColorHint="@color/textTitletColor"
                     android:textStyle="italic" />
@@ -220,18 +208,13 @@
                         android:id="@+id/editurl"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-
-
-                        android:clickable="false"
-                        android:editable="true"
-
                         android:gravity="top|left"
                         android:inputType="textUri"
                         android:linksClickable="true"
                         android:longClickable="true"
                         android:padding="10dp"
                         android:singleLine="true"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="#ff4c4c48"
                         android:textColorHint="@color/textTitletColor"
                         android:textStyle="italic" />
@@ -241,10 +224,10 @@
                     android:id="@+id/imageButtonSearch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:background="@drawable/selector_imagebutton_call"
                     android:padding="10dp"
-                    android:src="@drawable/searck_dark"
-                    android:layout_gravity="center_vertical" />
+                    android:src="@drawable/searck_dark" />
             </LinearLayout>
 
 

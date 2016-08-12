@@ -1,16 +1,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    tools:context=".Recipes_Activity"
-    android:orientation="vertical">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Recipes_Activity">
 
     <include layout="@layout/toolbar" />
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
         <FrameLayout
             android:id="@+id/container"
@@ -21,10 +21,10 @@
         <fragment
             android:id="@+id/detalle"
             android:name="rafaxplayer.cheftools.recipes.fragments.DetalleRecipes_Fragment"
-            tools:layout="@layout/fragment_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="40" />
+            android:layout_weight="40"
+            tools:layout="@layout/fragment_list" />
     </LinearLayout>
 
 </LinearLayout>

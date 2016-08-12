@@ -34,9 +34,6 @@ import rafaxplayer.cheftools.providers.ProviderDetalle_Activity;
  * A placeholder fragment containing a simple view.
  */
 public class OrdersDetalle_Fragment extends Fragment {
-    private SqliteWrapper sql;
-    private int ID;
-    private String supplierTlf = "";
     @BindView(R.id.ordernamedetalle)
     TextView orderName;
     @BindView(R.id.textComment)
@@ -47,6 +44,18 @@ public class OrdersDetalle_Fragment extends Fragment {
     RecyclerView listOrder;
     @BindView(R.id.buttonProviderCall)
     ImageButton buttonCall;
+    private SqliteWrapper sql;
+    private int ID;
+    private String supplierTlf = "";
+
+    public static OrdersDetalle_Fragment newInstance(int id) {
+        OrdersDetalle_Fragment fr = new OrdersDetalle_Fragment();
+        Bundle args = new Bundle();
+        args.putInt("id", id);
+        fr.setArguments(args);
+        return fr;
+
+    }
 
     @OnClick(R.id.textSupplier)
     public void view(TextView tv) {
@@ -67,15 +76,6 @@ public class OrdersDetalle_Fragment extends Fragment {
         if (!TextUtils.isEmpty(supplierTlf)) {
             GlobalUttilities.call(getActivity(), supplierTlf);
         }
-    }
-
-    public static OrdersDetalle_Fragment newInstance(int id) {
-        OrdersDetalle_Fragment fr = new OrdersDetalle_Fragment();
-        Bundle args = new Bundle();
-        args.putInt("id", id);
-        fr.setArguments(args);
-        return fr;
-
     }
 
     @Override

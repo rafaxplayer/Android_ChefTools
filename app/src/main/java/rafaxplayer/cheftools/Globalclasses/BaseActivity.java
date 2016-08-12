@@ -15,10 +15,7 @@ import rafaxplayer.cheftools.R;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-    protected abstract int getLayoutResourceId();
-
-    protected abstract String getCustomTitle();
-
+    private static String TAG = BaseActivity.class.getSimpleName();
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.contenttoolbar)
@@ -26,12 +23,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     @BindView(R.id.texttitle)
     TextView txttitle;
 
+    protected abstract int getLayoutResourceId();
+
+    protected abstract String getCustomTitle();
+
     @OnClick(R.id.logo)
     public void back() {
         onBackPressed();
     }
-
-    private static String TAG = BaseActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

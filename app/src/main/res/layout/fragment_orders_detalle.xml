@@ -41,33 +41,33 @@
         android:background="@color/textTitletColor" />
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/textSupplier"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_weight="0"
-            android:textColor="@android:color/white"
-            android:background="@drawable/backgroun_text_oval"
             android:layout_gravity="center_vertical"
+            android:layout_weight="0"
+            android:background="@drawable/backgroun_text_oval"
+            android:paddingBottom="@dimen/icon_list_padding"
             android:paddingLeft="@dimen/fab_margin"
             android:paddingRight="@dimen/fab_margin"
             android:paddingTop="@dimen/icon_list_padding"
-            android:paddingBottom="@dimen/icon_list_padding" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/white" />
 
         <ImageButton
+            android:id="@+id/buttonProviderCall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/buttonProviderCall"
-            android:src="@drawable/ic_phone"
             android:layout_marginLeft="5dp"
+            android:background="@drawable/selector_imagebutton_call"
 
             android:padding="@dimen/item_menu_padding"
-            android:background="@drawable/selector_imagebutton_call"
+            android:src="@drawable/ic_phone"
             android:visibility="gone" />
     </LinearLayout>
 

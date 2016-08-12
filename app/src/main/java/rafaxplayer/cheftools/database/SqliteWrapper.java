@@ -24,11 +24,8 @@ import rafaxplayer.cheftools.R;
 
 
 public class SqliteWrapper {
-    private Context con;
-
     private static String TAG = SqliteWrapper.class.getSimpleName();
-
-
+    private Context con;
     private SQLiteDatabase db;
     private DBHelper dbHelper;
 

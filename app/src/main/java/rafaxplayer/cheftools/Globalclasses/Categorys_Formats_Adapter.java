@@ -28,12 +28,12 @@ import rafaxplayer.cheftools.database.SqliteWrapper;
  * Created by rafaxplayer on 06/07/2015.
  */
 public class Categorys_Formats_Adapter extends RecyclerView.Adapter<Categorys_Formats_Adapter.ViewHolder> {
+    private static String TAG = Categorys_Formats_Adapter.class.getSimpleName();
     private SqliteWrapper sql;
     private ArrayList<HashMap<String, Object>> mDataset;
     private String Table;
     private Context con;
     private Activity act;
-    private static String TAG = Categorys_Formats_Adapter.class.getSimpleName();
 
     public Categorys_Formats_Adapter(Activity con, ArrayList<HashMap<String, Object>> myDataset, String sTable, SqliteWrapper sqlite) {
         this.mDataset = myDataset;

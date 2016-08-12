@@ -7,15 +7,6 @@ public class Supplier {
     String Email;
     String Direccion;
     String Comentario;
-
-    public String getEmail() {
-        return Email;
-    }
-
-    public void setEmail(String email) {
-        Email = email;
-    }
-
     String Categoria;
 
     public Supplier() {
@@ -30,6 +21,14 @@ public class Supplier {
         Comentario = comentario;
         Categoria = categoria;
 
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String email) {
+        Email = email;
     }
 
     public int getId() {

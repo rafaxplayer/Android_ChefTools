@@ -48,6 +48,16 @@ public class Escandallos_Activity extends BaseActivity {
     FloatingActionButton fab;
     @BindView(R.id.escandalloRecipe)
     EditText editnameRecipe;
+    private MaterialDialog dialogNewProduct;
+    private EditText editnameProduct;
+    private EditText editcostuni;
+    private EditText editquantity;
+    private Spinner spinerFormat;
+    private TextView textviewuni;
+    private TextView textFormat2;
+    private TextView textCosteProducto;
+    private double dataUni = 1000;
+
     @OnClick(R.id.fab)
     public void submit(View view) {
         if (TextUtils.isEmpty(editnameRecipe.getText())) {
@@ -57,20 +67,6 @@ public class Escandallos_Activity extends BaseActivity {
             dialogNewProduct.show();
         }
     }
-
-
-
-    private MaterialDialog dialogNewProduct;
-    private EditText editnameProduct;
-    private EditText editcostuni;
-    private EditText editquantity;
-    private Spinner spinerFormat;
-    private TextView textviewuni;
-    private TextView textFormat2;
-    private TextView textCosteProducto;
-
-
-    private double dataUni = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

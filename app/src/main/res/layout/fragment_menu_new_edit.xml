@@ -5,8 +5,6 @@
     android:background="@color/windowBackgroundColor"
     tools:context="rafaxplayer.cheftools.recipes.fragments.NewEditRecipe_Fragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
@@ -46,12 +44,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.20"
-                    android:editable="true"
+
                     android:imeOptions="actionNext"
                     android:inputType="textCapWords"
                     android:padding="10dp"
                     android:singleLine="true"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="#ff4c4c48"
                     android:textColorHint="@color/textTitletColor"
                     android:textStyle="italic" />
@@ -83,8 +81,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.20"
-                    android:capitalize="words"
-                    android:editable="true"
+
                     android:gravity="top|left"
                     android:imeOptions="actionNext"
                     android:inputType="textMultiLine"
@@ -92,7 +89,7 @@
                     android:maxLines="10"
                     android:minLines="5"
                     android:padding="10dp"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="#ff4c4c48"
                     android:textColorHint="@color/textTitletColor"
                     android:textStyle="italic" />
@@ -124,8 +121,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.20"
-                    android:capitalize="words"
-                    android:editable="true"
                     android:gravity="top|left"
                     android:imeOptions="actionNext"
                     android:inputType="textMultiLine"
@@ -133,7 +128,7 @@
                     android:maxLines="10"
                     android:minLines="5"
                     android:padding="10dp"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="#ff4c4c48"
                     android:textColorHint="@color/textTitletColor"
                     android:textStyle="italic" />
@@ -165,18 +160,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.20"
-
-                    android:capitalize="words"
-                    android:editable="true"
                     android:gravity="top|left"
-
                     android:imeOptions="actionNext"
                     android:inputType="textMultiLine"
                     android:lines="8"
                     android:maxLines="10"
                     android:minLines="5"
                     android:padding="10dp"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="#ff4c4c48"
                     android:textColorHint="@color/textTitletColor"
                     android:textStyle="italic" />
@@ -208,18 +199,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.20"
-
-                    android:capitalize="words"
-                    android:editable="true"
                     android:gravity="top|left"
-
                     android:imeOptions="actionNext"
                     android:inputType="textMultiLine"
                     android:lines="8"
                     android:maxLines="10"
                     android:minLines="5"
                     android:padding="10dp"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="#ff4c4c48"
                     android:textColorHint="@color/textTitletColor"
                     android:textStyle="italic" />
@@ -251,8 +238,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.20"
-                    android:capitalize="words"
-                    android:editable="true"
+
                     android:gravity="top|left"
                     android:imeOptions="actionDone"
                     android:inputType="textMultiLine"
@@ -260,7 +246,7 @@
                     android:maxLines="10"
                     android:minLines="5"
                     android:padding="10dp"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="#ff4c4c48"
                     android:textColorHint="@color/textTitletColor"
                     android:textStyle="italic" />

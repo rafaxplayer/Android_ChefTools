@@ -2,26 +2,26 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dimen_gallery_thumbnail_min"
-    android:focusable="false"
-    android:layout_margin="2dp">
+    android:layout_margin="2dp"
+    android:focusable="false">
 
     <ImageView
+        android:id="@+id/imageGallery"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/imageGallery"
         android:layout_gravity="center_horizontal"
         android:scaleType="centerCrop" />
 
     <TextView
+        android:id="@+id/textImageGallery"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Medium Text"
-        android:id="@+id/textImageGallery"
         android:layout_gravity="center_horizontal|bottom"
         android:background="#87141313"
-        android:textColor="#ffffff"
+        android:paddingBottom="7dp"
         android:paddingLeft="5dp"
         android:paddingTop="7dp"
-        android:paddingBottom="7dp" />
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#ffffff" />
 </FrameLayout>

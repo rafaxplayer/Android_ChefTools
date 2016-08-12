@@ -58,11 +58,91 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
     @BindView(R.id.fab)
     FloatingActionButton fab;
 
+
     private OnSelectedCallback mCallback;
     private ActionMode mActionMode;
     private SqliteWrapper sql;
     private Boolean menusFound;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+
+        MenusAdapter adp;
+
+        // Called when the action mode is created; startActionMode() was called
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, android.view.Menu menu) {
+            // Inflate a menu resource providing context menu items
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.menu_action_mode, menu);
+            //((Menus_Activity) getActivity()).getSupportActionBar().hide();
+            ((BaseActivity) getActivity()).hideToolbarContent(true);
+            adp = (MenusAdapter) listMenus.getAdapter();
+
+            return true;
+        }
+
+        // Called each time the action mode is shown. Always called after onCreateActionMode, but
+        // may be called multiple times if the mode is invalidated.
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, android.view.Menu menu) {
+            return false; // Return false if nothing is done
+        }
+
+        // Called when the user selects a contextual menu item
+        @Override
+        public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.action_delete:
+                    int items = ((MenusAdapter) listMenus.getAdapter()).getSelectedItemCount();
+                    if (items > 0) {
+
+                        new MaterialDialog.Builder(getActivity())
+                                .title(R.string.deleterecipetitle)
+                                .content(getString(R.string.deleterecipesmsg).replace("###", String.valueOf(items)))
+                                .theme(Theme.LIGHT)
+                                .positiveText(R.string.yes)
+                                .negativeText(R.string.cancel)
+                                .callback(new MaterialDialog.ButtonCallback() {
+                                    @Override
+                                    public void onPositive(MaterialDialog dialog) {
+                                        adp.deleteSelectedItems();
+                                        mode.finish();
+                                        dialog.dismiss();
+                                    }
+
+                                    @Override
+                                    public void onNegative(MaterialDialog dialog) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .show();
+                    }
+
+                    return true;
+
+                case R.id.action_edit:
+                    if (adp.getSelectedItemCount() > 0) {
+                        int pos = adp.getSelectedItems().get(0);
+                        ((Menus_Activity) getActivity()).showMenuEdit(((Menu) adp.mDataset.get(pos)).getId());
+
+                    }
+                    mode.finish();
+                    return true;
+                default:
+                    mode.finish();
+                    return false;
+            }
+        }
+
+        // Called when the user exits the action mode
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            mActionMode = null;
+            ((MenusAdapter) listMenus.getAdapter()).clearSelections();
+            ((BaseActivity) getActivity()).hideToolbarContent(false);
+            //((Menus_Activity) getActivity()).getSupportActionBar().show();
+        }
+    };
 
     public MenusList_Fragment() {
     }
@@ -73,6 +153,7 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
         View v = inflater.inflate(R.layout.fragment_list, container, false);
         ButterKnife.bind(this, v);
         emptytxt.setText(getString(R.string.new_menu));
+
         empty.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,6 +219,7 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
         } else {
             menusFound = false;
             empty.setVisibility(View.VISIBLE);
+            empty.bringToFront();
         }
         listMenus.setAdapter(new MenusAdapter(lstMenuss));
         swipeRefreshLayout.setRefreshing(false);
@@ -235,10 +317,6 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
         onResume();
     }
 
-    public interface OnSelectedCallback {
-        public void onSelect(int id);
-    }
-
     private List<Menu> loadMenus(String order) {
 
         return (List<Menu>) (Object) sql.getAllObjects("Menu", order);
@@ -256,6 +334,10 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
         super.onDetach();
         mCallback = null;
         setHasOptionsMenu(true);
+    }
+
+    public interface OnSelectedCallback {
+        public void onSelect(int id);
     }
 
     public class MenusAdapter extends RecyclerView.Adapter<MenusAdapter.ViewHolder> implements Filterable {
@@ -488,84 +570,4 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
             }
         }
     }
-
-    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
-
-        MenusAdapter adp;
-
-        // Called when the action mode is created; startActionMode() was called
-        @Override
-        public boolean onCreateActionMode(ActionMode mode, android.view.Menu menu) {
-            // Inflate a menu resource providing context menu items
-            MenuInflater inflater = mode.getMenuInflater();
-            inflater.inflate(R.menu.menu_action_mode, menu);
-            //((Menus_Activity) getActivity()).getSupportActionBar().hide();
-            ((BaseActivity) getActivity()).hideToolbarContent(true);
-            adp = (MenusAdapter) listMenus.getAdapter();
-
-            return true;
-        }
-
-        // Called each time the action mode is shown. Always called after onCreateActionMode, but
-        // may be called multiple times if the mode is invalidated.
-        @Override
-        public boolean onPrepareActionMode(ActionMode mode, android.view.Menu menu) {
-            return false; // Return false if nothing is done
-        }
-
-        // Called when the user selects a contextual menu item
-        @Override
-        public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.action_delete:
-                    int items = ((MenusAdapter) listMenus.getAdapter()).getSelectedItemCount();
-                    if (items > 0) {
-
-                        new MaterialDialog.Builder(getActivity())
-                                .title(R.string.deleterecipetitle)
-                                .content(getString(R.string.deleterecipesmsg).replace("###", String.valueOf(items)))
-                                .theme(Theme.LIGHT)
-                                .positiveText(R.string.yes)
-                                .negativeText(R.string.cancel)
-                                .callback(new MaterialDialog.ButtonCallback() {
-                                    @Override
-                                    public void onPositive(MaterialDialog dialog) {
-                                        adp.deleteSelectedItems();
-                                        mode.finish();
-                                        dialog.dismiss();
-                                    }
-
-                                    @Override
-                                    public void onNegative(MaterialDialog dialog) {
-                                        dialog.dismiss();
-                                    }
-                                })
-                                .show();
-                    }
-
-                    return true;
-
-                case R.id.action_edit:
-                    if (adp.getSelectedItemCount() > 0) {
-                        int pos = adp.getSelectedItems().get(0);
-                        ((Menus_Activity) getActivity()).showMenuEdit(((Menu) adp.mDataset.get(pos)).getId());
-
-                    }
-                    mode.finish();
-                    return true;
-                default:
-                    mode.finish();
-                    return false;
-            }
-        }
-
-        // Called when the user exits the action mode
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-            mActionMode = null;
-            ((MenusAdapter) listMenus.getAdapter()).clearSelections();
-            ((BaseActivity) getActivity()).hideToolbarContent(false);
-            //((Menus_Activity) getActivity()).getSupportActionBar().show();
-        }
-    };
 }

@@ -21,15 +21,18 @@ public class IntroActivity extends AppCompatActivity {
     @BindView(R.id.textpro)
     TextView textIntro3;
 
-    private final int DURACION_SPLASH = 3000;
+    private ObjectAnimator translateX1;
+    private ObjectAnimator translateX2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
         ButterKnife.bind(this);
-        ObjectAnimator translateX1 = ObjectAnimator.ofFloat(textIntro1, "translationX", -100, 0);
-        ObjectAnimator translateX2 = ObjectAnimator.ofFloat(textIntro2, "translationX", 100, 0);
+
+        translateX1 = ObjectAnimator.ofFloat(textIntro1, "translationX", -100, 0);
+        translateX2 = ObjectAnimator.ofFloat(textIntro2, "translationX", 100, 0);
+
         final ObjectAnimator fadeout = ObjectAnimator.ofFloat(textIntro3, "Alpha", 0.0f, 1.0f);
         fadeout.setDuration(1000).addListener(new Animator.AnimatorListener() {
             @Override
@@ -84,15 +87,15 @@ public class IntroActivity extends AppCompatActivity {
 
             }
         });
-        translateX2.start();
-        translateX1.start();
+
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
+        translateX2.start();
+        translateX1.start();
 
     }
 }

@@ -4,12 +4,12 @@
         android:width="1.0dip"
         android:color="#FF8B4513"></stroke>
     <gradient
-        android:startColor="#FF695629"
+        android:angle="225.0"
         android:endColor="#FFB89847"
-        android:angle="225.0"></gradient>
+        android:startColor="#FF695629"></gradient>
     <corners
-        android:topLeftRadius="7.0dip"
-        android:topRightRadius="7.0dip"
         android:bottomLeftRadius="7.0dip"
-        android:bottomRightRadius="7.0dip"></corners>
+        android:bottomRightRadius="7.0dip"
+        android:topLeftRadius="7.0dip"
+        android:topRightRadius="7.0dip"></corners>
 </shape>

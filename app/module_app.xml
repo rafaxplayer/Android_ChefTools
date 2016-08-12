@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="module_app" default="compile.module.app">
-    <dirname property="module.app.basedir" file="${ant.file.module_app}" />
+    <dirname file="${ant.file.module_app}" property="module.app.basedir" />
 
     <property name="module.jdk.home.app" value="${jdk.home.android_api_23_platform}" />
     <property name="module.jdk.bin.app" value="${jdk.bin.android_api_23_platform}" />
@@ -76,9 +76,9 @@
     <target name="compile.module.app.production" depends="register.custom.compilers"
         description="Compile module app; production classes">
         <mkdir dir="${app.output.dir}" />
-        <javac2 destdir="${app.output.dir}" debug="${compiler.debug}"
-            nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}"
-            fork="true" executable="${module.jdk.bin.app}/javac">
+        <javac2 debug="${compiler.debug}" destdir="${app.output.dir}"
+            executable="${module.jdk.bin.app}/javac" fork="true"
+            memorymaximumsize="${compiler.max.memory}" nowarn="${compiler.generate.no.warnings}">
             <compilerarg line="${compiler.args.app}" />
             <bootclasspath refid="app.module.bootclasspath" />
             <classpath refid="app.module.production.classpath" />
@@ -126,9 +126,9 @@
         depends="register.custom.compilers,compile.module.app.production"
         description="compile module app; test classes" unless="skip.tests">
         <mkdir dir="${app.testoutput.dir}" />
-        <javac2 destdir="${app.testoutput.dir}" debug="${compiler.debug}"
-            nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}"
-            fork="true" executable="${module.jdk.bin.app}/javac">
+        <javac2 debug="${compiler.debug}" destdir="${app.testoutput.dir}"
+            executable="${module.jdk.bin.app}/javac" fork="true"
+            memorymaximumsize="${compiler.max.memory}" nowarn="${compiler.generate.no.warnings}">
             <compilerarg line="${compiler.args.app}" />
             <bootclasspath refid="app.module.bootclasspath" />
             <classpath refid="app.module.classpath" />

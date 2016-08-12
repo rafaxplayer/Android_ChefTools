@@ -28,8 +28,6 @@ import rafaxplayer.cheftools.recipes.DetalleRecipes_Activity;
 import rafaxplayer.cheftools.recipes.Recipes_Activity;
 
 public class DetalleRecipes_Fragment extends Fragment {
-    private int ID;
-    private SqliteWrapper sql;
     @BindView(R.id.imgRecipedetalle)
     ImageView imageDetalle;
     @BindView(R.id.recipenamedetalle)
@@ -44,7 +42,8 @@ public class DetalleRecipes_Fragment extends Fragment {
     TextView textTEladetalle;
     @BindView(R.id.textUrl)
     TextView textUrldetalle;
-
+    private int ID;
+    private SqliteWrapper sql;
     private String img = "";
 
     public DetalleRecipes_Fragment() {

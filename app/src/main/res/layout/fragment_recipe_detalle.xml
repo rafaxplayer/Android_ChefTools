@@ -59,16 +59,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="@string/recipe_category"
                 android:background="@drawable/backgroun_text_oval"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/text_medium"
-                android:textStyle="normal|italic"
+                android:paddingBottom="@dimen/icon_list_padding"
                 android:paddingLeft="@dimen/fab_margin"
                 android:paddingRight="@dimen/fab_margin"
                 android:paddingTop="@dimen/icon_list_padding"
-                android:paddingBottom="@dimen/icon_list_padding" />
+                android:text="@string/recipe_category"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_medium"
+                android:textStyle="normal|italic" />
 
 
             <TextView
@@ -153,7 +153,6 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textSize="15dp"
                 android:textStyle="italic" />
-
 
         </LinearLayout>
 

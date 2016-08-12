@@ -69,11 +69,89 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
     private SqliteWrapper sql;
     private Boolean itemsFound;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+
+        StocksAdapter adp;
+
+        // Called when the action mode is created; startActionMode() was called
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, android.view.Menu menu) {
+            // Inflate a menu resource providing context menu items
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.menu_action_mode, menu);
+
+            ((BaseActivity) getActivity()).hideToolbarContent(true);
+            adp = (StocksAdapter) listStocks.getAdapter();
+
+            return true;
+        }
+
+        // Called each time the action mode is shown. Always called after onCreateActionMode, but
+        // may be called multiple times if the mode is invalidated.
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, android.view.Menu menu) {
+            return false; // Return false if nothing is done
+        }
+
+        // Called when the user selects a contextual menu item
+        @Override
+        public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.action_delete:
+                    int items = ((StocksAdapter) listStocks.getAdapter()).getSelectedItemCount();
+                    if (items > 0) {
+
+                        new MaterialDialog.Builder(getActivity())
+                                .title(R.string.deleterecipetitle)
+                                .content(getString(R.string.deleterecipesmsg).replace("###", String.valueOf(items)))
+                                .positiveText(R.string.yes)
+                                .negativeText(R.string.cancel)
+                                .callback(new MaterialDialog.ButtonCallback() {
+                                    @Override
+                                    public void onPositive(MaterialDialog dialog) {
+                                        adp.deleteSelectedItems();
+                                        mode.finish();
+                                        dialog.dismiss();
+                                    }
+
+                                    @Override
+                                    public void onNegative(MaterialDialog dialog) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .show();
+                    }
+
+                    return true;
+
+                case R.id.action_edit:
+                    if (adp.getSelectedItemCount() > 0) {
+                        int pos = adp.getSelectedItems().get(0);
+                        ((Stocks_Activity) getActivity()).showMenuEdit((adp.mDataset.get(pos)).getId());
+
+                    }
+                    mode.finish();
+                    return true;
+                default:
+                    mode.finish();
+                    return false;
+            }
+        }
+
+        // Called when the user exits the action mode
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            mActionMode = null;
+            ((StocksAdapter) listStocks.getAdapter()).clearSelections();
+            ((BaseActivity) getActivity()).hideToolbarContent(false);
+
+        }
+    };
+
 
     public StocksList_Fragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -150,6 +228,7 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
         } else {
             itemsFound = false;
             empty.setVisibility(View.VISIBLE);
+            empty.bringToFront();
         }
         listStocks.setAdapter(new StocksAdapter(list));
         swipeRefreshLayout.setRefreshing(false);
@@ -245,11 +324,6 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
         onResume();
     }
 
-
-    public interface OnSelectedCallback {
-        void onSelect(int id);
-    }
-
     private List<Stocks> loadValues(String order) {
 
         return (List<Stocks>) (Object) sql.getAllObjects("Stocks", order);
@@ -267,6 +341,10 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
         super.onDetach();
         mCallback = null;
         setHasOptionsMenu(true);
+    }
+
+    public interface OnSelectedCallback {
+        void onSelect(int id);
     }
 
     public class StocksAdapter extends RecyclerView.Adapter<StocksAdapter.ViewHolder> implements Filterable {
@@ -416,11 +494,10 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
             public ImageView img;
             public ImageButton edit;
-            private ImageButton del;
             public TextView sName;
             public TextView sDate;
-
             int ID;
+            private ImageButton del;
 
             public ViewHolder(View v) {
                 super(v);
@@ -546,83 +623,4 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
             }
         }
     }
-
-    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
-
-        StocksAdapter adp;
-
-        // Called when the action mode is created; startActionMode() was called
-        @Override
-        public boolean onCreateActionMode(ActionMode mode, android.view.Menu menu) {
-            // Inflate a menu resource providing context menu items
-            MenuInflater inflater = mode.getMenuInflater();
-            inflater.inflate(R.menu.menu_action_mode, menu);
-
-            ((BaseActivity) getActivity()).hideToolbarContent(true);
-            adp = (StocksAdapter) listStocks.getAdapter();
-
-            return true;
-        }
-
-        // Called each time the action mode is shown. Always called after onCreateActionMode, but
-        // may be called multiple times if the mode is invalidated.
-        @Override
-        public boolean onPrepareActionMode(ActionMode mode, android.view.Menu menu) {
-            return false; // Return false if nothing is done
-        }
-
-        // Called when the user selects a contextual menu item
-        @Override
-        public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.action_delete:
-                    int items = ((StocksAdapter) listStocks.getAdapter()).getSelectedItemCount();
-                    if (items > 0) {
-
-                        new MaterialDialog.Builder(getActivity())
-                                .title(R.string.deleterecipetitle)
-                                .content(getString(R.string.deleterecipesmsg).replace("###", String.valueOf(items)))
-                                .positiveText(R.string.yes)
-                                .negativeText(R.string.cancel)
-                                .callback(new MaterialDialog.ButtonCallback() {
-                                    @Override
-                                    public void onPositive(MaterialDialog dialog) {
-                                        adp.deleteSelectedItems();
-                                        mode.finish();
-                                        dialog.dismiss();
-                                    }
-
-                                    @Override
-                                    public void onNegative(MaterialDialog dialog) {
-                                        dialog.dismiss();
-                                    }
-                                })
-                                .show();
-                    }
-
-                    return true;
-
-                case R.id.action_edit:
-                    if (adp.getSelectedItemCount() > 0) {
-                        int pos = adp.getSelectedItems().get(0);
-                        ((Stocks_Activity) getActivity()).showMenuEdit((adp.mDataset.get(pos)).getId());
-
-                    }
-                    mode.finish();
-                    return true;
-                default:
-                    mode.finish();
-                    return false;
-            }
-        }
-
-        // Called when the user exits the action mode
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-            mActionMode = null;
-            ((StocksAdapter) listStocks.getAdapter()).clearSelections();
-            ((BaseActivity) getActivity()).hideToolbarContent(false);
-
-        }
-    };
 }

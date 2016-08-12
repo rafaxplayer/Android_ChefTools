@@ -4,7 +4,7 @@
     tools:context="rafaxplayer.cheftools.menus.MenuNewEdit_Activity">
     <item
         android:id="@+id/action_save"
-        android:title="@string/save"
         android:icon="@drawable/ic_save"
+        android:title="@string/save"
         app:showAsAction="ifRoom" />
 </menu>

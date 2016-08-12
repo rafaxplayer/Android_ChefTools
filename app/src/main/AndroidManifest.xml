@@ -74,6 +74,7 @@
             android:label="@string/activity_stoks" />
         <activity
             android:name=".escandallos.Escandallos_Activity"
+            android:screenOrientation="portrait"
             android:label="@string/activity_escandallos" />
         <activity
             android:name=".IntroActivity"

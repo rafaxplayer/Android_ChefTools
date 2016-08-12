@@ -72,13 +72,13 @@
         android:id="@+id/newproduct"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:layout_marginRight="@dimen/dimen_fabmargin"
         android:layout_marginBottom="@dimen/dimen_fabmargin"
+        android:layout_marginRight="@dimen/dimen_fabmargin"
+        android:cropToPadding="false"
+        android:elevation="@dimen/fab_elevation"
         android:src="@drawable/add_min"
         app:borderWidth="@dimen/floatbuttonBorder"
         app:layout_anchor="@id/list_items"
-        app:layout_anchorGravity="bottom|right"
-        android:elevation="@dimen/fab_elevation"
-        android:cropToPadding="false" />
+        app:layout_anchorGravity="bottom|right" />
 </android.support.design.widget.CoordinatorLayout>
 

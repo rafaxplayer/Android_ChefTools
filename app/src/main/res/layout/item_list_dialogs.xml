@@ -28,62 +28,62 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:layout_weight="1"
         android:orientation="vertical"
-        android:padding="5dp"
-        android:layout_weight="1">
+        android:padding="5dp">
 
         <TextView
             android:id="@+id/text1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Large Text"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textStyle="bold|italic"
             android:ellipsize="end"
             android:singleLine="true"
+            android:text="Large Text"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/textNameColor"
             android:textSize="@dimen/text_medium"
-            android:textColor="@color/textNameColor" />
+            android:textStyle="bold|italic" />
 
         <TextView
             android:id="@+id/text2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
             android:paddingTop="@dimen/text_list_padding_top"
+            android:singleLine="true"
             android:text="Medium Text"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#ff565656"
-            android:textStyle="italic"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:textSize="@dimen/fab_shadow_size" />
+            android:textSize="@dimen/fab_shadow_size"
+            android:textStyle="italic" />
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
         <ImageButton
-            android:layout_width="@dimen/icon_list_dimen"
-            android:layout_height="@dimen/icon_list_dimen"
             android:id="@+id/ButtonEdit"
-            android:src="@drawable/edit"
-            android:background="@drawable/selector_imagebutton_call"
-            android:layout_gravity="center_vertical|right"
-            android:scaleType="centerCrop"
-            android:padding="@dimen/icon_list_padding"
-            android:layout_marginRight="@dimen/icon_list_margin" />
-
-        <ImageButton
             android:layout_width="@dimen/icon_list_dimen"
             android:layout_height="@dimen/icon_list_dimen"
-            android:id="@+id/ButtonDelete"
-            android:src="@drawable/delete"
             android:layout_gravity="center_vertical|right"
             android:layout_marginRight="@dimen/icon_list_margin"
             android:background="@drawable/selector_imagebutton_call"
+            android:padding="@dimen/icon_list_padding"
             android:scaleType="centerCrop"
-            android:padding="@dimen/icon_list_padding" />
+            android:src="@drawable/edit" />
+
+        <ImageButton
+            android:id="@+id/ButtonDelete"
+            android:layout_width="@dimen/icon_list_dimen"
+            android:layout_height="@dimen/icon_list_dimen"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginRight="@dimen/icon_list_margin"
+            android:background="@drawable/selector_imagebutton_call"
+            android:padding="@dimen/icon_list_padding"
+            android:scaleType="centerCrop"
+            android:src="@drawable/delete" />
 
     </LinearLayout>
 
