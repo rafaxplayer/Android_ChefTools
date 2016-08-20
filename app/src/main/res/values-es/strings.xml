@@ -199,4 +199,5 @@
     <string name="dlgerror_costuni">Debes especificar el precio del producto</string>
     <string name="cost_total">Coste Total : </string>
     <string name="product_cost2">Coste Producto :</string>
+    <string name="format_placeholder">KG</string>
 </resources>

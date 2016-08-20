@@ -1,7 +1,9 @@
 package rafaxplayer.cheftools;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.Toast;
 
@@ -96,6 +98,8 @@ public class Inicio_Activity extends BaseActivity implements ProductosMannager_F
             super.onBackPressed();
         } else {
             Toast.makeText(getBaseContext(), getString(R.string.back_exit), Toast.LENGTH_SHORT).show();
+            Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+            v.vibrate(500);
             back_pressed = System.currentTimeMillis();
         }
 

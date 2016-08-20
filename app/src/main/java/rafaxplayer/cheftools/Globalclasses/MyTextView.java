@@ -23,9 +23,12 @@ public class MyTextView extends TextView {
     }
 
     private void init(Context con) {
-        Typeface tf = Typeface.createFromAsset(con.getAssets(),
-                "fonts/Days.ttf");
-        setTypeface(tf);
+        if (!isInEditMode()) {
+            Typeface tf = Typeface.createFromAsset(con.getAssets(),
+                    "fonts/Days.ttf");
+            this.setTypeface(tf);
+        }
+
     }
 
 }

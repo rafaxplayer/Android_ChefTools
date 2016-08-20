@@ -304,6 +304,8 @@ public class Escandallos_Activity extends BaseActivity {
             public void onClick(View v) {
                 if (v.getId() == R.id.ButtonDeleteProduct) {
                     deleteItem(ViewHolder.this.getLayoutPosition());
+                    double sum = calculatecostetotal();
+                    texttotal.setText(String.format("%s %s%s", costTotal, String.valueOf(sum), "€"));
                 }
 
             }

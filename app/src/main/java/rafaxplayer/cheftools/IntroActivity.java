@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.LinearInterpolator;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -20,6 +21,8 @@ public class IntroActivity extends AppCompatActivity {
     TextView textIntro2;
     @BindView(R.id.textpro)
     TextView textIntro3;
+    @BindView(R.id.background)
+    RelativeLayout back;
 
     private ObjectAnimator translateX1;
     private ObjectAnimator translateX2;
@@ -59,6 +62,7 @@ public class IntroActivity extends AppCompatActivity {
 
             }
         });
+
         fadeout.setInterpolator(new AccelerateInterpolator());
         translateX1.setInterpolator(new LinearInterpolator());
         translateX1.setDuration(1000);
