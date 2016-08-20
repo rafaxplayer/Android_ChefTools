@@ -170,7 +170,7 @@
                     android:layout_height="wrap_content"
                     android:background="#89c7aa80"
                     android:imeOptions="actionDone"
-                    android:inputType="number|textCapWords"
+                    android:inputType="number"
                     android:padding="10dp"
                     android:singleLine="true"
                     android:textAppearance="?android:attr/textAppearanceMedium"
