@@ -250,7 +250,7 @@ public class Escandallos_Activity extends BaseActivity {
 
                             double result = Double.valueOf(editquantity.getText().toString()) * Double.valueOf(editcostuni.getText().toString()) / Double.valueOf(dataUni);
 
-                            String text = costTotal + String.valueOf(numberFormat.format(result));
+                            String text = costTotal + numberFormat.format(result);
                             textCosteProducto.setText(text);
 
                             Escandallo_Product escpr = new Escandallo_Product();
@@ -258,7 +258,7 @@ public class Escandallos_Activity extends BaseActivity {
                             escpr.setCostforuni(editcostuni.getText().toString());
                             escpr.setCantidad(editquantity.getText().toString());
                             escpr.setFormato(textFormat2.getText().toString());
-                            escpr.setCoste(result);
+                            escpr.setCoste(Double.valueOf(numberFormat.format(result)));
 
                             ((RecyclerAdapter) listProducts.getAdapter()).addItem(escpr);
                             double sum = ((RecyclerAdapter) listProducts.getAdapter()).calculatecostetotal();
@@ -334,7 +334,7 @@ public class Escandallos_Activity extends BaseActivity {
                 Log.e("error :", e.getMessage());
             }
 
-            return sum;
+            return Double.valueOf(numberFormat.format(sum));
         }
 
         @Override
