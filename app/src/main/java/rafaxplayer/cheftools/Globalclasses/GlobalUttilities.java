@@ -46,7 +46,7 @@ public class GlobalUttilities {
     public static final String CALCULATOR_CLASS = "com.android.calculator2.Calculator";
 
     public static Boolean backup(Context con) {
-        Boolean ret = false;
+        boolean ret;
 
         File dbFile = con.getDatabasePath(DBHelper.DATABASE_NAME);
 
@@ -91,7 +91,7 @@ public class GlobalUttilities {
     }
 
     public static Boolean backupRestore(Context con, String filename) {
-        Boolean ret = false;
+        Boolean ret;
         try {
 
             File dbFile = new File(PATH_BACKUPS + filename);
@@ -127,6 +127,37 @@ public class GlobalUttilities {
         }
         return ret;
 
+    }
+
+    public static String shareEscandalloText(Context con, Escandallo esc) {
+        StringBuilder str = new StringBuilder();
+        str.append(esc.getName());
+        str.append("\n");
+        str.append(String.format("%s: %s", con.getString(R.string.date), esc.getDate()));
+        str.append("\n");
+        str.append("-=-=-=-=-=-=-=-=-=-=");
+        str.append("\n");
+        str.append(con.getString(R.string.products));
+        str.append("\n");
+        str.append("--------------------");
+        str.append("\n");
+        for (Escandallo_Product pr : esc.getProducts()) {
+            str.append(pr.getProductoname());
+            str.append("\n");
+            str.append(String.format("%s: %s%s", con.getString(R.string.product_uni), pr.getCantidad(), pr.getFormato()));
+            str.append("\n");
+            str.append(String.format("%s %s€", con.getString(R.string.product_cost2), String.valueOf(pr.getCoste())));
+            str.append("\n");
+            str.append("--------------------");
+            str.append("\n");
+        }
+
+        str.append(String.format("%s %s€", con.getString(R.string.cost_total), esc.getCostetotal()));
+        str.append("\n");
+        str.append("\n");
+        str.append("Shared with " + con.getString(R.string.app_name));
+
+        return str.toString();
     }
 
     public static String shareDataText(Context con, Object obj) {
@@ -354,4 +385,29 @@ public class GlobalUttilities {
                 || screenSize == Configuration.SCREENLAYOUT_SIZE_XLARGE;
     }
 
+    public static String PerfectDecimal(String str, int MAX_BEFORE_POINT, int MAX_DECIMAL) {
+        if (str.charAt(0) == '.') str = "0" + str;
+        int max = str.length();
+
+        String rFinal = "";
+        boolean after = false;
+        int i = 0, up = 0, decimal = 0;
+        char t;
+        while (i < max) {
+            t = str.charAt(i);
+            if (t != '.' && after == false) {
+                up++;
+                if (up > MAX_BEFORE_POINT) return rFinal;
+            } else if (t == '.') {
+                after = true;
+            } else {
+                decimal++;
+                if (decimal > MAX_DECIMAL)
+                    return rFinal;
+            }
+            rFinal = rFinal + t;
+            i++;
+        }
+        return rFinal;
+    }
 }

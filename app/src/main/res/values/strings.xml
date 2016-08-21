@@ -202,6 +202,9 @@
     <string name="cost_total">Total Cost : </string>
     <string name="product_cost2">Product Cost :</string>
     <string name="format_placeholder">KG</string>
+    <string name="share_cost">Share Cost Evaluation</string>
+    <string name="share">Share</string>
+    <string name="date">Date</string>
 
 
 </resources>

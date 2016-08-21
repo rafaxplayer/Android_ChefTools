@@ -4,74 +4,74 @@
     android:background="@drawable/back_kitchen"
     android:id="@+id/background">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:alpha="0.5"
-            android:background="@android:color/black">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.5"
+        android:background="@android:color/black">
 
-        </FrameLayout>
+    </FrameLayout>
 
-        <rafaxplayer.cheftools.Globalclasses.MyTextView
-            android:id="@+id/textIntro1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignWithParentIfMissing="false"
-            android:layout_centerVertical="true"
-            android:layout_gravity="left|center_vertical"
-            android:layout_toLeftOf="@+id/imageView"
-            android:layout_toStartOf="@+id/imageView"
-            android:shadowColor="@android:color/black"
+    <rafaxplayer.cheftools.Globalclasses.MyTextView
+        android:id="@+id/textIntro1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_centerVertical="true"
+        android:layout_gravity="left|center_vertical"
+        android:layout_toLeftOf="@+id/imageView"
+        android:layout_toStartOf="@+id/imageView"
+        android:shadowColor="@android:color/black"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="1.5"
+        android:text="Chef"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/introred"
+        android:textSize="@dimen/dimen_introtext" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_toolbar_large" />
+
+    <!--android:shadowColor="@android:color/black"
             android:shadowDx="3"
             android:shadowDy="3"
-            android:shadowRadius="1.5"
-            android:text="Chef"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/introred"
-            android:textSize="@dimen/dimen_introtext" />
+            android:shadowRadius="1.5"-->
+    <TextView
+        android:id="@+id/textpro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal|bottom"
+        android:alpha="0.0"
+        android:text="For Professionals"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/darker_gray"
+        android:textStyle="normal|italic"
+        android:typeface="sans" />
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_toolbar_large" />
+    <rafaxplayer.cheftools.Globalclasses.MyTextView
+        android:id="@+id/textIntro2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
 
-        <!--android:shadowColor="@android:color/black"
-                android:shadowDx="3"
-                android:shadowDy="3"
-                android:shadowRadius="1.5"-->
-        <TextView
-            android:id="@+id/textpro"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/imageView"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal|bottom"
-            android:alpha="0.0"
-            android:text="For Professionals"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/darker_gray"
-            android:textStyle="normal|italic"
-            android:typeface="sans" />
-
-        <rafaxplayer.cheftools.Globalclasses.MyTextView
-            android:id="@+id/textIntro2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_alignTop="@+id/textIntro1"
-            android:shadowColor="@android:color/black"
-            android:shadowDx="3"
-            android:shadowDy="3"
-            android:shadowRadius="1.5"
-            android:layout_gravity="right|center_vertical"
-            android:layout_toEndOf="@+id/imageView"
-            android:text="Tools"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/textTitletColor"
-            android:textSize="@dimen/dimen_introtext" />
+        android:layout_alignTop="@+id/textIntro1"
+        android:shadowColor="@android:color/black"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="1.5"
+        android:layout_gravity="right|center_vertical"
+        android:layout_toEndOf="@+id/imageView"
+        android:text="Tools"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/textTitletColor"
+        android:textSize="@dimen/dimen_introtext" />
 
 </RelativeLayout>

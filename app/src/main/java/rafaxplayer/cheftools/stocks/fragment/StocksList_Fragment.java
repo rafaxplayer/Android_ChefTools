@@ -106,16 +106,17 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
                                 .content(getString(R.string.deleterecipesmsg).replace("###", String.valueOf(items)))
                                 .positiveText(R.string.yes)
                                 .negativeText(R.string.cancel)
-                                .callback(new MaterialDialog.ButtonCallback() {
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
                                     @Override
-                                    public void onPositive(MaterialDialog dialog) {
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                         adp.deleteSelectedItems();
                                         mode.finish();
                                         dialog.dismiss();
                                     }
-
+                                })
+                                .onNegative(new MaterialDialog.SingleButtonCallback() {
                                     @Override
-                                    public void onNegative(MaterialDialog dialog) {
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                         dialog.dismiss();
                                     }
                                 })

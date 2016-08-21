@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -130,7 +129,7 @@ public class DetalleRecipes_Fragment extends Fragment {
                     }
                     startActivity(Intent.createChooser(shareIntent, getString(R.string.share_recipe_use)));
                 }
-                Toast.makeText(getActivity(), "Share", Toast.LENGTH_LONG).show();
+
                 break;
             default:
                 break;

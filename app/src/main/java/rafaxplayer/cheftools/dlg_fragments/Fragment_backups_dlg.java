@@ -4,6 +4,7 @@ package rafaxplayer.cheftools.dlg_fragments;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.cocosw.bottomsheet.BottomSheet;
@@ -76,20 +78,19 @@ public class Fragment_backups_dlg extends DialogFragment {
                         .content(R.string.dlg_backup_question)
                         .positiveText("Ok")
                         .negativeText(R.string.cancel)
-                        .callback(new MaterialDialog.ButtonCallback() {
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
-                            public void onPositive(MaterialDialog dialog) {
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 GlobalUttilities.backup(getActivity());
                                 onResume();
                             }
-
+                        })
+                        .onNegative(new MaterialDialog.SingleButtonCallback() {
                             @Override
-                            public void onNegative(MaterialDialog dialog) {
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 dialog.dismiss();
                             }
                         })
-
-
                         .show();
             }
         });
@@ -128,6 +129,8 @@ public class Fragment_backups_dlg extends DialogFragment {
         ArrayList<HashMap<String, String>> backList = loadbackups();
         listItems.setAdapter(new RecyclerAdapter(backList));
     }
+
+
 
     private ArrayList<HashMap<String, String>> loadbackups() {
         int maxBackups = 10;
@@ -215,15 +218,16 @@ public class Fragment_backups_dlg extends DialogFragment {
                                         .theme(Theme.LIGHT)
                                         .positiveText("Ok")
                                         .negativeText(R.string.cancel)
-                                        .callback(new MaterialDialog.ButtonCallback() {
+                                        .onPositive(new MaterialDialog.SingleButtonCallback() {
                                             @Override
-                                            public void onPositive(MaterialDialog dialog) {
+                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                                 GlobalUttilities.backupRestore(getActivity(), mDataset.get(ViewHolder.this.getLayoutPosition()).get("name"));
                                                 dialog.dismiss();
                                             }
-
+                                        })
+                                        .onNegative(new MaterialDialog.SingleButtonCallback() {
                                             @Override
-                                            public void onNegative(MaterialDialog dialog) {
+                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                                 dialog.dismiss();
                                             }
                                         })
@@ -237,15 +241,16 @@ public class Fragment_backups_dlg extends DialogFragment {
                                         .theme(Theme.LIGHT)
                                         .positiveText("Ok")
                                         .negativeText(R.string.cancel)
-                                        .callback(new MaterialDialog.ButtonCallback() {
+                                        .onPositive(new MaterialDialog.SingleButtonCallback() {
                                             @Override
-                                            public void onPositive(MaterialDialog dialog) {
+                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                                 deleteItem(ViewHolder.this.getLayoutPosition());
                                                 dialog.dismiss();
                                             }
-
+                                        })
+                                        .onNegative(new MaterialDialog.SingleButtonCallback() {
                                             @Override
-                                            public void onNegative(MaterialDialog dialog) {
+                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                                 dialog.dismiss();
                                             }
                                         })

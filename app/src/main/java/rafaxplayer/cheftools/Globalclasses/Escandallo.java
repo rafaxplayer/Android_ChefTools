@@ -1,32 +1,27 @@
 package rafaxplayer.cheftools.Globalclasses;
 
+import java.util.ArrayList;
+
 /**
  * Created by rafaxplayer on 23/06/2015.
  */
 public class Escandallo {
-    int id;
+
     String Name;
-    String Comentario;
-    String Fecha;
+    String Date;
+    double Costetotal;
+    ArrayList<Escandallo_Product> Products;
 
     public Escandallo() {
 
     }
 
-    public Escandallo(String name, String comentario, String fecha) {
+    public Escandallo(String name, String comentario, String date, ArrayList<Escandallo_Product> products, double costetotal) {
         Name = name;
-        Comentario = comentario;
-
-        Fecha = fecha;
+        Costetotal = costetotal;
+        Date = date;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getName() {
         return Name;
@@ -36,19 +31,27 @@ public class Escandallo {
         Name = name;
     }
 
-    public String getComentario() {
-        return Comentario;
+    public String getDate() {
+        return Date;
     }
 
-    public void setComentario(String comentario) {
-        Comentario = comentario;
+    public void setDate(String date) {
+        Date = date;
     }
 
-    public String getFecha() {
-        return Fecha;
+    public ArrayList<Escandallo_Product> getProducts() {
+        return Products;
     }
 
-    public void setFecha(String fecha) {
-        Fecha = fecha;
+    public void setProducts(ArrayList<Escandallo_Product> products) {
+        Products = products;
+    }
+
+    public double getCostetotal() {
+        return Costetotal;
+    }
+
+    public void setCostetotal(double costetotal) {
+        this.Costetotal = costetotal;
     }
 }

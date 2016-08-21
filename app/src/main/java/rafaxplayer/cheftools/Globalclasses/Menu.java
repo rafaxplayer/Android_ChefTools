@@ -1,4 +1,5 @@
 package rafaxplayer.cheftools.Globalclasses;
+
 public class Menu {
     int id;
     String name;

@@ -200,4 +200,7 @@
     <string name="cost_total">Coste Total : </string>
     <string name="product_cost2">Coste Producto :</string>
     <string name="format_placeholder">KG</string>
+    <string name="share_cost">Compartir escandallo</string>
+    <string name="share">Compartir</string>
+    <string name="date">Fecha</string>
 </resources>

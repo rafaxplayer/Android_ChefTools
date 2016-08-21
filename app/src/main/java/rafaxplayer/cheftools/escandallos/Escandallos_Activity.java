@@ -1,14 +1,20 @@
 package rafaxplayer.cheftools.escandallos;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -23,6 +29,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -31,7 +38,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
+import rafaxplayer.cheftools.Globalclasses.Escandallo;
 import rafaxplayer.cheftools.Globalclasses.Escandallo_Product;
+import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
 import rafaxplayer.cheftools.R;
 
 
@@ -48,6 +57,7 @@ public class Escandallos_Activity extends BaseActivity {
     FloatingActionButton fab;
     @BindView(R.id.escandalloRecipe)
     EditText editnameRecipe;
+    private DecimalFormat numberFormat;
     private MaterialDialog dialogNewProduct;
     private EditText editnameProduct;
     private EditText editcostuni;
@@ -72,12 +82,54 @@ public class Escandallos_Activity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+        numberFormat = new DecimalFormat("#.00");
         fab.attachToRecyclerView(listProducts);
         dialogNewProduct = createDilaogNewProduct();
         listProducts.setHasFixedSize(true);
         listProducts.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         listProducts.setItemAnimator(new DefaultItemAnimator());
         listProducts.setAdapter(new RecyclerAdapter(new ArrayList<Escandallo_Product>()));
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_share, menu);
+        MenuItem share = menu.findItem(R.id.action_share);
+        share.setTitle(R.string.share_cost);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_share:
+                if (listProducts.getAdapter().getItemCount() > 0) {
+                    try {
+                        Escandallo esc = new Escandallo();
+                        esc.setName(editnameProduct.getText().toString());
+                        esc.setDate(GlobalUttilities.getDateTime());
+                        esc.setProducts(((RecyclerAdapter) listProducts.getAdapter()).getProducts());
+                        esc.setCostetotal(((RecyclerAdapter) listProducts.getAdapter()).calculatecostetotal());
+                        String strShared = GlobalUttilities.shareEscandalloText(getApplicationContext(), esc);
+
+                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                        shareIntent.putExtra(Intent.EXTRA_TEXT, strShared);
+                        shareIntent.setType("text/plain");
+                        startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.share_recipe_use)));
+
+                    } catch (Exception e) {
+                        Log.e("Error :", e.getMessage());
+                    }
+
+                } else {
+                    Toast.makeText(Escandallos_Activity.this, "Error: No Cost product", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -125,10 +177,30 @@ public class Escandallos_Activity extends BaseActivity {
 
                         View view = dialogNewProduct.getCustomView();
                         editnameProduct = ButterKnife.findById(view, R.id.editnameproduct);
-
+                        editnameProduct.setText("");
                         editcostuni = ButterKnife.findById(view, R.id.editcostporuni);
-                        editquantity = ButterKnife.findById(view, R.id.editunicant);
+                        editcostuni.setText("");
+                        editcostuni.addTextChangedListener(new TextWatcher() {
+                            public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+                            }
 
+                            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+                            }
+
+                            public void afterTextChanged(Editable arg0) {
+                                String str = editcostuni.getText().toString();
+                                if (str.isEmpty()) return;
+                                String str2 = GlobalUttilities.PerfectDecimal(str, 5, 2);
+
+                                if (!str2.equals(str)) {
+                                    editcostuni.setText(str2);
+                                    int pos = editcostuni.getText().length();
+                                    editcostuni.setSelection(pos);
+                                }
+                            }
+                        });
+                        editquantity = ButterKnife.findById(view, R.id.editunicant);
+                        editquantity.setText("");
                         spinerFormat = ButterKnife.findById(view, R.id.spinnerFormat);
                         textCosteProducto = ButterKnife.findById(view, R.id.textcosteProduct);
                         final ArrayList<HashMap<String, Object>> spinnerFormatsData = generateSpinnerDta();
@@ -174,12 +246,11 @@ public class Escandallos_Activity extends BaseActivity {
                             return;
                         }
 
-
                         try {
 
                             double result = Double.valueOf(editquantity.getText().toString()) * Double.valueOf(editcostuni.getText().toString()) / Double.valueOf(dataUni);
-                            ;
-                            String text = costTotal + String.valueOf(result);
+
+                            String text = costTotal + String.valueOf(numberFormat.format(result));
                             textCosteProducto.setText(text);
 
                             Escandallo_Product escpr = new Escandallo_Product();
@@ -191,7 +262,7 @@ public class Escandallos_Activity extends BaseActivity {
 
                             ((RecyclerAdapter) listProducts.getAdapter()).addItem(escpr);
                             double sum = ((RecyclerAdapter) listProducts.getAdapter()).calculatecostetotal();
-                            texttotal.setText(String.format("%s %s%s", costTotal, String.valueOf(sum), "€"));
+                            texttotal.setText(String.format("%s %s%s", costTotal, String.valueOf(numberFormat.format(sum)), "€"));
 
                             new android.os.Handler().postDelayed(
                                     new Runnable() {
@@ -223,7 +294,7 @@ public class Escandallos_Activity extends BaseActivity {
 
     public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
-        private ArrayList<Escandallo_Product> mDataset;
+        public ArrayList<Escandallo_Product> mDataset;
 
         public RecyclerAdapter(ArrayList<Escandallo_Product> myDataset) {
             mDataset = myDataset;
@@ -247,6 +318,10 @@ public class Escandallos_Activity extends BaseActivity {
 
         }
 
+        public ArrayList<Escandallo_Product> getProducts() {
+            return mDataset;
+        }
+
         public double calculatecostetotal() {
 
             double sum = 0;
@@ -258,7 +333,7 @@ public class Escandallos_Activity extends BaseActivity {
             } catch (Exception e) {
                 Log.e("error :", e.getMessage());
             }
-            Log.e("Coste:", String.valueOf(sum));
+
             return sum;
         }
 
@@ -274,7 +349,7 @@ public class Escandallos_Activity extends BaseActivity {
         public void onBindViewHolder(RecyclerAdapter.ViewHolder viewHolder, int i) {
             Escandallo_Product escPr = (Escandallo_Product) mDataset.get(i);
             viewHolder.txtProd.setText(escPr.getProductoname());
-            Log.e("Cantidad", String.format("%s %s", escPr.getCantidad(), escPr.getFormato()));
+            //Log.e("Cantidad", String.format("%s %s", escPr.getCantidad(), escPr.getFormato()));
             viewHolder.txtCantidad.setText(String.format("%s%s", escPr.getCantidad(), escPr.getFormato()));
             viewHolder.txtCoste.setText(String.format("%s€", String.valueOf(escPr.getCoste())));
         }
