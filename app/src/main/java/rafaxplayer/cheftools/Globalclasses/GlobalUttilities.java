@@ -141,6 +141,7 @@ public class GlobalUttilities {
         str.append("\n");
         str.append("--------------------");
         str.append("\n");
+
         for (Escandallo_Product pr : esc.getProducts()) {
             str.append(pr.getProductoname());
             str.append("\n");
@@ -318,7 +319,6 @@ public class GlobalUttilities {
 
         return str.toString();
     }
-
 
     public static String getDateTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
