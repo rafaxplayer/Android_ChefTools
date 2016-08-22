@@ -38,8 +38,6 @@ public class GlobalUttilities {
     public static final int SELECT_PICTURE = 1;
     public static final int CAPTURE_ID = 2;
     public static final int RECIPE_WITH_CAPTURE = 3;
-    public static final int WEBURL_MODE_SEARCHIMG = 1;
-    public static final int WEBURL_MODE_SEARCHRECIPE = 2;
     public static final String CALCULATOR_PACKAGE_2 = "com.sec.android.app.popupcalculator";
     public static final String CALCULATOR_CLASS_2 = "com.sec.android.app.popupcalculator.Calculator";
     public static final String CALCULATOR_PACKAGE = "com.android.calculator2";
@@ -409,5 +407,10 @@ public class GlobalUttilities {
             i++;
         }
         return rFinal;
+    }
+
+    public static String FormatDecimal(double decimal) {
+
+        return String.format(Locale.CANADA, "%.2f", decimal);
     }
 }

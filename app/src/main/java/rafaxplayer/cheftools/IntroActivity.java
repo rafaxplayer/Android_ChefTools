@@ -23,6 +23,8 @@ public class IntroActivity extends AppCompatActivity {
     TextView textIntro3;
     @BindView(R.id.background)
     RelativeLayout back;
+    @BindView(R.id.textVersion)
+    TextView version;
 
     private ObjectAnimator translateX1;
     private ObjectAnimator translateX2;
@@ -32,7 +34,7 @@ public class IntroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
         ButterKnife.bind(this);
-
+        version.setText(String.format("V%s", BuildConfig.VERSION_NAME));
         translateX1 = ObjectAnimator.ofFloat(textIntro1, "translationX", -100, 0);
         translateX2 = ObjectAnimator.ofFloat(textIntro2, "translationX", 100, 0);
 

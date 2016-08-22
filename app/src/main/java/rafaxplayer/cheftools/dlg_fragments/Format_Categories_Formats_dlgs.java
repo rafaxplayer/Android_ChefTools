@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rafaxplayer.cheftools.Globalclasses.Categorys_Formats_Adapter;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
 import rafaxplayer.cheftools.R;
@@ -32,6 +33,10 @@ public class Format_Categories_Formats_dlgs extends DialogFragment {
     ImageButton addCategory;
     @BindView(R.id.texttitle)
     TextView texttitle;
+    @OnClick(R.id.logo)
+    public void back() {
+        getActivity().onBackPressed();
+    }
     private SqliteWrapper sql;
 
     private Categorys_Formats_Adapter adp;

@@ -29,7 +29,6 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -57,16 +56,6 @@ public class Escandallos_Activity extends BaseActivity {
     FloatingActionButton fab;
     @BindView(R.id.escandalloRecipe)
     EditText editnameRecipe;
-    private DecimalFormat numberFormat;
-    private MaterialDialog dialogNewProduct;
-    private EditText editnameProduct;
-    private EditText editcostuni;
-    private EditText editquantity;
-    private Spinner spinerFormat;
-    private TextView textviewuni;
-    private TextView textFormat2;
-    private TextView textCosteProducto;
-    private double dataUni = 1000;
 
     @OnClick(R.id.fab)
     public void submit(View view) {
@@ -78,11 +67,22 @@ public class Escandallos_Activity extends BaseActivity {
         }
     }
 
+
+    private MaterialDialog dialogNewProduct;
+    private EditText editnameProduct;
+    private EditText editcostuni;
+    private EditText editquantity;
+    private Spinner spinerFormat;
+    private TextView textviewuni;
+    private TextView textFormat2;
+    private TextView textCosteProducto;
+    private double dataUni = 1000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        numberFormat = new DecimalFormat("#.00");
+
         fab.attachToRecyclerView(listProducts);
         dialogNewProduct = createDilaogNewProduct();
         listProducts.setHasFixedSize(true);
@@ -248,21 +248,20 @@ public class Escandallos_Activity extends BaseActivity {
 
                         try {
 
-                            double result = Double.valueOf(editquantity.getText().toString()) * Double.valueOf(editcostuni.getText().toString()) / Double.valueOf(dataUni);
-
-                            String text = costTotal + numberFormat.format(result);
-                            textCosteProducto.setText(text);
+                            Double result = Double.valueOf(editquantity.getText().toString()) * Double.valueOf(editcostuni.getText().toString()) / Double.valueOf(dataUni);
+                            String textResult = String.format("%s %s", costTotal, GlobalUttilities.FormatDecimal(result));
+                            textCosteProducto.setText(textResult);
 
                             Escandallo_Product escpr = new Escandallo_Product();
                             escpr.setProductoname(editnameProduct.getText().toString());
                             escpr.setCostforuni(editcostuni.getText().toString());
                             escpr.setCantidad(editquantity.getText().toString());
                             escpr.setFormato(textFormat2.getText().toString());
-                            escpr.setCoste(Double.valueOf(numberFormat.format(result)));
+                            escpr.setCoste(Double.valueOf(GlobalUttilities.FormatDecimal(result)));
 
                             ((RecyclerAdapter) listProducts.getAdapter()).addItem(escpr);
-                            double sum = ((RecyclerAdapter) listProducts.getAdapter()).calculatecostetotal();
-                            texttotal.setText(String.format("%s %s%s", costTotal, String.valueOf(numberFormat.format(sum)), "€"));
+                            Double sum = ((RecyclerAdapter) listProducts.getAdapter()).calculatecostetotal();
+                            texttotal.setText(String.format("%s %s%s", costTotal, GlobalUttilities.FormatDecimal(sum), "€"));
 
                             new android.os.Handler().postDelayed(
                                     new Runnable() {
@@ -334,7 +333,7 @@ public class Escandallos_Activity extends BaseActivity {
                 Log.e("error :", e.getMessage());
             }
 
-            return Double.valueOf(numberFormat.format(sum));
+            return Double.valueOf(sum);
         }
 
         @Override

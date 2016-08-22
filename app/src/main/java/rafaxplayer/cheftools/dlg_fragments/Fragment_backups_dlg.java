@@ -31,6 +31,7 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
 import rafaxplayer.cheftools.R;
 
@@ -43,6 +44,10 @@ public class Fragment_backups_dlg extends DialogFragment {
     @BindView(R.id.fab)
     FloatingActionButton fab;
 
+    @OnClick(R.id.logo)
+    public void back() {
+        getActivity().onBackPressed();
+    }
     public Fragment_backups_dlg() {
 
     }
