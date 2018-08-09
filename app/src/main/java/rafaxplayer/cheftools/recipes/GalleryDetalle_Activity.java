@@ -22,7 +22,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
-import rafaxplayer.cheftools.Globalclasses.ImageGalleryModel;
+import rafaxplayer.cheftools.Globalclasses.models.ImageGalleryModel;
 import rafaxplayer.cheftools.R;
 
 
@@ -145,7 +145,7 @@ public class GalleryDetalle_Activity extends BaseActivity {
                 }
             });
             container.addView(itemView);
-            Picasso.with(mContext).load(path)
+            Picasso.get().load(path)
                     .fit().centerCrop()
                     .placeholder(R.drawable.placeholder_recetas)
                     .into(imageView);

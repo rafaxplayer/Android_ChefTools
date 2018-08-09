@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/selector_imagebutton_call"
-
     android:clickable="true"
     android:orientation="horizontal"
     android:padding="5dp">
@@ -30,9 +30,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:orientation="vertical"
+        android:padding="5dp"
         android:layout_weight="1"
-        android:orientation="horizontal"
-        android:padding="5dp">
+        android:elevation="1dp">
 
         <TextView
             android:id="@+id/text1"
@@ -48,34 +49,58 @@
             android:textSize="@dimen/text_large"
             android:textStyle="bold|italic" />
 
-        <TextView
-            android:id="@+id/text2"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="8dp"
-            android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textStyle="italic" />
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/text3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="8dp"
-            android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            <TextView
+                android:id="@+id/text2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="8dp"
+                android:text="Medium Text"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:elevation="1dp" />
+
+            <TextView
+                android:id="@+id/text3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="8dp"
+                android:text="Medium Text"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="italic"
+                android:elevation="1dp" />
+        </LinearLayout>
 
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/ButtonDeleteProduct"
-        android:layout_width="@dimen/icon_list_dimen"
-        android:layout_height="@dimen/icon_list_dimen"
-        android:layout_gravity="center_vertical|right"
-        android:layout_marginRight="@dimen/icon_list_margin"
-        android:background="@drawable/selector_imagebutton_call"
-        android:padding="@dimen/icon_list_padding"
-        android:src="@drawable/delete" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="5dp">
+        <ImageButton
+            android:id="@+id/ButtonEditProduct"
+            android:layout_width="@dimen/icon_list_dimen"
+            android:layout_height="@dimen/icon_list_dimen"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginRight="@dimen/floatbuttonBorder"
+            android:background="@drawable/selector_imagebutton_call"
+            android:padding="@dimen/icon_list_padding"
+            android:src="@drawable/edit" />
+
+        <ImageButton
+            android:id="@+id/ButtonDeleteProduct"
+            android:layout_width="@dimen/icon_list_dimen"
+            android:layout_height="@dimen/icon_list_dimen"
+            android:layout_gravity="center_vertical|right"
+            android:background="@drawable/selector_imagebutton_call"
+            android:padding="@dimen/icon_list_padding"
+            android:src="@drawable/delete" />
+    </LinearLayout>
 </LinearLayout>

@@ -24,19 +24,16 @@ import android.widget.ScrollView;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
 import rafaxplayer.cheftools.Globalclasses.IconizedMenu;
-import rafaxplayer.cheftools.Globalclasses.Recipe;
+import rafaxplayer.cheftools.Globalclasses.models.Recipe;
 import rafaxplayer.cheftools.R;
 import rafaxplayer.cheftools.database.DBHelper;
 import rafaxplayer.cheftools.database.SqliteWrapper;
@@ -76,7 +73,6 @@ public class NewEditRecipe_Fragment extends Fragment {
 
     private ArrayList<HashMap<String, Object>> catsarr;
 
-
     public static NewEditRecipe_Fragment newInstance(int recipeid) {
         NewEditRecipe_Fragment f = new NewEditRecipe_Fragment();
         Bundle args = new Bundle();
@@ -86,7 +82,6 @@ public class NewEditRecipe_Fragment extends Fragment {
 
         return f;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -152,6 +147,7 @@ public class NewEditRecipe_Fragment extends Fragment {
                                                          intent.setType("image/*");
                                                          getActivity().startActivityForResult(Intent.createChooser(intent,
                                                                  getString(R.string.selectpicture)), GlobalUttilities.SELECT_PICTURE);
+                                                         Log.e("Get Activity", getActivity().getLocalClassName());
                                                          break;
                                                      case R.id.action_photo:
                                                          Intent inte = new Intent(
@@ -167,7 +163,7 @@ public class NewEditRecipe_Fragment extends Fragment {
                                                                  .input(getString(R.string.urlimage), "", new MaterialDialog.InputCallback() {
                                                                      @Override
                                                                      public void onInput(MaterialDialog dialog, CharSequence input) {
-                                                                         setImage(Uri.parse(input.toString()));
+                                                                         updateImage(Uri.parse(input.toString()));
                                                                          //getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                                                                          dialog.dismiss();
                                                                      }
@@ -269,15 +265,15 @@ public class NewEditRecipe_Fragment extends Fragment {
 
                         .negativeText(R.string.not)
 
-                        .callback(new MaterialDialog.ButtonCallback() {
+                        .callback( new MaterialDialog.ButtonCallback() {
                             @Override
-                            public void onPositive(MaterialDialog dialog) {
+                            public void onPositive( MaterialDialog dialog) {
                                 refresh();
                                 dialog.dismiss();
                             }
 
                             @Override
-                            public void onNegative(MaterialDialog dialog) {
+                            public void onNegative( MaterialDialog dialog) {
                                 getActivity().onBackPressed();
                                 dialog.dismiss();
                             }
@@ -310,18 +306,16 @@ public class NewEditRecipe_Fragment extends Fragment {
         }
         Recipe rec = (Recipe) sql.SelectWithId("Recipe", DBHelper.TABLE_RECETAS, id);
         if (rec != null) {
-            Picasso.with(getActivity()).load(Uri.parse(rec.getImg().toString()))
+            Picasso.get().load(Uri.parse(rec.getImg().toString()))
                     .resize(getResources().getDimensionPixelOffset(R.dimen.image_dimen_width), getResources().getDimensionPixelOffset(R.dimen.image_dimen_height))
                     .placeholder(R.drawable.item_image_placeholder)
                     .into(img);
 
             nametxt.setText(rec.getName());
-
             cats.setSelection(GlobalUttilities.SpinnergetIndex(catsarr, rec.getCategoty()));
             url.setText(rec.getUrl());
             ingtxt.setText(rec.getIngredients());
             elatxt.setText(rec.getElaboration());
-
 
             this.ID = id;
             this.imgUri = Uri.parse(rec.getImg().toString());
@@ -330,21 +324,22 @@ public class NewEditRecipe_Fragment extends Fragment {
         sql.close();
     }
 
-    public void setImage(Uri ur) {
-        this.imgUri = ur;
-        Log.e("Imaguri :", ur.toString());
+    public void updateImage(final Uri ur) {
 
-        Picasso.with(getActivity())
-                .load(ur)
-                .resize(getResources().getDimensionPixelOffset(R.dimen.image_dimen_width), getResources().getDimensionPixelOffset(R.dimen.image_dimen_height))
-                .placeholder(R.drawable.placeholder_recetas)
-                .noFade()
-                .into(img);
-
+        if(ur != null) {
+            Log.e("Set Image", ur.toString());
+            Picasso.get()
+                    .load(ur)
+                    .placeholder(R.drawable.item_image_placeholder)
+                    .resize(getResources().getDimensionPixelOffset(R.dimen.image_dimen_width), getResources().getDimensionPixelOffset(R.dimen.image_dimen_height))
+                    .into(this.img);
+            this.imgUri = ur;
+            Log.e("set image", this.imgUri.toString());
+        }
     }
 
     public void refresh() {
-        Picasso.with(getActivity())
+        Picasso.get()
                 .load(Uri.parse(""))
                 .placeholder(R.drawable.item_image_placeholder)
                 .noFade()
@@ -355,9 +350,7 @@ public class NewEditRecipe_Fragment extends Fragment {
         url.setText("");
         ingtxt.setText("");
         elatxt.setText("");
-
         this.ID = 0;
-
     }
 
     public void setUrl(String url) {
@@ -374,8 +367,8 @@ public class NewEditRecipe_Fragment extends Fragment {
 
     @Override
     public void onPause() {
-        super.onPause();
         sql.close();
+        super.onPause();
     }
 
     @Override

@@ -32,8 +32,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
-import rafaxplayer.cheftools.Globalclasses.Product;
-import rafaxplayer.cheftools.Globalclasses.Stock_Product;
+import rafaxplayer.cheftools.Globalclasses.models.Product;
+import rafaxplayer.cheftools.Globalclasses.models.Stock_Product;
 import rafaxplayer.cheftools.R;
 import rafaxplayer.cheftools.database.DBHelper;
 import rafaxplayer.cheftools.database.SqliteWrapper;
@@ -56,14 +56,16 @@ public class StocksNewEdit_Fragment extends Fragment {
 
     private SqliteWrapper sql;
     private Menu menu;
-    private EditText Formattxt;
     private TextView newlisttxt;
     private EditText name;
     private EditText Comentariostxt;
+    private EditText EditCantidad;
     private LinearLayout providerPannel;
     private MaterialDialog dialogNewStock;
+    private MaterialDialog dialogEditProduct;
     private int ID;
     private Product prod;
+    private Stock_Product stProd;
     private String namestock;
     private ArrayList<HashMap<String, Object>> arrSuppliers;
 
@@ -91,6 +93,7 @@ public class StocksNewEdit_Fragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         dialogNewStock = new MaterialDialog.Builder(getActivity())
                 .customView(R.layout.new_list_order_dlg, true)
                 .positiveText(R.string.done)
@@ -137,6 +140,47 @@ public class StocksNewEdit_Fragment extends Fragment {
                         } else {
                             Toast.makeText(getActivity(), getString(R.string.dlgerror_namerecipe), Toast.LENGTH_LONG).show();
                         }
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                        getActivity().onBackPressed();
+                    }
+                })
+                .build();
+
+        dialogEditProduct = new MaterialDialog.Builder(getActivity())
+                .customView(R.layout.edit_product_escandallo_dlg, true)
+                .positiveText(R.string.done)
+                .negativeText(R.string.cancel)
+                .showListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        EditCantidad = (EditText) dialogEditProduct.getCustomView().findViewById(R.id.editcantproduct);
+                        if(stProd != null){
+                            EditCantidad.setText(String.valueOf(stProd.getCantidad()));
+                        }
+                    }
+                })
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        if (!sql.IsOpen()) {
+                            sql.open();
+                        }
+                        long count=sql.UpdateSimpleData(DBHelper.TABLE_INVENTARIOS_LISTAS,DBHelper.PRODUCTO_CANTIDAD,EditCantidad.getText().toString(),stProd.getID());
+                        if (count>0){
+                            Toast.makeText(getActivity(),"Ok Producto actualizado",Toast.LENGTH_LONG).show();
+                            displayWithId(StocksNewEdit_Fragment.this.ID);
+                            dialog.dismiss();
+
+                        }else{
+                            Toast.makeText(getActivity(),"Ocurrio un error al actualizar",Toast.LENGTH_LONG).show();
+                        }
+
+
                     }
                 })
                 .onNegative(new MaterialDialog.SingleButtonCallback() {
@@ -266,9 +310,10 @@ public class StocksNewEdit_Fragment extends Fragment {
         if (!sql.IsOpen()) {
             sql.open();
         }
+
         try {
             Product pr = (Product) sql.SelectWithId("Product", DBHelper.TABLE_PRODUCTOS, id);
-            NameProduct.setText(pr.getName().toString());
+            NameProduct.setText(pr.getName());
             this.prod = pr;
 
         } catch (Exception e) {
@@ -329,7 +374,7 @@ public class StocksNewEdit_Fragment extends Fragment {
 
         public void deleteItem(int pos) {
 
-            int count = sql.DeleteWithId(((Stock_Product) mDataset.get(pos)).getID(), DBHelper.TABLE_INVENTARIOS_LISTAS);
+            int count = sql.DeleteWithId((mDataset.get(pos)).getID(), DBHelper.TABLE_INVENTARIOS_LISTAS);
 
             if (count > 0) {
                 mDataset.remove(pos);
@@ -344,7 +389,12 @@ public class StocksNewEdit_Fragment extends Fragment {
             if (!sql.IsOpen()) {
                 sql.open();
             }
-            String query = "SELECT * FROM " + DBHelper.TABLE_INVENTARIOS_LISTAS + " WHERE " + DBHelper.INVENTARIO_ID + " = " + listID + " AND " + DBHelper.PRODUCTO_ID + " = " + pr.getId();
+            String query = "SELECT * FROM " + DBHelper.TABLE_INVENTARIOS_LISTAS
+                        + " WHERE " + DBHelper.INVENTARIO_ID
+                        + " = " + listID + " AND "
+                        + DBHelper.PRODUCTO_ID + " = "
+                        + pr.getId();
+
             if (sql.freeQueryExistsorNot(query)) {
                 Toast.makeText(getActivity(), getString(R.string.product_exist), Toast.LENGTH_LONG).show();
                 return;
@@ -382,11 +432,11 @@ public class StocksNewEdit_Fragment extends Fragment {
             if (!sql.IsOpen()) {
                 sql.open();
             }
-            String productName = sql.getSimpleData(((Stock_Product) mDataset.get(i)).getProductoId(), DBHelper.NAME, DBHelper.TABLE_PRODUCTOS);
-            String formatName = sql.getSimpleData(((Stock_Product) mDataset.get(i)).getProductoId(), DBHelper.PRODUCTO_FORMATO_NAME, DBHelper.TABLE_PRODUCTOS);
+            String productName = sql.getSimpleData((mDataset.get(i)).getProductoId(), DBHelper.NAME, DBHelper.TABLE_PRODUCTOS);
+            String formatName = sql.getSimpleData((mDataset.get(i)).getProductoId(), DBHelper.PRODUCTO_FORMATO_NAME, DBHelper.TABLE_PRODUCTOS);
 
             viewHolder.txtProd.setText(productName);
-            viewHolder.txtCantidad.setText(String.valueOf(((Stock_Product) mDataset.get(i)).getCantidad()));
+            viewHolder.txtCantidad.setText(String.valueOf((mDataset.get(i)).getCantidad()));
             viewHolder.txtFormat.setText(formatName);
         }
 
@@ -397,7 +447,9 @@ public class StocksNewEdit_Fragment extends Fragment {
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
             public ImageButton delButton;
+            public ImageButton editButton;
             public TextView txtProd;
             public TextView txtCantidad;
             public TextView txtFormat;
@@ -405,16 +457,24 @@ public class StocksNewEdit_Fragment extends Fragment {
             public ViewHolder(View v) {
                 super(v);
                 delButton = (ImageButton) v.findViewById(R.id.ButtonDeleteProduct);
+                editButton =(ImageButton) v.findViewById(R.id.ButtonEditProduct);
                 txtProd = (TextView) v.findViewById(R.id.text1);
                 txtCantidad = (TextView) v.findViewById(R.id.text2);
                 txtFormat = (TextView) v.findViewById(R.id.text3);
                 delButton.setOnClickListener(this);
+                editButton.setOnClickListener(this);
             }
 
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.ButtonDeleteProduct) {
                     deleteItem(ViewHolder.this.getLayoutPosition());
+                    return;
+                }
+                if(v.getId() == R.id.ButtonEditProduct){
+                    stProd = (Stock_Product) mDataset.get(ViewHolder.this.getLayoutPosition());
+                    dialogEditProduct.show();
+                    Toast.makeText(getActivity(), String.valueOf(mDataset.get(ViewHolder.this.getLayoutPosition()).getID()),Toast.LENGTH_LONG).show();
                 }
 
             }

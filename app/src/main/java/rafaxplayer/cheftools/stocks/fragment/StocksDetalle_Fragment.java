@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
-import rafaxplayer.cheftools.Globalclasses.Stock_Product;
-import rafaxplayer.cheftools.Globalclasses.Stocks;
+import rafaxplayer.cheftools.Globalclasses.models.Stock_Product;
+import rafaxplayer.cheftools.Globalclasses.models.Stocks;
 import rafaxplayer.cheftools.R;
 import rafaxplayer.cheftools.database.DBHelper;
 import rafaxplayer.cheftools.database.SqliteWrapper;
@@ -188,6 +188,7 @@ public class StocksDetalle_Fragment extends Fragment {
             String productName = sql.getSimpleData(((Stock_Product) mDataset.get(i)).getProductoId(), DBHelper.NAME, DBHelper.TABLE_PRODUCTOS);
             String formatName = sql.getSimpleData(((Stock_Product) mDataset.get(i)).getProductoId(), DBHelper.PRODUCTO_FORMATO_NAME, DBHelper.TABLE_PRODUCTOS);
             viewHolder.delbut.setVisibility(View.GONE);
+            viewHolder.editbut.setVisibility(View.GONE);
             viewHolder.txtProd.setText(productName);
             viewHolder.txtCantidad.setText(String.valueOf(((Stock_Product) mDataset.get(i)).getCantidad()));
             viewHolder.txtFormat.setText(formatName);
@@ -205,10 +206,12 @@ public class StocksDetalle_Fragment extends Fragment {
             public TextView txtCantidad;
             public TextView txtFormat;
             public ImageButton delbut;
+            public ImageButton editbut;
 
             public ViewHolder(View v) {
                 super(v);
                 delbut = (ImageButton) v.findViewById(R.id.ButtonDeleteProduct);
+                editbut = (ImageButton) v.findViewById(R.id.ButtonEditProduct);
                 txtProd = (TextView) v.findViewById(R.id.text1);
                 txtCantidad = (TextView) v.findViewById(R.id.text2);
                 txtFormat = (TextView) v.findViewById(R.id.text3);

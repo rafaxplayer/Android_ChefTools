@@ -1,20 +1,18 @@
-package rafaxplayer.cheftools.Globalclasses;
+package rafaxplayer.cheftools.Globalclasses.models;
 
-public class Orders {
+public class Stocks {
     int id;
     String Name;
     String Comentario;
-    int Supplierid;
     String Fecha;
 
-    public Orders() {
+    public Stocks() {
 
     }
 
-    public Orders(String name, int supplierid, String comentario, String fecha) {
+    public Stocks(String name, String comentario, String fecha) {
         Name = name;
         Comentario = comentario;
-        Supplierid = supplierid;
         Fecha = fecha;
     }
 
@@ -34,13 +32,6 @@ public class Orders {
         Name = name;
     }
 
-    public int getSupplierid() {
-        return Supplierid;
-    }
-
-    public void setSupplierid(int supplierid) {
-        this.Supplierid = supplierid;
-    }
 
     public String getComentario() {
         return Comentario;

@@ -7,10 +7,11 @@ import android.support.v4.app.FragmentTransaction;
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
 import rafaxplayer.cheftools.R;
+import rafaxplayer.cheftools.products.fragments.ProductosMannager_Fragment;
 import rafaxplayer.cheftools.stocks.fragment.StocksDetalle_Fragment;
 import rafaxplayer.cheftools.stocks.fragment.StocksNewEdit_Fragment;
 
-public class StocksDetalle_Activity extends BaseActivity {
+public class StocksDetalle_Activity extends BaseActivity implements ProductosMannager_Fragment.OnSelectedCallback{
     private int ID;
 
     @Override
@@ -56,4 +57,12 @@ public class StocksDetalle_Activity extends BaseActivity {
     }
 
 
+    @Override
+    public void onSelect(int pid) {
+        StocksNewEdit_Fragment fr = (StocksNewEdit_Fragment) getSupportFragmentManager().findFragmentByTag("neweditstock");
+        if (fr != null) {
+            fr.displayProductWithId(pid);
+
+        }
+    }
 }

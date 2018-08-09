@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
-import rafaxplayer.cheftools.Globalclasses.ImageGalleryModel;
+import rafaxplayer.cheftools.Globalclasses.models.ImageGalleryModel;
 import rafaxplayer.cheftools.R;
 import rafaxplayer.cheftools.database.SqliteWrapper;
 
@@ -68,7 +68,7 @@ public class GalleryRecipesActivity extends BaseActivity {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            Picasso.with(context).load(((ImageGalleryModel) listImages.get(position)).ImagePath)
+            Picasso.get().load(((ImageGalleryModel) listImages.get(position)).ImagePath)
                     .resizeDimen(R.dimen.dimen_gallery_thumbnail_min, R.dimen.dimen_gallery_thumbnail_min)
                     .centerCrop()
                     .placeholder(R.drawable.placeholder_recetas)

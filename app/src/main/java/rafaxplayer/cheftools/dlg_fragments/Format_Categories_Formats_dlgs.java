@@ -7,6 +7,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,6 +96,7 @@ public class Format_Categories_Formats_dlgs extends DialogFragment {
             public void onClick(View v) {
 
                 addEntry(editEntry.getText().toString());
+                //Toast.makeText(getActivity(),editEntry.getText().toString(),Toast.LENGTH_LONG).show();
             }
         });
         texttitle.setText(getString(tittle));
@@ -107,8 +109,9 @@ public class Format_Categories_Formats_dlgs extends DialogFragment {
         if (!sql.IsOpen()) {
             sql.open();
         }
+
         try {
-            adp = new Categorys_Formats_Adapter(getActivity(), sql.getFormatsOrCategorysData(this.sqltable), this.sqltable, sql);
+            adp = new Categorys_Formats_Adapter(getActivity(),sql.getFormatsOrCategorysData(this.sqltable), this.sqltable, sql);
             listItems.setAdapter(adp);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -127,7 +130,9 @@ public class Format_Categories_Formats_dlgs extends DialogFragment {
     }
 
     private void addEntry(String Name) {
+
         if (Name.length() > 0) {
+            Log.i("Adapter",listItems.getAdapter().getItemCount()+"");
             ((Categorys_Formats_Adapter) listItems.getAdapter()).additem(Name);
             editEntry.setText("");
             GlobalUttilities.ocultateclado(getActivity(), editEntry);

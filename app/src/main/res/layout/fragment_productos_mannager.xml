@@ -1,4 +1,5 @@
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/coordinator"
     android:layout_width="match_parent"
@@ -90,7 +91,6 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.design.widget.FloatingActionButton
-
         android:id="@+id/newproduct"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -99,9 +99,8 @@
         android:src="@drawable/add_min"
         app:borderWidth="@dimen/floatbuttonBorder"
         app:elevation="@dimen/fab_elevation"
-        app:fabSize="mini"
+        app:fabSize="normal"
         app:layout_anchor="@id/list_items"
         app:layout_anchorGravity="bottom|right" />
-
 </android.support.design.widget.CoordinatorLayout>
 

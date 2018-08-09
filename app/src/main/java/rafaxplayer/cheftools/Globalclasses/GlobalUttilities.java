@@ -28,6 +28,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
+import rafaxplayer.cheftools.Globalclasses.models.Escandallo;
+import rafaxplayer.cheftools.Globalclasses.models.Escandallo_Product;
+import rafaxplayer.cheftools.Globalclasses.models.Menu;
+import rafaxplayer.cheftools.Globalclasses.models.Orders;
+import rafaxplayer.cheftools.Globalclasses.models.Recipe;
+import rafaxplayer.cheftools.Globalclasses.models.Stocks;
+import rafaxplayer.cheftools.Globalclasses.models.Supplier;
 import rafaxplayer.cheftools.R;
 import rafaxplayer.cheftools.database.DBHelper;
 import rafaxplayer.cheftools.database.SqliteWrapper;
@@ -344,7 +351,6 @@ public class GlobalUttilities {
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:"));
         intent.putExtra(Intent.EXTRA_EMAIL, new String[]{emailAddres});
-
         con.startActivity(intent);
     }
 

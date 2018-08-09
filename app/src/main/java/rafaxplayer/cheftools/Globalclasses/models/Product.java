@@ -1,4 +1,4 @@
-package rafaxplayer.cheftools.Globalclasses;
+package rafaxplayer.cheftools.Globalclasses.models;
 
 /**
  * Created by rafaxplayer on 17/06/2015.

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
@@ -53,7 +54,9 @@ public class NewEditRecipe_Activity extends BaseActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (resultCode == RESULT_OK) {
+
             Uri selectedImageUri = data.getData();
 
             if (requestCode == GlobalUttilities.SELECT_PICTURE || requestCode == GlobalUttilities.CAPTURE_ID) {
@@ -61,7 +64,7 @@ public class NewEditRecipe_Activity extends BaseActivity {
                 if (selectedImageUri != null) {
                     NewEditRecipe_Fragment fr = (NewEditRecipe_Fragment) getSupportFragmentManager().findFragmentByTag("neweditrecipe");
                     if (fr != null) {
-                        fr.setImage(selectedImageUri);
+                        fr.updateImage(selectedImageUri);
                     }
                 }
             } else if (requestCode == GlobalUttilities.RECIPE_WITH_CAPTURE) {
@@ -70,7 +73,7 @@ public class NewEditRecipe_Activity extends BaseActivity {
                     NewEditRecipe_Fragment fr = (NewEditRecipe_Fragment) getSupportFragmentManager().findFragmentByTag("neweditrecipe");
                     if (fr != null) {
                         fr.refresh();
-                        fr.setImage(selectedImageUri);
+                        fr.updateImage(selectedImageUri);
                     }
                 }
             }

@@ -1,5 +1,6 @@
 package rafaxplayer.cheftools.Globalclasses;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.view.SupportMenuInflater;
 import android.support.v7.view.menu.MenuBuilder;
@@ -33,13 +34,14 @@ public class IconizedMenu implements MenuBuilder.Callback, MenuPresenter.Callbac
      * @param anchor  Anchor view for this popup. The popup will appear below the anchor if there
      *                is room, or above it if there is not.
      */
+    @SuppressLint("RestrictedApi")
     public IconizedMenu(Context context, View anchor) {
         mContext = context;
         mMenu = new MenuBuilder(context);
         mMenu.setCallback(this);
         mAnchor = anchor;
         mPopup = new MenuPopupHelper(context, mMenu, anchor);
-        mPopup.setCallback(this);
+        mPopup.setPresenterCallback(this);
         mPopup.setForceShowIcon(true);
     }
 

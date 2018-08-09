@@ -1,4 +1,4 @@
-package rafaxplayer.cheftools.Globalclasses;
+package rafaxplayer.cheftools.Globalclasses.models;
 
 import java.util.ArrayList;
 

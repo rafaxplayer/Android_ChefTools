@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -33,8 +34,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
-import com.melnykov.fab.FloatingActionButton;
-import com.melnykov.fab.ScrollDirectionListener;
+
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
-import rafaxplayer.cheftools.Globalclasses.Orders;
+import rafaxplayer.cheftools.Globalclasses.models.Orders;
 import rafaxplayer.cheftools.Orders.OrdersNewEdit_Activity;
 import rafaxplayer.cheftools.Orders.Orders_Activity;
 import rafaxplayer.cheftools.R;
@@ -181,17 +181,7 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
         listOrders.setItemAnimator(new DefaultItemAnimator());
 
         fab.hide();
-        fab.attachToRecyclerView(listOrders, new ScrollDirectionListener() {
-            @Override
-            public void onScrollDown() {
-                fab.hide(true);
-            }
 
-            @Override
-            public void onScrollUp() {
-                fab.show(true);
-            }
-        });
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -364,12 +354,12 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
 
             if (selectedItems.get(pos, false)) {
                 selectedItems.delete(pos);
-                Picasso.with(getActivity()).load(R.drawable.purchase).placeholder(R.drawable.purchase).into(img);
+                Picasso.get().load(R.drawable.purchase).placeholder(R.drawable.purchase).into(img);
 
             } else {
                 selectedItems.put(pos, true);
                 if (mActionMode != null)
-                    Picasso.with(getActivity()).load(R.drawable.checked).placeholder(R.drawable.purchase).into(img);
+                    Picasso.get().load(R.drawable.checked).placeholder(R.drawable.purchase).into(img);
 
             }
             if (mActionMode != null)
@@ -436,18 +426,18 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            Picasso.with(getActivity()).load(R.drawable.purchase).into(holder.img);
+            Picasso.get().load(R.drawable.purchase).into(holder.img);
             holder.sName.setText(((Orders) mDataset.get(position)).getName());
             holder.sDate.setText(((Orders) mDataset.get(position)).getFecha());
             boolean state = selectedItems.get(position, false);
             holder.itemView.setSelected(state);
             if (mActionMode != null) {
                 if (state) {
-                    Picasso.with(getActivity())
+                    Picasso.get()
                             .load(R.drawable.checked).placeholder(R.drawable.item_image_placeholder)
                             .into(holder.img);
                 } else {
-                    Picasso.with(getActivity())
+                    Picasso.get()
                             .load(R.drawable.purchase)
                             .resize(getResources().getDimensionPixelOffset(R.dimen.image_dimen_thumbnail), getResources().getDimensionPixelOffset(R.dimen.image_dimen_thumbnail))
                             .placeholder(R.drawable.item_image_placeholder)

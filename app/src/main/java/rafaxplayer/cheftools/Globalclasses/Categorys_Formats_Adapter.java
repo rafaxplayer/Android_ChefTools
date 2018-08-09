@@ -28,6 +28,7 @@ import rafaxplayer.cheftools.database.SqliteWrapper;
  * Created by rafaxplayer on 06/07/2015.
  */
 public class Categorys_Formats_Adapter extends RecyclerView.Adapter<Categorys_Formats_Adapter.ViewHolder> {
+
     private static String TAG = Categorys_Formats_Adapter.class.getSimpleName();
     private SqliteWrapper sql;
     private ArrayList<HashMap<String, Object>> mDataset;
@@ -35,7 +36,7 @@ public class Categorys_Formats_Adapter extends RecyclerView.Adapter<Categorys_Fo
     private Context con;
     private Activity act;
 
-    public Categorys_Formats_Adapter(Activity con, ArrayList<HashMap<String, Object>> myDataset, String sTable, SqliteWrapper sqlite) {
+    public Categorys_Formats_Adapter(Activity con, ArrayList<HashMap<String,Object>> myDataset, String sTable, SqliteWrapper sqlite) {
         this.mDataset = myDataset;
         this.mDataset.remove(0);
         this.Table = sTable;
@@ -61,6 +62,7 @@ public class Categorys_Formats_Adapter extends RecyclerView.Adapter<Categorys_Fo
         viewHolder.mTextView2.setVisibility(View.GONE);
         viewHolder.mTextView3.setVisibility(View.GONE);
         viewHolder.delete.setVisibility(View.GONE);
+        viewHolder.edit.setVisibility(View.GONE);
     }
 
     public void additem(String Name) {
@@ -102,6 +104,7 @@ public class Categorys_Formats_Adapter extends RecyclerView.Adapter<Categorys_Fo
         public TextView mTextView2;
         public TextView mTextView3;
         public ImageView imglist;
+        public ImageButton edit;
         public ImageButton delete;
 
         public ViewHolder(View v) {
@@ -111,6 +114,7 @@ public class Categorys_Formats_Adapter extends RecyclerView.Adapter<Categorys_Fo
             mTextView2 = (TextView) v.findViewById(R.id.text2);
             mTextView3 = (TextView) v.findViewById(R.id.text3);
             delete = (ImageButton) v.findViewById(R.id.ButtonDeleteProduct);
+            edit = (ImageButton) v.findViewById(R.id.ButtonEditProduct);
             v.setOnClickListener(this);
         }
 

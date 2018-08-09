@@ -66,9 +66,11 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String PEDIDO_ID = "pedido_id";
     public static final String PRODUCTO_ID = "producto_id";
     public static final String PRODUCTO_CANTIDAD = "producto_cantidad";
+    public static final String PRODUCTO_CANTIDAD_MIN = "producto_cantidad_min";
     public static final String PROVEEDOR_ID = "proveedor_id";
+
     //database version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // Campos para tabla escandallos.
     private static final String SqlCreateTable_recetas = "CREATE TABLE IF NOT EXISTS "
@@ -80,7 +82,6 @@ public class DBHelper extends SQLiteOpenHelper {
             + RECETA_URL + "  TEXT, "
             + FECHA + " DEFAULT CURRENT_TIMESTAMP, "
             + RECETA_CATEGORIA + " TEXT)";
-
 
     private static final String SqlCreateTable_menus_cartas = "CREATE TABLE IF NOT EXISTS "
             + TABLE_MENUSCARTAS + "(" + ID + " INTEGER PRIMARY KEY,"
@@ -130,7 +131,6 @@ public class DBHelper extends SQLiteOpenHelper {
             + PRODUCTO_CATEGORIA_ID + "  INTEGER, "
             + PRODUCTO_FORMATO_ID + " INTEGER)";
 
-
     private static final String SqlCreateTable_inventarios = "CREATE TABLE IF NOT EXISTS "
             + TABLE_INVENTARIOS + "(" + ID + " INTEGER PRIMARY KEY,"
             + NAME + " TEXT, "
@@ -166,6 +166,8 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String SqlCreateTable_categoria_recetas = "CREATE TABLE IF NOT EXISTS "
             + TABLE_RECETAS_CATEGORIA + "(" + ID + " INTEGER PRIMARY KEY,"
             + NAME + " TEXT)";
+    // Update for version 2
+    private String SQLUpdate_Create_CampV2 = "ALTER TABLE " + TABLE_INVENTARIOS_LISTAS + "ADD COLUMN " + PRODUCTO_CANTIDAD_MIN + " INTEGER DEFAULT 0;";
 
 
     private Context con;
@@ -177,6 +179,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
         try {
             Resources res = con.getResources();
             ContentValues _Values = new ContentValues();
@@ -193,7 +196,6 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(SqlCreateTable_categoria_recetas);
             db.execSQL(SqlCreateTrigger_OnDeletePedido);
             db.execSQL(SqlCreateTrigger_OnDeleteInventario);
-
 
             int _Length;
 
@@ -229,7 +231,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         try {
-            db.execSQL("drop table if exists " + TABLE_MENUSCARTAS);
+            /*db.execSQL("drop table if exists " + TABLE_MENUSCARTAS);
             db.execSQL("drop table if exists " + TABLE_RECETAS);
             db.execSQL("drop table if exists " + TABLE_PROVEEDORES);
             db.execSQL("drop table if exists " + TABLE_PRODUCTOS);
@@ -239,9 +241,17 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL("drop table if exists " + TABLE_INVENTARIOS_LISTAS);
             db.execSQL("drop table if exists " + TABLE_PRODUCTOS_FORMATO);
             db.execSQL("drop table if exists " + TABLE_PRODUCTOS_CATEGORY);
-            db.execSQL("drop table if exists " + TABLE_RECETAS_CATEGORIA);
+            db.execSQL("drop table if exists " + TABLE_RECETAS_CATEGORIA);*/
 
+            //update for set quantity minim TABLE_INVENTARIOS_LISTAS
+
+            db.execSQL("drop table if exists " + TABLE_INVENTARIOS_LISTAS);
+            
             onCreate(db);
+
+            if(oldVersion == 1 && newVersion == 2){
+                db.execSQL(SQLUpdate_Create_CampV2);
+            }
 
         } catch (SQLException e) {
             Log.e("SqliteException: ", "getting exception "

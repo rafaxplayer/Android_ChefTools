@@ -41,7 +41,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
-import rafaxplayer.cheftools.Globalclasses.Product;
+import rafaxplayer.cheftools.Globalclasses.models.Product;
 import rafaxplayer.cheftools.R;
 import rafaxplayer.cheftools.database.DBHelper;
 import rafaxplayer.cheftools.database.SqliteWrapper;
@@ -362,7 +362,7 @@ public class ProductosMannager_Fragment extends DialogFragment {
             provSpinner.setSelection(GlobalUttilities.SpinnergetIndex(arrSuppliers, pro.getSuppliername()));
             this.productID = id;
         }
-        //sql.close();
+
     }
 
 
@@ -376,7 +376,6 @@ public class ProductosMannager_Fragment extends DialogFragment {
             throw new ClassCastException(activity.toString()
                     + " must implement OnHeadlineSelectedListener");
         }
-
 
     }
 
@@ -394,7 +393,7 @@ public class ProductosMannager_Fragment extends DialogFragment {
     }
 
     public interface OnSelectedCallback {
-        public void onSelect(int pid);
+       void onSelect(int pid);
     }
 
     public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHolder> implements Filterable {
@@ -410,9 +409,7 @@ public class ProductosMannager_Fragment extends DialogFragment {
             mDataset = myDataset;
             listorigin = myDataset;
             this.searchResultsok = false;
-
         }
-
 
         public void deleteItem(int pos) {
 
@@ -425,7 +422,6 @@ public class ProductosMannager_Fragment extends DialogFragment {
 
             notifyItemRemoved(pos);
         }
-
 
         @Override
         public ProductsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
@@ -445,7 +441,6 @@ public class ProductosMannager_Fragment extends DialogFragment {
         public void onBindViewHolder(ViewHolder holder, int position) {
 
             holder.sName.setText(((Product) mDataset.get(position)).getName());
-
             holder.sCat.setText(((Product) mDataset.get(position)).getCategoryname());
 
         }
@@ -471,8 +466,6 @@ public class ProductosMannager_Fragment extends DialogFragment {
             public ImageButton delete;
             public TextView sName;
             public TextView sCat;
-
-            int ID;
 
             public ViewHolder(View v) {
                 super(v);
@@ -522,8 +515,8 @@ public class ProductosMannager_Fragment extends DialogFragment {
 
                 }
                 if (v.getId() == R.id.item_product) {
-                    int id = ((Product) mDataset.get(ViewHolder.this.getLayoutPosition())).getId();
-                    if (modeSelect) {
+                    int id = (mDataset.get(ViewHolder.this.getLayoutPosition())).getId();
+                    if (modeSelect){
                         if (mCallback != null) {
                             mCallback.onSelect(id);
                             getDialog().dismiss();

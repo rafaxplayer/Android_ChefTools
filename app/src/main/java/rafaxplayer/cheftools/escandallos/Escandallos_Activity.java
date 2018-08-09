@@ -37,8 +37,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
-import rafaxplayer.cheftools.Globalclasses.Escandallo;
-import rafaxplayer.cheftools.Globalclasses.Escandallo_Product;
+import rafaxplayer.cheftools.Globalclasses.models.Escandallo;
+import rafaxplayer.cheftools.Globalclasses.models.Escandallo_Product;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
 import rafaxplayer.cheftools.R;
 
@@ -81,6 +81,7 @@ public class Escandallos_Activity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         ButterKnife.bind(this);
 
         fab.attachToRecyclerView(listProducts);

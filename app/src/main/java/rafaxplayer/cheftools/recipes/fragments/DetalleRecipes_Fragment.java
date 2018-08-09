@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,7 +20,7 @@ import com.squareup.picasso.Picasso;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
-import rafaxplayer.cheftools.Globalclasses.Recipe;
+import rafaxplayer.cheftools.Globalclasses.models.Recipe;
 import rafaxplayer.cheftools.R;
 import rafaxplayer.cheftools.database.DBHelper;
 import rafaxplayer.cheftools.database.SqliteWrapper;
@@ -64,7 +65,6 @@ public class DetalleRecipes_Fragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_recipe_detalle, container, false);
         ButterKnife.bind(this, v);
-
 
         textUrldetalle = (TextView) v.findViewById(R.id.textUrl);
         return v;
@@ -150,7 +150,7 @@ public class DetalleRecipes_Fragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
+        sql.open();
         if (getArguments() != null) {
             displayWithId(getArguments().getInt("id"));
             this.ID = getArguments().getInt("id");
@@ -173,7 +173,7 @@ public class DetalleRecipes_Fragment extends Fragment {
         Recipe rec = (Recipe) sql.SelectWithId("Recipe", DBHelper.TABLE_RECETAS, id);
         if (rec != null) {
             this.img = rec.getImg();
-            Picasso.with(getActivity()).load(Uri.parse(rec.getImg()))
+            Picasso.get().load(Uri.parse(rec.getImg()))
                     .placeholder(R.drawable.placeholder_recetas)
                     .resize(getResources().getDimensionPixelOffset(R.dimen.image_dimen_width), getResources().getDimensionPixelOffset(R.dimen.image_dimen_height))
                     .into(imageDetalle);
@@ -188,6 +188,12 @@ public class DetalleRecipes_Fragment extends Fragment {
         setHasOptionsMenu(true);
 
     }
+    @Override
+    public void onPause() {
+        sql.close();
+        super.onPause();
+    }
+
 
 
 }

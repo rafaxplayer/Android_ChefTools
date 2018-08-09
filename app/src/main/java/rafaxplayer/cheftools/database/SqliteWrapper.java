@@ -11,15 +11,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import rafaxplayer.cheftools.Globalclasses.ImageGalleryModel;
-import rafaxplayer.cheftools.Globalclasses.Menu;
-import rafaxplayer.cheftools.Globalclasses.Order_Product;
-import rafaxplayer.cheftools.Globalclasses.Orders;
-import rafaxplayer.cheftools.Globalclasses.Product;
-import rafaxplayer.cheftools.Globalclasses.Recipe;
-import rafaxplayer.cheftools.Globalclasses.Stock_Product;
-import rafaxplayer.cheftools.Globalclasses.Stocks;
-import rafaxplayer.cheftools.Globalclasses.Supplier;
+import rafaxplayer.cheftools.Globalclasses.models.ImageGalleryModel;
+import rafaxplayer.cheftools.Globalclasses.models.Menu;
+import rafaxplayer.cheftools.Globalclasses.models.Order_Product;
+import rafaxplayer.cheftools.Globalclasses.models.Orders;
+import rafaxplayer.cheftools.Globalclasses.models.Product;
+import rafaxplayer.cheftools.Globalclasses.models.Recipe;
+import rafaxplayer.cheftools.Globalclasses.models.Stock_Product;
+import rafaxplayer.cheftools.Globalclasses.models.Stocks;
+import rafaxplayer.cheftools.Globalclasses.models.Supplier;
 import rafaxplayer.cheftools.R;
 
 
@@ -474,11 +474,11 @@ public class SqliteWrapper {
 
     }
 
-    public long UpdateSimpleData(String Table, String value, long id) {
+    public long UpdateSimpleData(String Table,String camp,String value, long id) {
         long count = 0;
         ContentValues values = new ContentValues();
         try {
-            values.put(DBHelper.NAME, value);
+            values.put(camp, value);
             count = db.update(Table, values, DBHelper.ID + " = ?",
                     new String[]{String.valueOf(id)});
         } catch (SQLException ex) {
@@ -490,7 +490,7 @@ public class SqliteWrapper {
 
     public ArrayList<HashMap<String, Object>> getFormatsOrCategorysData(String Table) {
         String selectQuery = "SELECT * FROM " + Table;
-        ArrayList<HashMap<String, Object>> lst = new ArrayList<HashMap<String, Object>>();
+        ArrayList<HashMap<String, Object>> lst = new ArrayList<>();
 
         try {
             Cursor cats = db.rawQuery(selectQuery, null);
@@ -616,7 +616,6 @@ public class SqliteWrapper {
         }
         return id;
     }
-
 
     public long addProduct(String name, int cat, int format, int prov) {
         long id = -1;

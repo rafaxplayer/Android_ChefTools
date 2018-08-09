@@ -5,14 +5,13 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 
 public class IntroActivity extends AppCompatActivity {
     @BindView(R.id.textIntro1)
@@ -34,7 +33,8 @@ public class IntroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
         ButterKnife.bind(this);
-        version.setText(String.format("V%s", BuildConfig.VERSION_NAME));
+       //Log.d("intro", String.format("V%s",BuildConfig.VERSION_NAME));
+        version.setText(String.format("V%s",BuildConfig.VERSION_NAME));
         translateX1 = ObjectAnimator.ofFloat(textIntro1, "translationX", -100, 0);
         translateX2 = ObjectAnimator.ofFloat(textIntro2, "translationX", 100, 0);
 

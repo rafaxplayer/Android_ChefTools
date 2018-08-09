@@ -1,10 +1,10 @@
 package rafaxplayer.cheftools.providers.fragment;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -30,11 +30,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
+
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
-import com.melnykov.fab.FloatingActionButton;
-import com.melnykov.fab.ScrollDirectionListener;
+
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
-import rafaxplayer.cheftools.Globalclasses.Supplier;
+import rafaxplayer.cheftools.Globalclasses.models.Supplier;
 import rafaxplayer.cheftools.R;
 import rafaxplayer.cheftools.database.DBHelper;
 import rafaxplayer.cheftools.database.SqliteWrapper;
@@ -188,18 +188,8 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
                                 }
         );
 
-        fab.hide();
-        fab.attachToRecyclerView(listProviders, new ScrollDirectionListener() {
-            @Override
-            public void onScrollDown() {
-                fab.hide(true);
-            }
+        //fab.hide();
 
-            @Override
-            public void onScrollUp() {
-                fab.show(true);
-            }
-        });
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -283,24 +273,24 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
                     }
                 });
 
-                AlertDialogWrapper.Builder alertDialogBuilder = new AlertDialogWrapper.Builder(
-                        getActivity());
-
-                alertDialogBuilder.setView(inputSearch);
-                alertDialogBuilder
-                        .setPositiveButton(getString(R.string.done),
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-
+                new MaterialDialog.Builder(
+                        getActivity()).customView(inputSearch,false)
+                        .positiveText(getString(R.string.done))
+                        .negativeText(getString(R.string.cancel))
+                        .onPositive( new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(MaterialDialog dialog, DialogAction which) {
                                         dialog.dismiss();
                                     }
-                                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        onResume();
-                        dialog.dismiss();
-                    }
-                }).show();
-                break;
+                        })
+                        .onNegative( new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(MaterialDialog dialog, DialogAction which) {
+                                    onResume();
+                                    dialog.dismiss();
+                                }
+                        }).show();
+                        break;
 
         }
         return super.onOptionsItemSelected(item);
@@ -375,12 +365,12 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
 
             if (selectedItems.get(pos, false)) {
                 selectedItems.delete(pos);
-                Picasso.with(getActivity()).load(R.drawable.providers).placeholder(R.drawable.providers).into(img);
+                Picasso.get().load(R.drawable.providers).placeholder(R.drawable.providers).into(img);
 
             } else {
                 selectedItems.put(pos, true);
                 if (mActionMode != null)
-                    Picasso.with(getActivity()).load(R.drawable.checked).placeholder(R.drawable.providers).into(img);
+                    Picasso.get().load(R.drawable.checked).placeholder(R.drawable.providers).into(img);
 
             }
             if (mActionMode != null)
@@ -443,18 +433,18 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            Picasso.with(getActivity()).load(R.drawable.providers).into(holder.img);
+            Picasso.get().load(R.drawable.providers).into(holder.img);
             holder.sName.setText(((Supplier) mDataset.get(position)).getName());
             holder.sCat.setText(((Supplier) mDataset.get(position)).getCategoria());
             boolean state = selectedItems.get(position, false);
             holder.itemView.setSelected(state);
             if (mActionMode != null) {
                 if (state) {
-                    Picasso.with(getActivity())
+                    Picasso.get()
                             .load(R.drawable.checked).placeholder(R.drawable.item_image_placeholder)
                             .into(holder.img);
                 } else {
-                    Picasso.with(getActivity())
+                    Picasso.get()
                             .load(R.drawable.providers)
                             .resize(getResources().getDimensionPixelOffset(R.dimen.image_dimen_thumbnail), getResources().getDimensionPixelOffset(R.dimen.image_dimen_thumbnail))
                             .placeholder(R.drawable.item_image_placeholder)

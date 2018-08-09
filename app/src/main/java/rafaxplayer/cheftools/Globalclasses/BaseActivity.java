@@ -15,7 +15,7 @@ import rafaxplayer.cheftools.R;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-    private static String TAG = BaseActivity.class.getSimpleName();
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.contenttoolbar)
@@ -37,7 +37,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResourceId());
         ButterKnife.bind(this);
-        txttitle.setTypeface(GlobalUttilities.getfont(this, "Days.ttf"));
+        //txttitle.setTypeface(GlobalUttilities.getfont(this, "Days.ttf"));
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle(null);
