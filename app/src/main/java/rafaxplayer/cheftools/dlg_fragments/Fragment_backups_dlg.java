@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,13 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.cocosw.bottomsheet.BottomSheet;
-import com.melnykov.fab.FloatingActionButton;
-import com.melnykov.fab.ScrollDirectionListener;
+
 
 import java.io.File;
 import java.util.ArrayList;
@@ -64,17 +63,6 @@ public class Fragment_backups_dlg extends DialogFragment {
         listItems.setLayoutManager(new LinearLayoutManager(getActivity()));
         listItems.setItemAnimator(new DefaultItemAnimator());
 
-        fab.attachToRecyclerView(listItems, new ScrollDirectionListener() {
-            @Override
-            public void onScrollDown() {
-
-            }
-
-            @Override
-            public void onScrollUp() {
-
-            }
-        });
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

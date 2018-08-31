@@ -177,7 +177,23 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
         listProviders.setHasFixedSize(true);
         listProviders.setLayoutManager(new LinearLayoutManager(getActivity()));
         listProviders.setItemAnimator(new DefaultItemAnimator());
+        listProviders.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
 
+                if (dy >= 0 || dy <= 0  && fab.isShown())
+                    fab.hide();
+            }
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+
+                if (newState == RecyclerView.SCROLL_STATE_IDLE){
+                    fab.show();
+                }
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.post(new Runnable() {
                                     @Override
@@ -187,8 +203,6 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
                                     }
                                 }
         );
-
-        //fab.hide();
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -168,6 +168,23 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
         listMenus.setHasFixedSize(true);
         listMenus.setLayoutManager(new LinearLayoutManager(getActivity()));
         listMenus.setItemAnimator(new DefaultItemAnimator());
+        listMenus.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (dy >= 0 || dy <= 0  && fab.isShown())
+                    fab.hide();
+            }
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+
+                if (newState == RecyclerView.SCROLL_STATE_IDLE){
+                    fab.show();
+                }
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
         swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.post(new Runnable() {
@@ -179,7 +196,7 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
                                 }
         );
 
-        fab.hide();
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

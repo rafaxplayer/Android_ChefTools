@@ -12,6 +12,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -172,7 +173,24 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
         listRecipes.setHasFixedSize(true);
         listRecipes.setLayoutManager(new LinearLayoutManager(getActivity()));
         listRecipes.setItemAnimator(new DefaultItemAnimator());
-        swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh_layout);
+        listRecipes.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                                            @Override
+                                            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                                                super.onScrolled(recyclerView, dx, dy);
+                                                Log.e("scroll", String.valueOf(dy));
+                                                if (dy >= 0 || dy <= 0  && fab.isShown())
+                                                    fab.hide();
+                                            }
+                                            @Override
+                                            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+
+                                                if (newState == RecyclerView.SCROLL_STATE_IDLE){
+                                                    fab.show();
+                                                }
+                                                super.onScrollStateChanged(recyclerView, newState);
+                                            }
+                                        });
+        swipeRefreshLayout = v.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.post(new Runnable() {
                                     @Override

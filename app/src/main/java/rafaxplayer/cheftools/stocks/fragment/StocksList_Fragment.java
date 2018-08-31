@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -51,9 +52,6 @@ import rafaxplayer.cheftools.database.SqliteWrapper;
 import rafaxplayer.cheftools.stocks.StocksNewEdit_Activity;
 import rafaxplayer.cheftools.stocks.Stocks_Activity;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     @BindView(R.id.list_items)
     RecyclerView listStocks;
@@ -174,6 +172,23 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
         listStocks.setHasFixedSize(true);
         listStocks.setLayoutManager(new LinearLayoutManager(getActivity()));
         listStocks.setItemAnimator(new DefaultItemAnimator());
+        listStocks.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                Log.e("scroll", String.valueOf(dy));
+                if (dy >= 0 || dy <= 0  && fab.isShown())
+                    fab.hide();
+            }
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+
+                if (newState == RecyclerView.SCROLL_STATE_IDLE){
+                    fab.show();
+                }
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
         swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.post(new Runnable() {
@@ -184,8 +199,6 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
                                     }
                                 }
         );
-
-        //fab.hide();
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

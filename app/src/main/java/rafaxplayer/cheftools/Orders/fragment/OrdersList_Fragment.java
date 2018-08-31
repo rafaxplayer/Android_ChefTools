@@ -179,9 +179,23 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
         listOrders.setHasFixedSize(true);
         listOrders.setLayoutManager(new LinearLayoutManager(getActivity()));
         listOrders.setItemAnimator(new DefaultItemAnimator());
+        listOrders.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
 
-        fab.hide();
+                if (dy >= 0 || dy <= 0  && fab.isShown())
+                    fab.hide();
+            }
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
 
+                if (newState == RecyclerView.SCROLL_STATE_IDLE){
+                    fab.show();
+                }
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,7 +28,6 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -84,7 +84,6 @@ public class Escandallos_Activity extends BaseActivity {
 
         ButterKnife.bind(this);
 
-        fab.attachToRecyclerView(listProducts);
         dialogNewProduct = createDilaogNewProduct();
         listProducts.setHasFixedSize(true);
         listProducts.setLayoutManager(new LinearLayoutManager(getApplicationContext()));

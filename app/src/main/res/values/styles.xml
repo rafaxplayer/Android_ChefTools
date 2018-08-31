@@ -54,8 +54,6 @@
     <style name="ActionMode" parent="Widget.AppCompat.ActionMode">
         <item name="background">@color/colorPrimary</item>
         <item name="android:background">@color/colorPrimary</item>
-
-
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
