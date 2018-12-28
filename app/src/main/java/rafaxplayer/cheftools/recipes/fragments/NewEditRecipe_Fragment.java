@@ -1,7 +1,10 @@
 package rafaxplayer.cheftools.recipes.fragments;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -142,20 +145,35 @@ public class NewEditRecipe_Fragment extends Fragment {
                                              public boolean onMenuItemClick(MenuItem item) {
                                                  switch (item.getItemId()) {
                                                      case R.id.action_gallery:
-                                                         Intent intent = new Intent();
-                                                         intent.setAction(Intent.ACTION_PICK);
-                                                         intent.setType("image/*");
-                                                         getActivity().startActivityForResult(Intent.createChooser(intent,
-                                                                 getString(R.string.selectpicture)), GlobalUttilities.SELECT_PICTURE);
-                                                         Log.e("Get Activity", getActivity().getLocalClassName());
+                                                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                                             if(getActivity().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){
+                                                                 getActivity().requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},GlobalUttilities.PERMISSION_GALLERY);
+                                                             }else{
+                                                                 Intent intentGallery = new Intent();
+                                                                 intentGallery.setAction(Intent.ACTION_PICK);
+                                                                 intentGallery.setType("image/*");
+                                                                 getActivity().startActivityForResult(Intent.createChooser(intentGallery,
+                                                                         getString(R.string.selectpicture)), GlobalUttilities.SELECT_PICTURE);
+                                                             }
+                                                         }else {
+                                                             sendIntentPermission(GlobalUttilities.PERMISSION_GALLERY);
+                                                         }
                                                          break;
                                                      case R.id.action_photo:
-                                                         Intent inte = new Intent(
-                                                                 android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                                                         getActivity().startActivityForResult(inte, GlobalUttilities.CAPTURE_ID);
+                                                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                                             if(getActivity().checkSelfPermission(Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED){
+
+                                                                 getActivity().requestPermissions(new String[]{Manifest.permission.CAMERA},GlobalUttilities.PERMISSION_PHOTO);
+                                                             }else{
+                                                                 Intent intentPhoto = new Intent(
+                                                                         android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                                                                 getActivity().startActivityForResult(intentPhoto, GlobalUttilities.CAPTURE_ID);
+                                                             }
+                                                         }else{
+                                                             sendIntentPermission(GlobalUttilities.PERMISSION_PHOTO);
+                                                         }
                                                          break;
                                                      case R.id.action_url:
-
 
                                                          new MaterialDialog.Builder(getActivity())
 
@@ -189,9 +207,40 @@ public class NewEditRecipe_Fragment extends Fragment {
 
         );
 
-
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
+
+    public void sendIntentPermission(int action){
+        switch (action){
+            case GlobalUttilities.PERMISSION_GALLERY:
+                Intent intentGallery = new Intent();
+                intentGallery.setAction(Intent.ACTION_PICK);
+                intentGallery.setType("image/*");
+                if(GlobalUttilities.checkPermission(getActivity(),Manifest.permission.READ_EXTERNAL_STORAGE)){
+                    getActivity().startActivityForResult(Intent.createChooser(intentGallery,
+                            getString(R.string.selectpicture)), GlobalUttilities.SELECT_PICTURE);
+                }else{
+                    Toast.makeText(getActivity(),"Has declinado el permiso", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case GlobalUttilities.PERMISSION_PHOTO:
+                 Intent intentPhoto = new Intent(
+                         android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                if(GlobalUttilities.checkPermission(getActivity(),Manifest.permission.CAMERA)){
+                    if ( intentPhoto.resolveActivity(getActivity().getPackageManager()) != null) {
+                        getActivity().startActivityForResult(intentPhoto, GlobalUttilities.CAPTURE_ID);
+                    }
+                }else{
+                    Toast.makeText(getActivity(),"Has declinado el permiso", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+                break;
+
+        }
+
+    }
+
 
     @Override
     public void onResume() {

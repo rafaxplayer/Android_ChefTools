@@ -2,6 +2,7 @@ package rafaxplayer.cheftools.Globalclasses;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.graphics.Typeface;
@@ -45,6 +46,8 @@ public class GlobalUttilities {
     public static final int SELECT_PICTURE = 1;
     public static final int CAPTURE_ID = 2;
     public static final int RECIPE_WITH_CAPTURE = 3;
+    public static final int PERMISSION_GALLERY = 100;
+    public static final int PERMISSION_PHOTO = 101;
     public static final String CALCULATOR_PACKAGE_2 = "com.sec.android.app.popupcalculator";
     public static final String CALCULATOR_CLASS_2 = "com.sec.android.app.popupcalculator.Calculator";
     public static final String CALCULATOR_PACKAGE = "com.android.calculator2";
@@ -418,5 +421,10 @@ public class GlobalUttilities {
     public static String FormatDecimal(double decimal) {
 
         return String.format(Locale.CANADA, "%.2f", decimal);
+    }
+
+    public static boolean checkPermission(Context con,String permission){
+        int result = con.checkCallingOrSelfPermission(permission);
+        return result == PackageManager.PERMISSION_GRANTED;
     }
 }

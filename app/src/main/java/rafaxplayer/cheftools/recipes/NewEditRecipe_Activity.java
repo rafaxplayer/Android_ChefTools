@@ -1,11 +1,22 @@
 package rafaxplayer.cheftools.recipes;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+
+import butterknife.internal.Utils;
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
 import rafaxplayer.cheftools.R;
@@ -59,24 +70,73 @@ public class NewEditRecipe_Activity extends BaseActivity {
 
             Uri selectedImageUri = data.getData();
 
-            if (requestCode == GlobalUttilities.SELECT_PICTURE || requestCode == GlobalUttilities.CAPTURE_ID) {
+            NewEditRecipe_Fragment fr = (NewEditRecipe_Fragment) getSupportFragmentManager().findFragmentByTag("neweditrecipe");
 
+            if (requestCode == GlobalUttilities.SELECT_PICTURE ) {
+                Log.e("PHOTO", "CAPTURE" );
                 if (selectedImageUri != null) {
-                    NewEditRecipe_Fragment fr = (NewEditRecipe_Fragment) getSupportFragmentManager().findFragmentByTag("neweditrecipe");
+                    Log.e("selectedImageUri", data.getData().toString() );
                     if (fr != null) {
                         fr.updateImage(selectedImageUri);
                     }
                 }
             } else if (requestCode == GlobalUttilities.RECIPE_WITH_CAPTURE) {
-
+                Log.e("PHOTO", "RECIPE_WITH_CAPTURE" );
                 if (selectedImageUri != null) {
-                    NewEditRecipe_Fragment fr = (NewEditRecipe_Fragment) getSupportFragmentManager().findFragmentByTag("neweditrecipe");
+                    Log.e("selectedImageUri", selectedImageUri.toString() );
                     if (fr != null) {
                         fr.refresh();
                         fr.updateImage(selectedImageUri);
                     }
                 }
+            }else if( requestCode == GlobalUttilities.CAPTURE_ID){
+
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+
+                /// seguimos con la uri de la fhoto
             }
+        }
+
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+
+        NewEditRecipe_Fragment fr = (NewEditRecipe_Fragment) getSupportFragmentManager().findFragmentByTag("neweditrecipe");
+
+        switch(requestCode){
+
+            case GlobalUttilities.PERMISSION_GALLERY:
+
+                if(permissions[0].equals(Manifest.permission.READ_EXTERNAL_STORAGE)){
+
+                    if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+
+                        fr.sendIntentPermission(GlobalUttilities.PERMISSION_GALLERY);
+
+                    }else{
+                        Toast.makeText(this, "No concedio su permiso", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                break;
+            case GlobalUttilities.PERMISSION_PHOTO:
+                if(permissions[0].equals(Manifest.permission.CAMERA)){
+
+                    if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+
+                        fr.sendIntentPermission(GlobalUttilities.PERMISSION_PHOTO);
+
+                    }else{
+                        Toast.makeText(this, "No concedio su permiso", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                break;
+
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                break;
         }
 
     }
