@@ -3,13 +3,17 @@ package rafaxplayer.cheftools;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -104,4 +108,6 @@ public class IntroActivity extends AppCompatActivity {
         translateX1.start();
 
     }
+
+
 }

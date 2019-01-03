@@ -1,13 +1,19 @@
 package rafaxplayer.cheftools.recipes.fragments;
 
 import android.Manifest;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -27,10 +33,17 @@ import android.widget.ScrollView;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.squareup.picasso.Picasso;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
@@ -120,6 +133,7 @@ public class NewEditRecipe_Fragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -145,33 +159,14 @@ public class NewEditRecipe_Fragment extends Fragment {
                                              public boolean onMenuItemClick(MenuItem item) {
                                                  switch (item.getItemId()) {
                                                      case R.id.action_gallery:
-                                                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                                             if(getActivity().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){
-                                                                 getActivity().requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},GlobalUttilities.PERMISSION_GALLERY);
-                                                             }else{
-                                                                 Intent intentGallery = new Intent();
-                                                                 intentGallery.setAction(Intent.ACTION_PICK);
-                                                                 intentGallery.setType("image/*");
-                                                                 getActivity().startActivityForResult(Intent.createChooser(intentGallery,
-                                                                         getString(R.string.selectpicture)), GlobalUttilities.SELECT_PICTURE);
-                                                             }
-                                                         }else {
-                                                             sendIntentPermission(GlobalUttilities.PERMISSION_GALLERY);
-                                                         }
+
+                                                         sendIntentPermission(GlobalUttilities.PERMISSION_GALLERY);
+
                                                          break;
                                                      case R.id.action_photo:
-                                                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                                             if(getActivity().checkSelfPermission(Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED){
 
-                                                                 getActivity().requestPermissions(new String[]{Manifest.permission.CAMERA},GlobalUttilities.PERMISSION_PHOTO);
-                                                             }else{
-                                                                 Intent intentPhoto = new Intent(
-                                                                         android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                                                                 getActivity().startActivityForResult(intentPhoto, GlobalUttilities.CAPTURE_ID);
-                                                             }
-                                                         }else{
                                                              sendIntentPermission(GlobalUttilities.PERMISSION_PHOTO);
-                                                         }
+
                                                          break;
                                                      case R.id.action_url:
 
@@ -210,28 +205,29 @@ public class NewEditRecipe_Fragment extends Fragment {
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
-    public void sendIntentPermission(int action){
-        switch (action){
+    public void sendIntentPermission(int action) {
+        switch (action) {
             case GlobalUttilities.PERMISSION_GALLERY:
                 Intent intentGallery = new Intent();
                 intentGallery.setAction(Intent.ACTION_PICK);
                 intentGallery.setType("image/*");
-                if(GlobalUttilities.checkPermission(getActivity(),Manifest.permission.READ_EXTERNAL_STORAGE)){
+                if (GlobalUttilities.checkPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
                     getActivity().startActivityForResult(Intent.createChooser(intentGallery,
                             getString(R.string.selectpicture)), GlobalUttilities.SELECT_PICTURE);
-                }else{
-                    Toast.makeText(getActivity(),"Has declinado el permiso", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "No tienes permisos para leer archivos del dispositivo", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case GlobalUttilities.PERMISSION_PHOTO:
-                 Intent intentPhoto = new Intent(
-                         android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                if(GlobalUttilities.checkPermission(getActivity(),Manifest.permission.CAMERA)){
-                    if ( intentPhoto.resolveActivity(getActivity().getPackageManager()) != null) {
+                Intent intentPhoto = new Intent(
+                        android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                if (GlobalUttilities.checkPermission(getActivity(), Manifest.permission.CAMERA) && GlobalUttilities.checkPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    if (intentPhoto.resolveActivity(getActivity().getPackageManager()) != null) {
+
                         getActivity().startActivityForResult(intentPhoto, GlobalUttilities.CAPTURE_ID);
                     }
-                }else{
-                    Toast.makeText(getActivity(),"Has declinado el permiso", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "No tienes permisos para usar la camara", Toast.LENGTH_SHORT).show();
                 }
                 break;
             default:
@@ -314,15 +310,15 @@ public class NewEditRecipe_Fragment extends Fragment {
 
                         .negativeText(R.string.not)
 
-                        .callback( new MaterialDialog.ButtonCallback() {
+                        .callback(new MaterialDialog.ButtonCallback() {
                             @Override
-                            public void onPositive( MaterialDialog dialog) {
+                            public void onPositive(MaterialDialog dialog) {
                                 refresh();
                                 dialog.dismiss();
                             }
 
                             @Override
-                            public void onNegative( MaterialDialog dialog) {
+                            public void onNegative(MaterialDialog dialog) {
                                 getActivity().onBackPressed();
                                 dialog.dismiss();
                             }
@@ -375,7 +371,7 @@ public class NewEditRecipe_Fragment extends Fragment {
 
     public void updateImage(final Uri ur) {
 
-        if(ur != null) {
+        if (ur != null) {
             Log.e("Set Image", ur.toString());
             Picasso.get()
                     .load(ur)
@@ -385,6 +381,10 @@ public class NewEditRecipe_Fragment extends Fragment {
             this.imgUri = ur;
             Log.e("set image", this.imgUri.toString());
         }
+    }
+
+    public void updateImageBmp(final Bitmap bmp) {
+        this.img.setImageBitmap(bmp);
     }
 
     public void refresh() {

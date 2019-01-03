@@ -55,7 +55,6 @@
 
     <string name="recipe_title">Recipe Tittle</string>
     <string name="recipe_category">Recipe Category</string>
-    <string name="recipe_time">Elaboration Time</string>
     <string name="recipe_ingredients">Ingredients</string>
     <string name="recipe_elaboration">Elaboration</string>
     <string name="recipe_url">Recipe Url</string>
@@ -74,7 +73,6 @@
     <string name="activity_detallerecipe">Details Recipe</string>
     <string name="activity_neweditmenu">New/Edit Menu</string>
     <string name="activity_detallemenu">Details Menu</string>
-    <string name="activity_menuslist">Menus</string>
     <string name="selectpicture">Select Picture</string>
     <string name="urlimage">Write Url Image</string>
     <string name="dlgerror_namerecipe">You must enter a name </string>
@@ -90,7 +88,6 @@
     <string name="menu_image_gallery">From Gallery</string>
     <string name="menu_image_url">From Link</string>
     <string name="search">Search</string>
-    <string name="refresh">Refresh</string>
 
     <string name="sharerecipe">Share Recipe</string>
     <string name="share_recipe_use">Share with :</string>
@@ -117,8 +114,6 @@
     <string name="menu_edit_provider">Edit Supplier</string>
     <string name="menu_new_provider">New Supplier</string>
     <string name="provider_category">Supplier Category</string>
-    <string name="search_recipe_url">Search recipe on the web --></string>
-    <string name="menu_edit_Supplier">Edit Supplier Data</string>
     <string name="menu_share_supplier">Share Supplier Data</string>
     <string name="email">Email addres</string>
     <string name="activity_detalle_orders">Orders List</string>
@@ -128,7 +123,6 @@
     <string name="menu_new_order">New Orders List Name</string>
     <string name="new_orderslist">New Orders list</string>
 
-    <string name="new_product">New product</string>
     <string name="product_name">Product Name</string>
     <string name="product_category">Product Category</string>
     <string name="product_supplier">Product Supplier</string>
@@ -138,9 +132,7 @@
     <string name="newedit_product">New/Edit Product</string>
     <string name="searchforcategory">Search by category</string>
     <string name="order_list">Orders List</string>
-    <string name="order_finish">Complete List Order</string>
     <string name="add_product">Add Product to the List</string>
-    <string name="enter_product_cant">Enter Product Quantity</string>
     <string name="add_provider_lis">Supplier For this List</string>
     <string name="dlgerror_dataexist">The data already exists</string>
     <string name="order_delete">Delete Order List</string>
@@ -148,7 +140,6 @@
     <string name="menu_share_order">Share List Orders</string>
     <string name="edit_order">Edit List Orders</string>
     <string name="product_exist">The product already exists in this list</string>
-    <string name="new_category">New Category</string>
     <string name="admin_cat_pro">Product Categories</string>
     <string name="admin_cat_recipes">Recipes Categories</string>
     <string name="admin_pro_format">Products Format</string>
@@ -163,8 +154,6 @@
     <string name="backups">BackUps</string>
     <string name="restore_backups_summary">Current data were removed and the selected backup was restored, create a copy if you want to keep them.</string>
     <string name="delete_backup_question">Delete Backup?</string>
-    <string name="dialog_backup_ok">Backup Create!</string>
-    <string name="dialog_backup_error">Failed to create backup</string>
     <string name="dialog_backup_restore_ok">Backup Restore!</string>
     <string name="dialog_backup_restore_error">Failed to restore backup</string>
     <string name="dlg_backup_question">You want to create a copy of existing data?</string>
@@ -176,7 +165,6 @@
     <string name="menu_calendar">Calendar</string>
     <string name="menu_calculator">Calculator</string>
     <string name="menu_internet">Internet</string>
-    <string name="menu_notes">Notes</string>
     <string name="menu_delete_item">Delete item</string>
     <string name="menu_action_items">Actions For Items</string>
     <string name="deleteitemmsg">You want remove the item selected ### ?</string>
@@ -190,7 +178,6 @@
     <string name="back_exit">Press once again to exit!</string>
     <string name="gallery_recipes">Gallery Recipes</string>
     <string name="view_recipe">Show Details Recipe</string>
-    <string name="counter_images" formatted="false">( %d off %d )</string>
     <string name="activity_escandallos">Cost Evaluations</string>
     <string name="recipe_name">Recipe Name</string>
     <string name="product_cost">Price for #</string>

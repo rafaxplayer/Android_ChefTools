@@ -57,7 +57,6 @@
 
     <string name="recipe_title">Título De La Receta</string>
     <string name="recipe_category">Categoria De La Receta</string>
-    <string name="recipe_time">Tiempo De Elaboración</string>
     <string name="recipe_ingredients">Ingredientes</string>
     <string name="recipe_elaboration">Elaboración</string>
     <string name="recipe_url">Enlace De La Receta</string>
@@ -72,7 +71,6 @@
     <string name="activity_recipes">Recetas del Chef</string>
     <string name="activity_newedit">Editar o Crear Receta</string>
     <string name="activity_detallerecipe">Detalles de la Receta</string>
-    <string name="activity_menuslist">Menus/Cartas</string>
     <string name="selectpicture">Selecciona Imagen</string>
     <string name="urlimage">Ecribe la Url de la Imagen</string>
     <string name="dlgerror_namerecipe">Debes escribir un nombre </string>
@@ -88,7 +86,6 @@
     <string name="menu_image_gallery">Desde Galeria de Imagenes</string>
     <string name="menu_image_url">Desde Enlace</string>
     <string name="search">Buscar</string>
-    <string name="refresh">Actualizar</string>
     <string name="sharerecipe">Compartir Receta</string>
     <string name="share_recipe_use">Compartir con :</string>
     <string name="activity_menus">Menus/Cartas</string>
@@ -112,8 +109,6 @@
     <string name="provider_category">Categoria del Proveedor</string>
     <string name="menu_edit_provider">Editar Proveedor</string>
     <string name="menu_new_provider">Nuevo Proveedor</string>
-    <string name="search_recipe_url">Buscar receta en la web ---></string>
-    <string name="menu_edit_Supplier">Editar Datos Proveedor</string>
     <string name="menu_share_supplier">Compartir Datos del proveedor</string>
     <string name="email">Direccion De Correo</string>
     <string name="activity_detalle_orders">Pedidos</string>
@@ -122,7 +117,6 @@
     <string name="order_title">Nombre De La Lista de Pedido</string>
     <string name="menu_new_order">Nombre Nueva Lista De Pedidos</string>
     <string name="new_orderslist">Nueva Lista de Pedidos</string>
-    <string name="new_product">Nuevo Producto</string>
     <string name="product_name">Nombre del Producto</string>
     <string name="product_category">Categoria Del Producto</string>
     <string name="product_supplier">Proveedor del Producto</string>
@@ -134,9 +128,7 @@
     <string name="newedit_product">Nuevo/Editar Producto</string>
     <string name="searchforcategory">Busqueda Por categoria</string>
     <string name="order_list">Lista de Pedido</string>
-    <string name="order_finish">Finalizar Lista </string>
     <string name="add_product">Añadir Producto a la Lista</string>
-    <string name="enter_product_cant">Intruduce Cantidad De producto</string>
     <string name="add_provider_lis">Proveedor Para Esta lista</string>
     <string name="dlgerror_dataexist">Los Datos ya existen</string>
     <string name="order_delete">Eliminar Lista de pedidos</string>
@@ -145,7 +137,6 @@
     <string name="edit_order">Editar Lista De Pedidos</string>
     <string name="product_exist">El producto ya existe en esta lista</string>
 
-    <string name="new_category">Nueva Categoria</string>
     <string name="admin_cat_pro">Categorias de Productos</string>
     <string name="admin_cat_recipes">Categorias de Recetas</string>
     <string name="admin_pro_format">Formato de Productos</string>
@@ -160,8 +151,6 @@
     <string name="name">Nombre</string>
     <string name="backups">Copias De Seguridad</string>
     <string name="restore_backups_summary">Los datos actuales desapreceran y se restaurara la copia seleccionada,crea una copia si quieres conservarlos.</string>
-    <string name="dialog_backup_error">Error al crear copia de seguridad</string>
-    <string name="dialog_backup_ok">Copia de seguridad Creada con exito!</string>
     <string name="dialog_backup_restore_error">Error al restaurar copia.</string>
     <string name="dialog_backup_restore_ok">Restauración completada!</string>
     <string name="dlg_backup_question">¿Quieres crear copia de datos actuales?</string>
@@ -174,7 +163,6 @@
     <string name="menu_calendar">Calendario</string>
     <string name="menu_calculator">Calculadora</string>
     <string name="menu_internet">Internet</string>
-    <string name="menu_notes">Notas</string>
     <string name="menu_action_items">Acciones para la entrada</string>
     <string name="menu_delete_item">Eliminar Entrada</string>
     <string name="deleteitemmsg">¿Quieres eliminar la entrada seleccionada ### ?</string>
@@ -188,7 +176,6 @@
     <string name="back_exit">Presiona otra vez para salir.</string>
     <string name="gallery_recipes">Galeria de Imagenes</string>
     <string name="view_recipe">Ver Detalles Receta</string>
-    <string name="counter_images" formatted="false">( %d de %d )</string>
     <string name="activity_escandallos">Escandallos</string>
     <string name="recipe_name">Nombre de la receta</string>
     <string name="product_cost">Precio por #</string>

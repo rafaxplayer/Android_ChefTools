@@ -110,6 +110,7 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".recipes.GalleryDetalle_Activity" />
 
+
     </application>
 
 </manifest>

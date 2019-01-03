@@ -29,7 +29,6 @@ import rafaxplayer.cheftools.database.SqliteWrapper;
  */
 public class Categorys_Formats_Adapter extends RecyclerView.Adapter<Categorys_Formats_Adapter.ViewHolder> {
 
-    private static String TAG = Categorys_Formats_Adapter.class.getSimpleName();
     private SqliteWrapper sql;
     private ArrayList<HashMap<String, Object>> mDataset;
     private String Table;
@@ -109,18 +108,18 @@ public class Categorys_Formats_Adapter extends RecyclerView.Adapter<Categorys_Fo
 
         public ViewHolder(View v) {
             super(v);
-            imglist = (ImageView) v.findViewById(R.id.imageList);
-            mTextView = (TextView) v.findViewById(R.id.text1);
-            mTextView2 = (TextView) v.findViewById(R.id.text2);
-            mTextView3 = (TextView) v.findViewById(R.id.text3);
-            delete = (ImageButton) v.findViewById(R.id.ButtonDeleteProduct);
-            edit = (ImageButton) v.findViewById(R.id.ButtonEditProduct);
+            imglist = v.findViewById(R.id.imageList);
+            mTextView = v.findViewById(R.id.text1);
+            mTextView2 = v.findViewById(R.id.text2);
+            mTextView3 = v.findViewById(R.id.text3);
+            delete = v.findViewById(R.id.ButtonDeleteProduct);
+            edit = v.findViewById(R.id.ButtonEditProduct);
             v.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            Log.e("Click", "Ok");
+
             new BottomSheet.Builder(act).title(con.getString(R.string.menu_action_items)).sheet(R.menu.menu_action_categorys_formats).listener(new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {

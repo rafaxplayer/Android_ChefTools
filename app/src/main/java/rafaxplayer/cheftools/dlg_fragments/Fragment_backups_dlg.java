@@ -1,6 +1,7 @@
 package rafaxplayer.cheftools.dlg_fragments;
 
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
@@ -74,8 +77,13 @@ public class Fragment_backups_dlg extends DialogFragment {
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                GlobalUttilities.backup(getActivity());
-                                onResume();
+                                if (GlobalUttilities.checkPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) && GlobalUttilities.checkPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                                    GlobalUttilities.backup(getActivity());
+                                    onResume();
+                                } else {
+                                    Toast.makeText(getActivity(), "No titnes permiso para escrivir archivos", Toast.LENGTH_SHORT).show();
+                                }
+
                             }
                         })
                         .onNegative(new MaterialDialog.SingleButtonCallback() {

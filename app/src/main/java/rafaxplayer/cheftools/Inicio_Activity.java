@@ -1,9 +1,13 @@
 package rafaxplayer.cheftools;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Toast;
 
@@ -13,7 +17,7 @@ import rafaxplayer.cheftools.Globalclasses.BaseActivity;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
 import rafaxplayer.cheftools.Orders.Orders_Activity;
 import rafaxplayer.cheftools.config.Config_Activity;
-import rafaxplayer.cheftools.database.DBHelper;
+
 import rafaxplayer.cheftools.menus.Menus_Activity;
 import rafaxplayer.cheftools.products.Products_Activity;
 import rafaxplayer.cheftools.products.fragments.ProductosMannager_Fragment;
@@ -25,12 +29,22 @@ import rafaxplayer.cheftools.tools.Tools_Activity;
 
 public class Inicio_Activity extends BaseActivity implements ProductosMannager_Fragment.OnSelectedCallback {
 
-    String inFileName = "/data/data/rafaxplayer.cheftools/databases/" + DBHelper.DATABASE_NAME;
     private static long back_pressed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
+                    checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                    checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+                requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, GlobalUttilities.PERMISSION_REQUEST);
+
+            }
+        }
 
         File folder = new File(GlobalUttilities.PATH_BACKUPS);
         if (!folder.exists()) {
@@ -102,6 +116,28 @@ public class Inicio_Activity extends BaseActivity implements ProductosMannager_F
             v.vibrate(500);
             back_pressed = System.currentTimeMillis();
         }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == GlobalUttilities.PERMISSION_REQUEST) {
+            boolean grant = true;
+            for (int i = 0; i < grantResults.length; i++) {
+
+                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                    grant = false;
+                }
+
+            }
+            if (grant) {
+                Toast.makeText(this, "Ok, permisos concedios", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Has declinado algun permiso, no tendras acceso a todas las funcionalidades de la aplicaciobn", Toast.LENGTH_SHORT).show();
+            }
+        }
+
 
     }
 }

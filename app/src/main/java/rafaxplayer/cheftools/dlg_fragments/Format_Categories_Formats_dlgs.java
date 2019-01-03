@@ -1,6 +1,5 @@
 package rafaxplayer.cheftools.dlg_fragments;
 
-
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -15,7 +14,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -35,13 +33,12 @@ public class Format_Categories_Formats_dlgs extends DialogFragment {
     @BindView(R.id.texttitle)
     TextView texttitle;
     @OnClick(R.id.logo)
+
     public void back() {
         getActivity().onBackPressed();
     }
     private SqliteWrapper sql;
-
     private Categorys_Formats_Adapter adp;
-
     private String sqltable;
     private int tittle;
 
@@ -73,7 +70,6 @@ public class Format_Categories_Formats_dlgs extends DialogFragment {
                     ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
-
     }
 
     @Override
@@ -96,7 +92,7 @@ public class Format_Categories_Formats_dlgs extends DialogFragment {
             public void onClick(View v) {
 
                 addEntry(editEntry.getText().toString());
-                //Toast.makeText(getActivity(),editEntry.getText().toString(),Toast.LENGTH_LONG).show();
+
             }
         });
         texttitle.setText(getString(tittle));

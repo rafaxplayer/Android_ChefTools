@@ -7,7 +7,9 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
@@ -15,8 +17,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 
-import butterknife.internal.Utils;
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
 import rafaxplayer.cheftools.R;
@@ -25,6 +27,8 @@ import rafaxplayer.cheftools.recipes.fragments.NewEditRecipe_Fragment;
 
 
 public class NewEditRecipe_Activity extends BaseActivity {
+
+    String mCurrentPhotoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,7 @@ public class NewEditRecipe_Activity extends BaseActivity {
         ft.commit();
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -72,63 +77,67 @@ public class NewEditRecipe_Activity extends BaseActivity {
 
             NewEditRecipe_Fragment fr = (NewEditRecipe_Fragment) getSupportFragmentManager().findFragmentByTag("neweditrecipe");
 
-            if (requestCode == GlobalUttilities.SELECT_PICTURE ) {
-                Log.e("PHOTO", "CAPTURE" );
+            if (requestCode == GlobalUttilities.SELECT_PICTURE) {
+
                 if (selectedImageUri != null) {
-                    Log.e("selectedImageUri", data.getData().toString() );
+                    Log.e("selectedImageUri", data.getData().toString());
                     if (fr != null) {
                         fr.updateImage(selectedImageUri);
                     }
                 }
             } else if (requestCode == GlobalUttilities.RECIPE_WITH_CAPTURE) {
-                Log.e("PHOTO", "RECIPE_WITH_CAPTURE" );
+                Log.e("PHOTO", "RECIPE_WITH_CAPTURE");
                 if (selectedImageUri != null) {
-                    Log.e("selectedImageUri", selectedImageUri.toString() );
+                    Log.e("selectedImageUri", selectedImageUri.toString());
                     if (fr != null) {
                         fr.refresh();
                         fr.updateImage(selectedImageUri);
                     }
                 }
-            }else if( requestCode == GlobalUttilities.CAPTURE_ID){
+            } else if (requestCode == GlobalUttilities.CAPTURE_ID) {
 
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
 
-                /// seguimos con la uri de la fhoto
+                if (photo != null) {
+                    Uri imageBmpUri = GlobalUttilities.getBmpUri(this, photo);
+                    fr.updateImage(imageBmpUri);
+                }
+
             }
         }
 
     }
 
 
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-
         NewEditRecipe_Fragment fr = (NewEditRecipe_Fragment) getSupportFragmentManager().findFragmentByTag("neweditrecipe");
 
-        switch(requestCode){
+        switch (requestCode) {
 
             case GlobalUttilities.PERMISSION_GALLERY:
 
-                if(permissions[0].equals(Manifest.permission.READ_EXTERNAL_STORAGE)){
+                if (permissions[0].equals(Manifest.permission.READ_EXTERNAL_STORAGE)) {
 
-                    if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                         fr.sendIntentPermission(GlobalUttilities.PERMISSION_GALLERY);
 
-                    }else{
+                    } else {
                         Toast.makeText(this, "No concedio su permiso", Toast.LENGTH_SHORT).show();
                     }
                 }
                 break;
             case GlobalUttilities.PERMISSION_PHOTO:
-                if(permissions[0].equals(Manifest.permission.CAMERA)){
+                if (permissions[0].equals(Manifest.permission.CAMERA)) {
 
-                    if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                         fr.sendIntentPermission(GlobalUttilities.PERMISSION_PHOTO);
 
-                    }else{
+                    } else {
                         Toast.makeText(this, "No concedio su permiso", Toast.LENGTH_SHORT).show();
                     }
                 }

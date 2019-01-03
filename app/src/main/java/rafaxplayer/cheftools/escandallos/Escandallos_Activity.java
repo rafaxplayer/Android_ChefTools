@@ -42,7 +42,6 @@ import rafaxplayer.cheftools.Globalclasses.models.Escandallo_Product;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
 import rafaxplayer.cheftools.R;
 
-
 public class Escandallos_Activity extends BaseActivity {
     @BindView(R.id.list_items)
     RecyclerView listProducts;
@@ -262,14 +261,7 @@ public class Escandallos_Activity extends BaseActivity {
                             ((RecyclerAdapter) listProducts.getAdapter()).addItem(escpr);
                             Double sum = ((RecyclerAdapter) listProducts.getAdapter()).calculatecostetotal();
                             texttotal.setText(String.format("%s %s%s", costTotal, GlobalUttilities.FormatDecimal(sum), "€"));
-
-                            new android.os.Handler().postDelayed(
-                                    new Runnable() {
-                                        public void run() {
-                                            dialog.dismiss();
-                                        }
-                                    },
-                                    5000);
+                            dialog.dismiss();
 
                         } catch (NumberFormatException ex) {
                             Log.e("Error : ", ex.getMessage());
@@ -346,9 +338,8 @@ public class Escandallos_Activity extends BaseActivity {
 
         @Override
         public void onBindViewHolder(RecyclerAdapter.ViewHolder viewHolder, int i) {
-            Escandallo_Product escPr = (Escandallo_Product) mDataset.get(i);
+            Escandallo_Product escPr = mDataset.get(i);
             viewHolder.txtProd.setText(escPr.getProductoname());
-            //Log.e("Cantidad", String.format("%s %s", escPr.getCantidad(), escPr.getFormato()));
             viewHolder.txtCantidad.setText(String.format("%s%s", escPr.getCantidad(), escPr.getFormato()));
             viewHolder.txtCoste.setText(String.format("%s€", String.valueOf(escPr.getCoste())));
         }
@@ -367,10 +358,11 @@ public class Escandallos_Activity extends BaseActivity {
 
             public ViewHolder(View v) {
                 super(v);
-                delButton = (ImageButton) v.findViewById(R.id.ButtonDeleteProduct);
-                txtProd = (TextView) v.findViewById(R.id.text1);
-                txtCantidad = (TextView) v.findViewById(R.id.text2);
-                txtCoste = (TextView) v.findViewById(R.id.text3);
+                delButton = v.findViewById(R.id.ButtonDeleteProduct);
+                v.findViewById(R.id.ButtonEditProduct).setVisibility(View.GONE);
+                txtProd = v.findViewById(R.id.text1);
+                txtCantidad = v.findViewById(R.id.text2);
+                txtCoste = v.findViewById(R.id.text3);
                 delButton.setOnClickListener(this);
             }
 

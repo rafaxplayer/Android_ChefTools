@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.Window;
@@ -18,6 +20,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -48,6 +51,8 @@ public class GlobalUttilities {
     public static final int RECIPE_WITH_CAPTURE = 3;
     public static final int PERMISSION_GALLERY = 100;
     public static final int PERMISSION_PHOTO = 101;
+    public static final int PERMISSION_REQUEST = 10001;
+    public static final String APP_TAG = "ChefTools";
     public static final String CALCULATOR_PACKAGE_2 = "com.sec.android.app.popupcalculator";
     public static final String CALCULATOR_CLASS_2 = "com.sec.android.app.popupcalculator.Calculator";
     public static final String CALCULATOR_PACKAGE = "com.android.calculator2";
@@ -426,5 +431,12 @@ public class GlobalUttilities {
     public static boolean checkPermission(Context con,String permission){
         int result = con.checkCallingOrSelfPermission(permission);
         return result == PackageManager.PERMISSION_GRANTED;
+    }
+
+    public static Uri getBmpUri(Context context, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
 }
