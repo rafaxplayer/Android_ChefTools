@@ -11,7 +11,7 @@ import rafaxplayer.cheftools.products.fragments.ProductosMannager_Fragment;
 import rafaxplayer.cheftools.stocks.fragment.StocksDetalle_Fragment;
 import rafaxplayer.cheftools.stocks.fragment.StocksNewEdit_Fragment;
 
-public class StocksDetalle_Activity extends BaseActivity implements ProductosMannager_Fragment.OnSelectedCallback{
+public class StocksDetalle_Activity extends BaseActivity implements ProductosMannager_Fragment.OnSelectedCallback {
     private int ID;
 
     @Override

@@ -474,7 +474,7 @@ public class SqliteWrapper {
 
     }
 
-    public long UpdateSimpleData(String Table,String camp,String value, long id) {
+    public long UpdateSimpleData(String Table, String camp, String value, long id) {
         long count = 0;
         ContentValues values = new ContentValues();
         try {

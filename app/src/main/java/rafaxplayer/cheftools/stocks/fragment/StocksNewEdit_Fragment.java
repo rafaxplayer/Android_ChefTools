@@ -159,7 +159,7 @@ public class StocksNewEdit_Fragment extends Fragment {
                     @Override
                     public void onShow(DialogInterface dialog) {
                         EditCantidad = (EditText) dialogEditProduct.getCustomView().findViewById(R.id.editcantproduct);
-                        if(stProd != null){
+                        if (stProd != null) {
                             EditCantidad.setText(String.valueOf(stProd.getCantidad()));
                         }
                     }
@@ -170,14 +170,14 @@ public class StocksNewEdit_Fragment extends Fragment {
                         if (!sql.IsOpen()) {
                             sql.open();
                         }
-                        long count=sql.UpdateSimpleData(DBHelper.TABLE_INVENTARIOS_LISTAS,DBHelper.PRODUCTO_CANTIDAD,EditCantidad.getText().toString(),stProd.getID());
-                        if (count>0){
-                            Toast.makeText(getActivity(),"Ok Producto actualizado",Toast.LENGTH_LONG).show();
+                        long count = sql.UpdateSimpleData(DBHelper.TABLE_INVENTARIOS_LISTAS, DBHelper.PRODUCTO_CANTIDAD, EditCantidad.getText().toString(), stProd.getID());
+                        if (count > 0) {
+                            Toast.makeText(getActivity(), "Ok Producto actualizado", Toast.LENGTH_LONG).show();
                             displayWithId(StocksNewEdit_Fragment.this.ID);
                             dialog.dismiss();
 
-                        }else{
-                            Toast.makeText(getActivity(),"Ocurrio un error al actualizar",Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getActivity(), "Ocurrio un error al actualizar", Toast.LENGTH_LONG).show();
                         }
 
 
@@ -390,10 +390,10 @@ public class StocksNewEdit_Fragment extends Fragment {
                 sql.open();
             }
             String query = "SELECT * FROM " + DBHelper.TABLE_INVENTARIOS_LISTAS
-                        + " WHERE " + DBHelper.INVENTARIO_ID
-                        + " = " + listID + " AND "
-                        + DBHelper.PRODUCTO_ID + " = "
-                        + pr.getId();
+                    + " WHERE " + DBHelper.INVENTARIO_ID
+                    + " = " + listID + " AND "
+                    + DBHelper.PRODUCTO_ID + " = "
+                    + pr.getId();
 
             if (sql.freeQueryExistsorNot(query)) {
                 Toast.makeText(getActivity(), getString(R.string.product_exist), Toast.LENGTH_LONG).show();
@@ -457,7 +457,7 @@ public class StocksNewEdit_Fragment extends Fragment {
             public ViewHolder(View v) {
                 super(v);
                 delButton = (ImageButton) v.findViewById(R.id.ButtonDeleteProduct);
-                editButton =(ImageButton) v.findViewById(R.id.ButtonEditProduct);
+                editButton = (ImageButton) v.findViewById(R.id.ButtonEditProduct);
                 txtProd = (TextView) v.findViewById(R.id.text1);
                 txtCantidad = (TextView) v.findViewById(R.id.text2);
                 txtFormat = (TextView) v.findViewById(R.id.text3);
@@ -471,10 +471,10 @@ public class StocksNewEdit_Fragment extends Fragment {
                     deleteItem(ViewHolder.this.getLayoutPosition());
                     return;
                 }
-                if(v.getId() == R.id.ButtonEditProduct){
+                if (v.getId() == R.id.ButtonEditProduct) {
                     stProd = (Stock_Product) mDataset.get(ViewHolder.this.getLayoutPosition());
                     dialogEditProduct.show();
-                    Toast.makeText(getActivity(), String.valueOf(mDataset.get(ViewHolder.this.getLayoutPosition()).getID()),Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), String.valueOf(mDataset.get(ViewHolder.this.getLayoutPosition()).getID()), Toast.LENGTH_LONG).show();
                 }
 
             }

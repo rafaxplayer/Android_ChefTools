@@ -34,7 +34,6 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
-
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -184,13 +183,14 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                if (dy >= 0 || dy <= 0  && fab.isShown())
+                if (dy >= 0 || dy <= 0 && fab.isShown())
                     fab.hide();
             }
+
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
 
-                if (newState == RecyclerView.SCROLL_STATE_IDLE){
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     fab.show();
                 }
                 super.onScrollStateChanged(recyclerView, newState);

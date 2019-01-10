@@ -42,7 +42,7 @@
             android:singleLine="true"
             android:text="Large Text"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/textNameColor"
+            android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_large"
             android:textStyle="bold|italic" />
 

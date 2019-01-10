@@ -17,7 +17,6 @@ import rafaxplayer.cheftools.Globalclasses.BaseActivity;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
 import rafaxplayer.cheftools.Orders.Orders_Activity;
 import rafaxplayer.cheftools.config.Config_Activity;
-
 import rafaxplayer.cheftools.menus.Menus_Activity;
 import rafaxplayer.cheftools.products.Products_Activity;
 import rafaxplayer.cheftools.products.fragments.ProductosMannager_Fragment;
@@ -46,9 +45,16 @@ public class Inicio_Activity extends BaseActivity implements ProductosMannager_F
             }
         }
 
-        File folder = new File(GlobalUttilities.PATH_BACKUPS);
-        if (!folder.exists()) {
-            if (folder.mkdirs()) {
+        File folderBack = new File(GlobalUttilities.PATH_BACKUPS);
+        if (!folderBack.exists()) {
+            if (folderBack.mkdirs()) {
+
+            }
+        }
+
+        File folderImg = new File(GlobalUttilities.PATH_IMAGES_RECIPES);
+        if (!folderImg.exists()) {
+            if (folderImg.mkdirs()) {
 
             }
         }

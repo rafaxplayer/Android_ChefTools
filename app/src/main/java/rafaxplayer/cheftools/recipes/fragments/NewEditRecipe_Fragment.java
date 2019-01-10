@@ -1,20 +1,11 @@
 package rafaxplayer.cheftools.recipes.fragments;
 
 import android.Manifest;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.FileProvider;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
@@ -37,12 +28,9 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,7 +42,6 @@ import rafaxplayer.cheftools.R;
 import rafaxplayer.cheftools.database.DBHelper;
 import rafaxplayer.cheftools.database.SqliteWrapper;
 import rafaxplayer.cheftools.recipes.NewEditRecipe_Activity;
-
 
 public class NewEditRecipe_Fragment extends Fragment {
     @BindView(R.id.categorys)
@@ -77,15 +64,11 @@ public class NewEditRecipe_Fragment extends Fragment {
     ScrollView scroll;
     @BindView(R.id.imageButtonSearch)
     ImageButton search;
-
     private IconizedMenu popup;
-    private String urlImage;
     private Uri imgUri;
     private int ID;
     private Boolean edit;
     private SqliteWrapper sql;
-    private SimpleCursorAdapter genreSpinnerAdapter;
-    private ArrayList<String> my_array;
 
     private ArrayList<HashMap<String, Object>> catsarr;
 
@@ -160,12 +143,12 @@ public class NewEditRecipe_Fragment extends Fragment {
                                                  switch (item.getItemId()) {
                                                      case R.id.action_gallery:
 
-                                                         sendIntentPermission(GlobalUttilities.PERMISSION_GALLERY);
+                                                         sendIntentPermission(GlobalUttilities.SELECT_PICTURE);
 
                                                          break;
                                                      case R.id.action_photo:
 
-                                                             sendIntentPermission(GlobalUttilities.PERMISSION_PHOTO);
+                                                         sendIntentPermission(GlobalUttilities.SELECT_PHOTO);
 
                                                          break;
                                                      case R.id.action_url:
@@ -205,38 +188,6 @@ public class NewEditRecipe_Fragment extends Fragment {
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
-    public void sendIntentPermission(int action) {
-        switch (action) {
-            case GlobalUttilities.PERMISSION_GALLERY:
-                Intent intentGallery = new Intent();
-                intentGallery.setAction(Intent.ACTION_PICK);
-                intentGallery.setType("image/*");
-                if (GlobalUttilities.checkPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                    getActivity().startActivityForResult(Intent.createChooser(intentGallery,
-                            getString(R.string.selectpicture)), GlobalUttilities.SELECT_PICTURE);
-                } else {
-                    Toast.makeText(getActivity(), "No tienes permisos para leer archivos del dispositivo", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case GlobalUttilities.PERMISSION_PHOTO:
-                Intent intentPhoto = new Intent(
-                        android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                if (GlobalUttilities.checkPermission(getActivity(), Manifest.permission.CAMERA) && GlobalUttilities.checkPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    if (intentPhoto.resolveActivity(getActivity().getPackageManager()) != null) {
-
-                        getActivity().startActivityForResult(intentPhoto, GlobalUttilities.CAPTURE_ID);
-                    }
-                } else {
-                    Toast.makeText(getActivity(), "No tienes permisos para usar la camara", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            default:
-                break;
-
-        }
-
-    }
-
 
     @Override
     public void onResume() {
@@ -271,6 +222,39 @@ public class NewEditRecipe_Fragment extends Fragment {
         return onOptionsItemSelected(item);
     }
 
+    public void sendIntentPermission(int action) {
+        switch (action) {
+            case GlobalUttilities.SELECT_PICTURE:
+                Intent intentGallery = new Intent();
+                intentGallery.setAction(Intent.ACTION_PICK);
+                intentGallery.setType("image/*");
+                if (GlobalUttilities.checkPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    getActivity().startActivityForResult(Intent.createChooser(intentGallery,
+                            getString(R.string.selectpicture)), GlobalUttilities.SELECT_PICTURE);
+                } else {
+                    Toast.makeText(getActivity(), getString(R.string.permission_whrite_failed), Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case GlobalUttilities.SELECT_PHOTO:
+                Intent intentPhoto = new Intent(
+                        android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                if (GlobalUttilities.checkPermission(getActivity(), Manifest.permission.CAMERA) && GlobalUttilities.checkPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    if (intentPhoto.resolveActivity(getActivity().getPackageManager()) != null) {
+
+                        getActivity().startActivityForResult(intentPhoto, GlobalUttilities.SELECT_PHOTO);
+
+                    }
+                } else {
+                    Toast.makeText(getActivity(), getString(R.string.permission_camera_failed), Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+                break;
+
+        }
+
+    }
+
     private void save() {
 
         if (!sql.IsOpen()) {
@@ -280,7 +264,7 @@ public class NewEditRecipe_Fragment extends Fragment {
         String cat = ((HashMap<String, Object>) cats.getSelectedItem()).get("Name").toString();
 
         Recipe rec = new Recipe(nametxt.getText().toString(),
-                imgUri == null ? "null" : imgUri.toString(),
+                imgUri == null ? "null" :  GlobalUttilities.backup_image_recipe(getActivity(), imgUri).get("Uri").toString(),
                 ingtxt.getText().toString(),
                 elatxt.getText().toString(),
                 url.getText().toString(),
@@ -372,20 +356,17 @@ public class NewEditRecipe_Fragment extends Fragment {
     public void updateImage(final Uri ur) {
 
         if (ur != null) {
-            Log.e("Set Image", ur.toString());
+
             Picasso.get()
                     .load(ur)
                     .placeholder(R.drawable.item_image_placeholder)
                     .resize(getResources().getDimensionPixelOffset(R.dimen.image_dimen_width), getResources().getDimensionPixelOffset(R.dimen.image_dimen_height))
                     .into(this.img);
             this.imgUri = ur;
-            Log.e("set image", this.imgUri.toString());
+
         }
     }
 
-    public void updateImageBmp(final Bitmap bmp) {
-        this.img.setImageBitmap(bmp);
-    }
 
     public void refresh() {
         Picasso.get()

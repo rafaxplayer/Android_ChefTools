@@ -32,15 +32,16 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
-
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
+import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
 import rafaxplayer.cheftools.Globalclasses.models.Recipe;
 import rafaxplayer.cheftools.R;
 import rafaxplayer.cheftools.database.DBHelper;
@@ -149,9 +150,7 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
         }
     };
 
-    public RecipesList_Fragment() {
-
-    }
+    public RecipesList_Fragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -174,22 +173,27 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
         listRecipes.setLayoutManager(new LinearLayoutManager(getActivity()));
         listRecipes.setItemAnimator(new DefaultItemAnimator());
         listRecipes.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                                            @Override
-                                            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                                                super.onScrolled(recyclerView, dx, dy);
-                                                Log.e("scroll", String.valueOf(dy));
-                                                if (dy >= 0 || dy <= 0  && fab.isShown())
-                                                    fab.hide();
-                                            }
-                                            @Override
-                                            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                Log.e("scroll", String.valueOf(dy));
+                if ( dy <= 0 && fab.isShown()) {
+                    fab.hide();
+                }else{
+                    fab.show();
+                }
 
-                                                if (newState == RecyclerView.SCROLL_STATE_IDLE){
-                                                    fab.show();
-                                                }
-                                                super.onScrollStateChanged(recyclerView, newState);
-                                            }
-                                        });
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+
+                if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                    fab.show();
+                }
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
         swipeRefreshLayout = v.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.post(new Runnable() {
@@ -201,8 +205,6 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
                                 }
         );
 
-        fabGallery.setVisibility(View.VISIBLE);
-        //fab.hide();
 
         fabGallery.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -372,19 +374,28 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
         }
 
 
-        private boolean getselectedItem(int position) {
-            return selectedItems.get(position);
-        }
-
         public void deleteItem(int pos) {
 
             int count = sql.DeleteWithId((mDataset.get(pos)).getId(), DBHelper.TABLE_RECETAS);
+
+            //comprovamos que la imagen este en los datos de la app no en el dispositivo
+            if ((mDataset.get(pos)).getImg().contains("Android/data")) {
+                File imageFile = new File((mDataset.get(pos)).getImg().replace("file://",""));
+                Log.e("Recipes list", String.valueOf(imageFile.exists()));
+                if (imageFile.exists()) {
+                    if (imageFile.delete()) {
+                        Toast.makeText(getActivity(), "Imagen eliminada", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
 
             if (count > 0) {
                 mDataset.remove(pos);
 
             }
             empty.setVisibility(mDataset.size() > 0 ? View.GONE : View.VISIBLE);
+
             notifyItemRemoved(pos);
         }
 

@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -32,11 +33,13 @@ public class Format_Categories_Formats_dlgs extends DialogFragment {
     ImageButton addCategory;
     @BindView(R.id.texttitle)
     TextView texttitle;
+
     @OnClick(R.id.logo)
 
     public void back() {
         getActivity().onBackPressed();
     }
+
     private SqliteWrapper sql;
     private Categorys_Formats_Adapter adp;
     private String sqltable;
@@ -107,7 +110,7 @@ public class Format_Categories_Formats_dlgs extends DialogFragment {
         }
 
         try {
-            adp = new Categorys_Formats_Adapter(getActivity(),sql.getFormatsOrCategorysData(this.sqltable), this.sqltable, sql);
+            adp = new Categorys_Formats_Adapter(getActivity(), sql.getFormatsOrCategorysData(this.sqltable), this.sqltable, sql);
             listItems.setAdapter(adp);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -128,7 +131,7 @@ public class Format_Categories_Formats_dlgs extends DialogFragment {
     private void addEntry(String Name) {
 
         if (Name.length() > 0) {
-            Log.i("Adapter",listItems.getAdapter().getItemCount()+"");
+            Log.i("Adapter", listItems.getAdapter().getItemCount() + "");
             ((Categorys_Formats_Adapter) listItems.getAdapter()).additem(Name);
             editEntry.setText("");
             GlobalUttilities.ocultateclado(getActivity(), editEntry);

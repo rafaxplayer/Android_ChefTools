@@ -1,0 +1,3 @@
+Cambiar libreria bottomSheet
+Hacer copia de fotos de recetas y incluir en los backups
+Guardar escandallos

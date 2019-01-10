@@ -393,7 +393,7 @@ public class ProductosMannager_Fragment extends DialogFragment {
     }
 
     public interface OnSelectedCallback {
-       void onSelect(int pid);
+        void onSelect(int pid);
     }
 
     public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHolder> implements Filterable {
@@ -516,7 +516,7 @@ public class ProductosMannager_Fragment extends DialogFragment {
                 }
                 if (v.getId() == R.id.item_product) {
                     int id = (mDataset.get(ViewHolder.this.getLayoutPosition())).getId();
-                    if (modeSelect){
+                    if (modeSelect) {
                         if (mCallback != null) {
                             mCallback.onSelect(id);
                             getDialog().dismiss();

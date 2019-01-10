@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.graphics.Typeface;
@@ -11,6 +12,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
@@ -25,12 +27,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import rafaxplayer.cheftools.Globalclasses.models.Escandallo;
 import rafaxplayer.cheftools.Globalclasses.models.Escandallo_Product;
@@ -46,11 +51,10 @@ import rafaxplayer.cheftools.database.SqliteWrapper;
 public class GlobalUttilities {
 
     public static final String PATH_BACKUPS = Environment.getExternalStorageDirectory() + "/ChefTools_Backup/";
+    public static final String PATH_IMAGES_RECIPES = Environment.getExternalStorageDirectory() + "/Android/data/rafaxplayer.cheftools/files/Pictures/";
     public static final int SELECT_PICTURE = 1;
-    public static final int CAPTURE_ID = 2;
+    public static final int SELECT_PHOTO = 2;
     public static final int RECIPE_WITH_CAPTURE = 3;
-    public static final int PERMISSION_GALLERY = 100;
-    public static final int PERMISSION_PHOTO = 101;
     public static final int PERMISSION_REQUEST = 10001;
     public static final String APP_TAG = "ChefTools";
     public static final String CALCULATOR_PACKAGE_2 = "com.sec.android.app.popupcalculator";
@@ -67,7 +71,7 @@ public class GlobalUttilities {
 
             FileInputStream fis = new FileInputStream(dbFile);
 
-            String outFileName = PATH_BACKUPS + DBHelper.DATABASE_NAME + "_" + GlobalUttilities.getDateTime();
+            String outFileName = PATH_BACKUPS + DBHelper.DATABASE_NAME + "_" + getDateTime();
 
             OutputStream output = new FileOutputStream(outFileName);
 
@@ -83,9 +87,12 @@ public class GlobalUttilities {
             File back = new File(outFileName);
             if (back.exists()) {
                 ret = true;
-                Toast.makeText(con, "Ok Backup Created", Toast.LENGTH_LONG).show();
+                Toast.makeText(con, con.getString(R.string.backup_cretaed), Toast.LENGTH_LONG).show();
+                if (backup_images(con)) {
+                    Toast.makeText(con, con.getString(R.string.backup_images_cretaed), Toast.LENGTH_LONG).show();
+                }
             } else {
-                Toast.makeText(con, "Error Backup", Toast.LENGTH_LONG).show();
+                Toast.makeText(con, con.getString(R.string.backup_error), Toast.LENGTH_LONG).show();
                 ret = false;
             }
         } catch (FileNotFoundException e) {
@@ -95,12 +102,50 @@ public class GlobalUttilities {
         } catch (Exception ex) {
 
 
-            Toast.makeText(con, "Error Backup", Toast.LENGTH_LONG).show();
+            Toast.makeText(con, con.getString(R.string.backup_error), Toast.LENGTH_LONG).show();
             ret = false;
         }
 
 
         return ret;
+    }
+
+    public static Boolean backup_images(Context con) {
+        Boolean ret;
+        try {
+
+            copyDirectoryOneLocationToAnotherLocation(new File(PATH_IMAGES_RECIPES), new File(PATH_BACKUPS + "/" + getDateTime()));
+            ret = true;
+        } catch (IOException ex) {
+            Toast.makeText(con, "Error al copiar directorio", Toast.LENGTH_SHORT).show();
+            ret = false;
+        }
+
+        return ret;
+    }
+
+    public static Boolean restore_backup_images(Context con, String filename) {
+
+        Boolean ret;
+        String folderImagesPath = PATH_BACKUPS + filename.replace(DBHelper.DATABASE_NAME + "_", "");
+        if (new File(folderImagesPath).exists()) {
+            try {
+
+                copyDirectoryOneLocationToAnotherLocation(new File(folderImagesPath), new File(PATH_IMAGES_RECIPES));
+                ret = true;
+
+            } catch (IOException ex) {
+                Toast.makeText(con, "Error al copiar directorio", Toast.LENGTH_SHORT).show();
+                ret = false;
+            }
+
+        } else {
+            Toast.makeText(con, "No hay directorio de imagenes", Toast.LENGTH_SHORT).show();
+            ret = false;
+        }
+
+        return ret;
+
     }
 
     public static Boolean backupRestore(Context con, String filename) {
@@ -113,6 +158,7 @@ public class GlobalUttilities {
 
             String outFileName = "/data/data/rafaxplayer.cheftools/databases/" + DBHelper.DATABASE_NAME;
 
+
             OutputStream output = new FileOutputStream(outFileName);
 
             byte[] buffer = new byte[1024];
@@ -124,8 +170,11 @@ public class GlobalUttilities {
             output.flush();
             output.close();
             fis.close();
+
             ret = true;
             Toast.makeText(con, con.getString(R.string.dialog_backup_restore_ok), Toast.LENGTH_LONG).show();
+
+            restore_backup_images(con, filename);
 
 
         } catch (FileNotFoundException e) {
@@ -140,6 +189,116 @@ public class GlobalUttilities {
         }
         return ret;
 
+    }
+
+    public static Map backup_image_recipe(Context con, Uri imageFile) {
+
+        Map ret = new HashMap<>();
+
+        File mFile = new File(uriGetPath(con, imageFile));
+
+        try {
+
+            FileInputStream fis = new FileInputStream(mFile);
+
+            String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+
+            String outFileName = PATH_IMAGES_RECIPES + "/Recipe_" + timeStamp + ".bmp";
+
+            OutputStream output = new FileOutputStream(outFileName);
+
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = fis.read(buffer)) > 0) {
+                output.write(buffer, 0, length);
+            }
+
+            output.flush();
+            output.close();
+            fis.close();
+            File back = new File(outFileName);
+            if (back.exists()) {
+                ret.put("Uri", Uri.fromFile(back));
+                ret.put("IsCreate", true);
+                Toast.makeText(con, "Ok image saved", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(con, "Error image save", Toast.LENGTH_LONG).show();
+                ret.put("Uri", null);
+                ret.put("IsCreate", false);
+            }
+        } catch (FileNotFoundException e) {
+
+            Toast.makeText(con, "No existe la imagen", Toast.LENGTH_LONG).show();
+            ret.put("Uri", null);
+            ret.put("IsCreate", false);
+        } catch (Exception ex) {
+
+
+            Toast.makeText(con, "Error image", Toast.LENGTH_LONG).show();
+            ret.put("Uri", null);
+            ret.put("IsCreate", false);
+        }
+
+
+        return ret;
+    }
+
+    public static void copyDirectoryOneLocationToAnotherLocation(File sourceLocation, File targetLocation)
+            throws IOException {
+
+        if (sourceLocation.isDirectory()) {
+            if (!targetLocation.exists()) {
+                targetLocation.mkdir();
+            }
+
+            String[] children = sourceLocation.list();
+            for (int i = 0; i < sourceLocation.listFiles().length; i++) {
+
+                copyDirectoryOneLocationToAnotherLocation(new File(sourceLocation, children[i]),
+                        new File(targetLocation, children[i]));
+            }
+        } else {
+
+            InputStream in = new FileInputStream(sourceLocation);
+
+            OutputStream out = new FileOutputStream(targetLocation);
+
+            // Copy the bits from instream to outstream
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+            in.close();
+            out.close();
+        }
+
+    }
+
+    public static boolean deleteDir(File dir) {
+        if (dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i=0; i<children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+
+        // The directory is now empty so delete it
+        return dir.delete();
+    }
+
+    public static String uriGetPath(Context con, Uri uri) {
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = con.getContentResolver().query(uri, projection, null, null, null);
+        if (cursor == null) return null;
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String s = cursor.getString(column_index);
+        cursor.close();
+        return s;
     }
 
     public static String shareEscandalloText(Context con, Escandallo esc) {
@@ -365,8 +524,8 @@ public class GlobalUttilities {
     public static int SpinnergetIndex(ArrayList<HashMap<String, Object>> arr, String str) {
 
         for (int i = 0; i < arr.size(); i++) {
-            //Log.e("pruevaindex", String.valueOf(((HashMap<String, Object>) arr.get(i)).get("Name")));
-            if (((HashMap<String, Object>) arr.get(i)).get("Name").equals(str)) {
+
+            if (arr.get(i).get("Name").equals(str)) {
 
                 return i;
             }
@@ -428,9 +587,11 @@ public class GlobalUttilities {
         return String.format(Locale.CANADA, "%.2f", decimal);
     }
 
-    public static boolean checkPermission(Context con,String permission){
+    public static boolean checkPermission(Context con, String permission) {
+
         int result = con.checkCallingOrSelfPermission(permission);
         return result == PackageManager.PERMISSION_GRANTED;
+
     }
 
     public static Uri getBmpUri(Context context, Bitmap inImage) {

@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Herramientas para Chefs</string>
-
     <string-array name="categorys_recipes">
         <item>Aperitivos</item>
         <item>Ensaladas</item>
@@ -14,7 +13,6 @@
         <item>Postres</item>
         <item>Otros</item>
     </string-array>
-
     <string-array name="categorys_products">
         <item>Carnes</item>
         <item>Espécias</item>
@@ -33,7 +31,6 @@
         <item>Bodega</item>
         <item>Otros</item>
     </string-array>
-
     <string-array name="format_products">
         <item>Unidades</item>
         <item>Latas</item>
@@ -46,7 +43,6 @@
         <item>Bolsas</item>
         <item>Otros</item>
     </string-array>
-
     <string name="action_settings">Ajustes</string>
     <string name="recipes">Recetas</string>
     <string name="menus">Menus</string>
@@ -54,7 +50,6 @@
     <string name="products">Productos</string>
     <string name="orders">Pedidos</string>
     <string name="inventories">Inventarios</string>
-
     <string name="recipe_title">Título De La Receta</string>
     <string name="recipe_category">Categoria De La Receta</string>
     <string name="recipe_ingredients">Ingredientes</string>
@@ -136,7 +131,6 @@
     <string name="menu_share_order">Compartir Lista se pedidos</string>
     <string name="edit_order">Editar Lista De Pedidos</string>
     <string name="product_exist">El producto ya existe en esta lista</string>
-
     <string name="admin_cat_pro">Categorias de Productos</string>
     <string name="admin_cat_recipes">Categorias de Recetas</string>
     <string name="admin_pro_format">Formato de Productos</string>
@@ -190,4 +184,12 @@
     <string name="share_cost">Compartir escandallo</string>
     <string name="share">Compartir</string>
     <string name="date">Fecha</string>
+    <string name="backup_path">Su copia de seguridad se encuentra en la raiz de su dispositivo o targeta sd /ChefTols_Backup</string>
+    <string name="white_permission">Declinaste permiso para escrivir archivos en el dispositivo</string>
+    <string name="backup_cretaed">Ok, Copia de seguridad realizada</string>
+    <string name="backup_images_cretaed">Ok, Copia de seguridad de imagenes realizada</string>
+    <string name="backup_error">Ocurrio un error al crear la copia de seguridad</string>
+    <string name="backup_images_deleted">Se ha eliminado la copia de seguridad de las imágenes</string>
+    <string name="permission_whrite_failed">No tienes permisos para escribir archivos en este dispositivo</string>
+    <string name="permission_camera_failed">No tienes permisos para usar la cámara en este dispositivo</string>
 </resources>

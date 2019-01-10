@@ -30,11 +30,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
-
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -182,13 +180,14 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                if (dy >= 0 || dy <= 0  && fab.isShown())
+                if (dy >= 0 || dy <= 0 && fab.isShown())
                     fab.hide();
             }
+
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
 
-                if (newState == RecyclerView.SCROLL_STATE_IDLE){
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     fab.show();
                 }
                 super.onScrollStateChanged(recyclerView, newState);
@@ -288,23 +287,23 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
                 });
 
                 new MaterialDialog.Builder(
-                        getActivity()).customView(inputSearch,false)
+                        getActivity()).customView(inputSearch, false)
                         .positiveText(getString(R.string.done))
                         .negativeText(getString(R.string.cancel))
-                        .onPositive( new MaterialDialog.SingleButtonCallback() {
-                                    @Override
-                                    public void onClick(MaterialDialog dialog, DialogAction which) {
-                                        dialog.dismiss();
-                                    }
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(MaterialDialog dialog, DialogAction which) {
+                                dialog.dismiss();
+                            }
                         })
-                        .onNegative( new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(MaterialDialog dialog, DialogAction which) {
-                                    onResume();
-                                    dialog.dismiss();
-                                }
+                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(MaterialDialog dialog, DialogAction which) {
+                                onResume();
+                                dialog.dismiss();
+                            }
                         }).show();
-                        break;
+                break;
 
         }
         return super.onOptionsItemSelected(item);

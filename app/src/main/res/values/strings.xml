@@ -30,7 +30,6 @@
         <item>Sauces</item>
         <item>Winery</item>
         <item>Undefined</item>
-         
     </string-array>
     <string-array name="format_products">
         <item>Units</item>
@@ -44,7 +43,6 @@
         <item>Bags</item>
         <item>Undefined</item>
     </string-array>
-
     <string name="action_settings">Settings</string>
     <string name="recipes">Recipes</string>
     <string name="menus">Menus</string>
@@ -52,7 +50,6 @@
     <string name="products">Products</string>
     <string name="orders">Orders</string>
     <string name="inventories">Stocks List</string>
-
     <string name="recipe_title">Recipe Tittle</string>
     <string name="recipe_category">Recipe Category</string>
     <string name="recipe_ingredients">Ingredients</string>
@@ -88,12 +85,9 @@
     <string name="menu_image_gallery">From Gallery</string>
     <string name="menu_image_url">From Link</string>
     <string name="search">Search</string>
-
     <string name="sharerecipe">Share Recipe</string>
     <string name="share_recipe_use">Share with :</string>
     <string name="activity_menus">Menus</string>
-
-
     <string name="menu_name">Menu Name</string>
     <string name="menu_entrantes">Snacks</string>
     <string name="menu_primeros">First Courses</string>
@@ -103,7 +97,6 @@
     <string name="share_menu">Share Menu</string>
     <string name="edit_menu">Edit Menu</string>
     <string name="new_menu">New Menu</string>
-
     <string name="activity_detallesproveedor">Details Supplier</string>
     <string name="activity_providers">Suppliers</string>
     <string name="activity_newedit_provider">Edit/New Supplier</string>
@@ -122,7 +115,6 @@
     <string name="order_title">Order List Name</string>
     <string name="menu_new_order">New Orders List Name</string>
     <string name="new_orderslist">New Orders list</string>
-
     <string name="product_name">Product Name</string>
     <string name="product_category">Product Category</string>
     <string name="product_supplier">Product Supplier</string>
@@ -192,6 +184,12 @@
     <string name="share_cost">Share Cost Evaluation</string>
     <string name="share">Share</string>
     <string name="date">Date</string>
-
-
+    <string name="backup_path">Your backup is located at the root of your device or targeta sd / ChefTols_Backup</string>
+    <string name="white_permission">You declined permission to write files on the device</string>
+    <string name="backup_cretaed">Ok, Backup created</string>
+    <string name="backup_images_cretaed">Ok, Backup images created</string>
+    <string name="backup_error">Backup error</string>
+    <string name="backup_images_deleted">Backup of images has ben deleted</string>
+    <string name="permission_whrite_failed">You do not have permissions to write files on this device</string>
+    <string name="permission_camera_failed">You do not have permission to use the camera on this device</string>
 </resources>

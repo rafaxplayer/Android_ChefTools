@@ -166,6 +166,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String SqlCreateTable_categoria_recetas = "CREATE TABLE IF NOT EXISTS "
             + TABLE_RECETAS_CATEGORIA + "(" + ID + " INTEGER PRIMARY KEY,"
             + NAME + " TEXT)";
+
     // Update for version 2
     private String SQLUpdate_Create_CampV2 = "ALTER TABLE " + TABLE_INVENTARIOS_LISTAS + "ADD COLUMN " + PRODUCTO_CANTIDAD_MIN + " INTEGER DEFAULT 0;";
 
@@ -246,10 +247,10 @@ public class DBHelper extends SQLiteOpenHelper {
             //update for set quantity minim TABLE_INVENTARIOS_LISTAS
 
             db.execSQL("drop table if exists " + TABLE_INVENTARIOS_LISTAS);
-            
+
             onCreate(db);
 
-            if(oldVersion == 1 && newVersion == 2){
+            if (oldVersion == 1 && newVersion == 2) {
                 db.execSQL(SQLUpdate_Create_CampV2);
             }
 

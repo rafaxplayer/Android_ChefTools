@@ -61,17 +61,17 @@ public class DetalleRecipes_Activity extends BaseActivity {
         if (resultCode == RESULT_OK) {
 
             final Uri selectedImageUri = data.getData();
-            Log.e("onActivityResult image", selectedImageUri.toString());
-            if (requestCode == GlobalUttilities.SELECT_PICTURE || requestCode == GlobalUttilities.CAPTURE_ID) {
-                Log.e("onActivityResult slect", selectedImageUri.toString());
+
+            if (requestCode == GlobalUttilities.SELECT_PICTURE || requestCode == GlobalUttilities.SELECT_PHOTO) {
+
                 if (selectedImageUri != null) {
                     final NewEditRecipe_Fragment fr = (NewEditRecipe_Fragment) getSupportFragmentManager().findFragmentByTag("editrecipe");
                     if (fr != null) {
-                        Log.e("onActivityResult fr", "fragment ok");
+
                         new android.os.Handler().postDelayed(
                                 new Runnable() {
                                     public void run() {
-                                        Log.i("tag","A Kiss after 5 seconds");
+
                                         fr.updateImage(selectedImageUri);
                                     }
                                 }, 1000);

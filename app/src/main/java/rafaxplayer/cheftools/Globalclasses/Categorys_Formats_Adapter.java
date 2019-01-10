@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +34,7 @@ public class Categorys_Formats_Adapter extends RecyclerView.Adapter<Categorys_Fo
     private Context con;
     private Activity act;
 
-    public Categorys_Formats_Adapter(Activity con, ArrayList<HashMap<String,Object>> myDataset, String sTable, SqliteWrapper sqlite) {
+    public Categorys_Formats_Adapter(Activity con, ArrayList<HashMap<String, Object>> myDataset, String sTable, SqliteWrapper sqlite) {
         this.mDataset = myDataset;
         this.mDataset.remove(0);
         this.Table = sTable;

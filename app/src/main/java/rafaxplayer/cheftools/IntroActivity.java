@@ -3,16 +3,12 @@ package rafaxplayer.cheftools;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,8 +33,8 @@ public class IntroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
         ButterKnife.bind(this);
-       //Log.d("intro", String.format("V%s",BuildConfig.VERSION_NAME));
-        version.setText(String.format("V%s",BuildConfig.VERSION_NAME));
+        //Log.d("intro", String.format("V%s",BuildConfig.VERSION_NAME));
+        version.setText(String.format("V%s", BuildConfig.VERSION_NAME));
         translateX1 = ObjectAnimator.ofFloat(textIntro1, "translationX", -100, 0);
         translateX2 = ObjectAnimator.ofFloat(textIntro2, "translationX", 100, 0);
 

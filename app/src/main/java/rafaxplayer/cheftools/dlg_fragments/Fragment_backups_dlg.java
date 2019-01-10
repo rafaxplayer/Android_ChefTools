@@ -11,6 +11,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +24,10 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.cocosw.bottomsheet.BottomSheet;
 
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -50,6 +49,7 @@ public class Fragment_backups_dlg extends DialogFragment {
     public void back() {
         getActivity().onBackPressed();
     }
+
     public Fragment_backups_dlg() {
 
     }
@@ -78,10 +78,17 @@ public class Fragment_backups_dlg extends DialogFragment {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 if (GlobalUttilities.checkPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) && GlobalUttilities.checkPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                                    GlobalUttilities.backup(getActivity());
+
+                                    if (GlobalUttilities.backup(getActivity())) {
+                                        new MaterialDialog.Builder(getActivity()).title(R.string.backups)
+                                                .content(R.string.backup_path)
+                                                .positiveText("Ok").show();
+
+                                    }
+                                    ;
                                     onResume();
                                 } else {
-                                    Toast.makeText(getActivity(), "No titnes permiso para escrivir archivos", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), R.string.white_permission, Toast.LENGTH_SHORT).show();
                                 }
 
                             }
@@ -132,7 +139,6 @@ public class Fragment_backups_dlg extends DialogFragment {
     }
 
 
-
     private ArrayList<HashMap<String, String>> loadbackups() {
         int maxBackups = 10;
         ArrayList<HashMap<String, String>> listBackups = new ArrayList<>();
@@ -141,15 +147,17 @@ public class Fragment_backups_dlg extends DialogFragment {
             File[] files = f.listFiles();
             Collections.sort(Arrays.asList(files), Collections.reverseOrder());
             for (int i = 0; i < files.length; i++) {
-                HashMap<String, String> map = new HashMap<String, String>();
-                Date lastModDate = new Date(files[i].lastModified());
-                map.put("name", files[i].getName().toString());
-                map.put("path", files[i].getAbsolutePath());
-                map.put("date", files[i].getName().toString().replace("ChefToolsDB_", ""));
-                listBackups.add(map);
-                if ((i + 1) >= maxBackups) {
-                    files[i].delete();
+                if (!files[i].isDirectory()) {
+                    HashMap<String, String> map = new HashMap<String, String>();
+                    map.put("name", files[i].getName().toString());
+                    map.put("path", files[i].getAbsolutePath());
+                    map.put("date", files[i].getName().toString().replace("ChefToolsDB_", ""));
+                    listBackups.add(map);
+                    if ((i + 1) >= maxBackups) {
+                        files[i].delete();
+                    }
                 }
+
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -167,12 +175,26 @@ public class Fragment_backups_dlg extends DialogFragment {
         }
 
         public void deleteItem(int pos) {
-            File file = new File(mDataset.get(pos).get("path"));
-            boolean deleted = file.delete();
-            if (deleted) {
-                mDataset.remove(pos);
+
+            File fileBackup = new File(mDataset.get(pos).get("path"));
+            File folderImagesBackup = new File(mDataset.get(pos).get("path").replace("ChefToolsDB_", ""));
+
+            if (fileBackup.exists()) {
+                boolean deleted = fileBackup.delete();
+                if (deleted) {
+                    mDataset.remove(pos);
+                }
+                notifyItemRemoved(pos);
             }
-            notifyItemRemoved(pos);
+
+            if (folderImagesBackup.exists()) {
+                boolean deletedFol = GlobalUttilities.deleteDir(folderImagesBackup);
+                if (deletedFol) {
+                    Toast.makeText(getActivity(), getString(R.string.backup_images_deleted), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
         }
 
         @Override
@@ -208,6 +230,7 @@ public class Fragment_backups_dlg extends DialogFragment {
 
             @Override
             public void onClick(View v) {
+
                 new BottomSheet.Builder(getActivity()).title(getString(R.string.actions_backup)).sheet(R.menu.menu_action_backups).listener(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
