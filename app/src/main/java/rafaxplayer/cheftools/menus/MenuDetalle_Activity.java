@@ -5,10 +5,10 @@ import android.support.v4.app.FragmentTransaction;
 
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
 import rafaxplayer.cheftools.R;
-import rafaxplayer.cheftools.menus.fragments.DetalleMenu_Fragment;
+import rafaxplayer.cheftools.menus.fragments.MenuDetalle_Fragment;
 import rafaxplayer.cheftools.menus.fragments.MenuNewEdit_Fragment;
 
-public class DetalleMenu_Activity extends BaseActivity {
+public class MenuDetalle_Activity extends BaseActivity {
     private int ID;
 
     @Override
@@ -19,7 +19,7 @@ public class DetalleMenu_Activity extends BaseActivity {
         if (savedInstanceState == null) {
 
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, DetalleMenu_Fragment.newInstance(ID), "detallemenu")
+                    .add(R.id.container, MenuDetalle_Fragment.newInstance(ID), "detallemenu")
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit();
         }

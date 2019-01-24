@@ -2,8 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
-    tools:context="rafaxplayer.micocina.fragments.Detalle_Recipes_Fragment">
+    android:padding="10dp">
 
     <ScrollView
         android:id="@+id/scrollView"

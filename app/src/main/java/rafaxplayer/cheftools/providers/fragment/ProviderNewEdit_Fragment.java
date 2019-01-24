@@ -1,10 +1,16 @@
 package rafaxplayer.cheftools.providers.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -27,9 +34,6 @@ import rafaxplayer.cheftools.R;
 import rafaxplayer.cheftools.database.DBHelper;
 import rafaxplayer.cheftools.database.SqliteWrapper;
 
-/**
- * A placeholder fragment containing a simple view.
- */
 public class ProviderNewEdit_Fragment extends Fragment {
     @BindView(R.id.editnameprovider)
     EditText Nametxt;
@@ -45,6 +49,9 @@ public class ProviderNewEdit_Fragment extends Fragment {
     EditText Comentariostxt;
     @BindView(R.id.buttonSave)
     Button save;
+    @BindView(R.id.searchContact)
+    ImageButton searchContact;
+
     private SqliteWrapper sql;
     private int ID;
 
@@ -77,6 +84,14 @@ public class ProviderNewEdit_Fragment extends Fragment {
             }
         });
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        searchContact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent contactPickerIntent = new Intent(Intent.ACTION_PICK,
+                        ContactsContract.Contacts.CONTENT_URI);
+                startActivityForResult(contactPickerIntent, GlobalUttilities.CONTACT_SELECT);
+            }
+        });
     }
 
     @Override
@@ -240,8 +255,88 @@ public class ProviderNewEdit_Fragment extends Fragment {
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        if (resultCode == Activity.RESULT_OK) {
+
+            if (requestCode == GlobalUttilities.CONTACT_SELECT) {
+
+                Uri result = data.getData();
+                String email = getContactData(result,
+                        ContactsContract.CommonDataKinds.Email.CONTENT_URI,
+                        ContactsContract.CommonDataKinds.Email.CONTACT_ID + "=?",
+                        new String[]{result.getLastPathSegment()},
+                        ContactsContract.CommonDataKinds.Email.DATA
+                        );
+
+                String phone = getContactData(result,
+                        ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=?",
+                        new String[]{result.getLastPathSegment()},
+                        ContactsContract.CommonDataKinds.Phone.DATA
+                );
+
+                String name = getContactData(result,
+                       result,
+                        null,
+                        null,
+                        ContactsContract.Contacts.DISPLAY_NAME
+                );
+
+                Nametxt.setText(name);
+                Emailtxt.setText(email);
+                Telefonotxt.setText(phone);
+
+                if (email.length() == 0) {
+                    Toast.makeText(getActivity(), "Email not found", Toast.LENGTH_SHORT).show();
+                }
+                if (phone.length() == 0) {
+                    Toast.makeText(getActivity(), "Phone not found", Toast.LENGTH_SHORT).show();
+                }
+                if (name.length() == 0) {
+                    Toast.makeText(getActivity(), "Name not found", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        } else {
+            Log.e("Activity", "Failed to pick contact");
+        }
+
+    }
+
+
+    private String getContactData(Uri data , Uri uri , String selection, String[] args , String column){
+
+        String infoContact="";
+        Cursor cursor = null;
+
+        try {
+
+            Log.v("INFO CONTACT", "Got a contact result: "
+                    + data.toString());
+
+            // query for everything email
+            cursor = getActivity().getContentResolver().query(uri, null, selection, args, null);
+
+            int Idx = cursor.getColumnIndex(column);
+            // let's just get the first email
+            if (cursor.moveToFirst()) {
+                infoContact = cursor.getString(Idx);
+
+                Log.v("INFO CONTACT", "Got name: " + infoContact);
+
+            } else {
+                Log.w("INFO CONTACT", "No results");
+            }
+        } catch (Exception e) {
+            Log.e("INFO CONTACT", "Failed to get name data", e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return infoContact;
     }
 }

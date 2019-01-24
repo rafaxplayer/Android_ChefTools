@@ -2,7 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:orientation="vertical">
 
     <include layout="@layout/toolbar" />
@@ -20,12 +19,12 @@
             android:layout_weight="60" />
 
         <fragment
-            android:id="@+id/detallemenu"
-            android:name="rafaxplayer.cheftools.menus.fragments.MenuDetalle_Fragment"
+            android:id="@+id/detalleescandallo"
+            android:name="rafaxplayer.cheftools.escandallos.fragments.EscandalloDetalle_Fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="40"
-            tools:layout="@layout/fragment_menu_detalle" />
+            tools:layout="@layout/fragment_escandallo_detalle"/>
     </LinearLayout>
 
 </LinearLayout>

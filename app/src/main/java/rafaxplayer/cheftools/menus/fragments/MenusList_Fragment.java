@@ -234,7 +234,7 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
     @Override
     public void onCreateOptionsMenu(android.view.Menu menu, MenuInflater inflater) {
 
-        inflater.inflate(R.menu.menu_menus_list, menu);
+        inflater.inflate(R.menu.menu_lists, menu);
 
         if (!menusFound) {
 
@@ -247,7 +247,7 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.newmenu:
+            case R.id.newelement:
                 Intent in = new Intent(getActivity(), MenuNewEdit_Activity.class);
                 in.putExtra("id", 0);
 
@@ -312,7 +312,9 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
         try {
             mCallback = (OnSelectedCallback) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
+
+
+                throw new ClassCastException(activity.toString()
                     + " must implement OnHeadlineSelectedListener");
         }
 
@@ -343,7 +345,7 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
     }
 
     public interface OnSelectedCallback {
-        public void onSelect(int id);
+         void onSelect(int id);
     }
 
     public class MenusAdapter extends RecyclerView.Adapter<MenusAdapter.ViewHolder> implements Filterable {

@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
 import rafaxplayer.cheftools.R;
-import rafaxplayer.cheftools.menus.fragments.DetalleMenu_Fragment;
+import rafaxplayer.cheftools.menus.fragments.MenuDetalle_Fragment;
 import rafaxplayer.cheftools.menus.fragments.MenusList_Fragment;
 
 public class Menus_Activity extends BaseActivity implements MenusList_Fragment.OnSelectedCallback {
@@ -53,12 +53,12 @@ public class Menus_Activity extends BaseActivity implements MenusList_Fragment.O
     @Override
     public void onSelect(int id) {
 
-        DetalleMenu_Fragment frDetalle = (DetalleMenu_Fragment) getSupportFragmentManager().findFragmentById(R.id.detallemenu);
+        MenuDetalle_Fragment frDetalle = (MenuDetalle_Fragment) getSupportFragmentManager().findFragmentById(R.id.detallemenu);
 
         if (frDetalle != null && frDetalle.isInLayout()) {
             frDetalle.displayWithId(id);
         } else {
-            Intent i = new Intent(this, DetalleMenu_Activity.class);
+            Intent i = new Intent(this, MenuDetalle_Activity.class);
             i.putExtra("id", id);
 
             startActivity(i);

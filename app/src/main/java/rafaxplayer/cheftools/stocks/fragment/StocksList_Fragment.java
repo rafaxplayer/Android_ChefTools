@@ -241,7 +241,7 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
     @Override
     public void onCreateOptionsMenu(android.view.Menu menu, MenuInflater inflater) {
 
-        inflater.inflate(R.menu.menu_orders_list, menu);
+        inflater.inflate(R.menu.menu_lists, menu);
 
         if (!itemsFound) {
 
@@ -254,7 +254,7 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.neworder:
+            case R.id.newelement:
                 Intent in = new Intent(getActivity(), StocksNewEdit_Activity.class);
                 in.putExtra("id", 0);
                 startActivity(in);

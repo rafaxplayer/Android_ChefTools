@@ -30,7 +30,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -263,8 +262,15 @@ public class NewEditRecipe_Fragment extends Fragment {
 
         String cat = ((HashMap<String, Object>) cats.getSelectedItem()).get("Name").toString();
 
+        String imageTosave = null;
+
+        if(imgUri != null){
+            //Si la imagen ya es un backup no es necesario backup_image_recipe()
+            imageTosave = imgUri.toString().contains("Android/data") ? imgUri.toString() : GlobalUttilities.backup_image_recipe(getActivity(), imgUri).get("Uri").toString();
+        }
+
         Recipe rec = new Recipe(nametxt.getText().toString(),
-                imgUri == null ? "null" :  GlobalUttilities.backup_image_recipe(getActivity(), imgUri).get("Uri").toString(),
+                imageTosave == null ? "null" :  imageTosave,
                 ingtxt.getText().toString(),
                 elatxt.getText().toString(),
                 url.getText().toString(),
@@ -347,7 +353,7 @@ public class NewEditRecipe_Fragment extends Fragment {
             elatxt.setText(rec.getElaboration());
 
             this.ID = id;
-            this.imgUri = Uri.parse(rec.getImg().toString());
+            this.imgUri = Uri.parse(rec.getImg());
             ((BaseActivity) getActivity()).setTittleDinamic(getString(R.string.menu_edit_recipe) + " " + rec.getName());
         }
         sql.close();

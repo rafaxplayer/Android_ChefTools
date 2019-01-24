@@ -184,7 +184,7 @@
     <string name="share_cost">Share Cost Evaluation</string>
     <string name="share">Share</string>
     <string name="date">Date</string>
-    <string name="backup_path">Your backup is located at the root of your device or targeta sd / ChefTols_Backup</string>
+    <string name="backup_path">Your backup is located at the root of your root device /ChefTols_Backup</string>
     <string name="white_permission">You declined permission to write files on the device</string>
     <string name="backup_cretaed">Ok, Backup created</string>
     <string name="backup_images_cretaed">Ok, Backup images created</string>
@@ -192,4 +192,13 @@
     <string name="backup_images_deleted">Backup of images has ben deleted</string>
     <string name="permission_whrite_failed">You do not have permissions to write files on this device</string>
     <string name="permission_camera_failed">You do not have permission to use the camera on this device</string>
+    <string name="activity_detalleescandallo">Detail Cost Evaluation</string>
+    <string name="activity_neweditescandallo">New edit Cost Evaluation</string>
+    <string name="save_cost">Save cost</string>
+    <string name="dlgerror_emptyproducts">There are no products in your cost evaluation</string>
+    <string name="Escandallo_name">Cost Evaluation name</string>
+    <string name="new_element">Add new</string>
+    <string name="new_escandallo">New Cost Evaluation</string>
+    <string name="share_escandallo">Share Cost evaluation</string>
+    <string name="edit_escandallo">Edit Cost evaluation</string>
 </resources>

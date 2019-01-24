@@ -89,12 +89,6 @@ public class OrdersDetalle_Fragment extends Fragment {
         return v;
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -145,15 +139,11 @@ public class OrdersDetalle_Fragment extends Fragment {
                 }
                 if (ID != 0) {
                     Orders ord = (Orders) sql.SelectWithId("Orders", DBHelper.TABLE_PEDIDOS, ID);
-
                     String sharedStr = GlobalUttilities.shareDataText(getActivity(), ord);
-                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                    shareIntent.setType("*/*");
-                    shareIntent.putExtra(Intent.EXTRA_TEXT, sharedStr);
+                    GlobalUttilities.shareIntenttext(getActivity(),sharedStr);
 
-                    startActivity(Intent.createChooser(shareIntent, getString(R.string.share_recipe_use)));
                 }
-                //Toast.makeText(getActivity(), "Share", Toast.LENGTH_LONG).show();
+
 
                 break;
             default:
@@ -179,7 +169,7 @@ public class OrdersDetalle_Fragment extends Fragment {
             orderSupplier.setVisibility(TextUtils.isEmpty(supplierName) ? View.GONE : View.VISIBLE);
             this.supplierTlf = sql.getSimpleData(ord.getSupplierid(), DBHelper.PROVEEDOR_TELEFONO, DBHelper.TABLE_PROVEEDORES);
             orderSupplier.setText(supplierName);
-            ArrayList<Order_Product> listProducts = sql.getProductListOrder(id);
+            ArrayList<Order_Product> listProducts = (ArrayList<Order_Product>) (Object)sql.getProductListWithListId("Order_product",id);
             listOrder.setAdapter(new RecyclerAdapter(listProducts));
 
         }

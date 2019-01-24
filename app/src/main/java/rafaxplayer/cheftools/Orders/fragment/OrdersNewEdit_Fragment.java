@@ -127,6 +127,7 @@ public class OrdersNewEdit_Fragment extends Fragment {
 
                         } else {
                             Toast.makeText(getActivity(), getString(R.string.dlgerror_namerecipe), Toast.LENGTH_LONG).show();
+                            getActivity().onBackPressed();
                         }
                     }
                 })
@@ -263,14 +264,14 @@ public class OrdersNewEdit_Fragment extends Fragment {
     public void onCreateOptionsMenu(android.view.Menu menu, MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
         this.menu = menu;
-        inflater.inflate(R.menu.menu_orders_list, menu);
+        inflater.inflate(R.menu.menu_lists, menu);
         menu.findItem(R.id.search).setVisible(false);
 
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.neworder) {
+        if (item.getItemId() == R.id.newelement) {
 
             refresh();
             onResume();
@@ -304,7 +305,7 @@ public class OrdersNewEdit_Fragment extends Fragment {
         }
         String name = sql.getSimpleData(id, DBHelper.NAME, DBHelper.TABLE_PEDIDOS);
         NameOrder.setText(name.toString());
-        ArrayList<Order_Product> listProducts = sql.getProductListOrder(id);
+        ArrayList<Order_Product> listProducts = (ArrayList<Order_Product>) (Object)sql.getProductListWithListId("Order_product",id);
         if (listProducts.size() > 0) {
             OrdersList.setAdapter(new RecyclerAdapter(listProducts));
         }

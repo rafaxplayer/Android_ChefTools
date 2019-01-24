@@ -1,158 +1,142 @@
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/scrollView2"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
         android:orientation="vertical"
         android:padding="10dp">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/textNameOrder"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+
+            android:text="@string/order_title"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/colorPrimary"
+            android:textIsSelectable="false"
+            android:textSize="24sp"
+            android:textStyle="normal|bold|italic" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@color/textTitletColor"
+            android:textStyle="bold|italic" />
+
+        <TextView
+            android:id="@+id/textViewListOrder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/order_list"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="normal|bold|italic" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@color/textTitletColor"
+            android:textStyle="bold|italic" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list_items"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
             android:layout_weight="1"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:paddingRight="5dp"
+            android:scrollbars="vertical" />
 
-            android:orientation="vertical">
+        <TextView
+            android:id="@+id/textView156"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_product"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp"
+            android:textStyle="normal|bold|italic" />
 
-            <TextView
-                android:id="@+id/textNameOrder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:text="@string/order_title"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/colorPrimary"
-                android:textIsSelectable="false"
-                android:textSize="30dp"
-                android:textStyle="normal|bold|italic" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/textTitletColor"
-                android:textStyle="bold|italic" />
-
-            <TextView
-                android:id="@+id/textViewListOrder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/order_list"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/colorPrimary"
-                android:textStyle="normal|bold|italic" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/textTitletColor"
-                android:textStyle="bold|italic" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/list_items"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingTop="5dp"
-                android:scrollbars="vertical" />
-        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@color/textTitletColor"
+            android:textStyle="bold|italic" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="10dp"
-            android:orientation="vertical">
+            android:gravity="bottom"
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/textView156"
+
+            <EditText
+                android:id="@+id/editnameproduct"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:text="@string/add_product"
+                android:inputType="textCapWords"
+                android:padding="10dp"
+                android:singleLine="true"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/colorPrimary"
-                android:textStyle="normal|bold|italic" />
+                android:textColor="#ff4c4c48"
+                android:textColorHint="@color/textTitletColor"
+                android:textStyle="italic" />
 
-            <View
+
+            <EditText
+                android:id="@+id/editCantidad"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_weight="1"
-                android:background="@color/textTitletColor"
-                android:textStyle="bold|italic" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-
-                <EditText
-                    android:id="@+id/editnameproduct"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-
-                    android:inputType="textCapWords"
-                    android:padding="10dp"
-                    android:singleLine="true"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#ff4c4c48"
-                    android:textColorHint="@color/textTitletColor"
-                    android:textStyle="italic" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1.5"
+                android:hint="@string/quantity"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#ff4c4c48"
+                android:textColorHint="@color/textTitletColor"
+                android:textSize="18sp"
+                android:textStyle="italic" />
 
 
-                <EditText
-                    android:id="@+id/editCantidad"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1.5"
-                    android:hint="@string/quantity"
-                    android:imeOptions="actionDone"
-                    android:inputType="number"
-                    android:padding="10dp"
-                    android:singleLine="true"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#ff4c4c48"
-                    android:textColorHint="@color/textTitletColor"
-                    android:textStyle="italic" />
+            <ImageButton
+                android:id="@+id/ButtonAddProduct"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/selector_imagebutton_call"
+                android:padding="10dp"
+                android:src="@drawable/searck_dark" />
 
+            <ImageButton
+                android:id="@+id/ButtonSaveProduct"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/selector_imagebutton_call"
+                android:padding="10dp"
+                android:src="@drawable/add_product" />
 
-                <ImageButton
-                    android:id="@+id/ButtonAddProduct"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:background="@drawable/selector_imagebutton_call"
-                    android:padding="10dp"
-                    android:src="@drawable/searck_dark" />
-
-                <ImageButton
-                    android:id="@+id/ButtonSaveProduct"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:background="@drawable/selector_imagebutton_call"
-                    android:padding="10dp"
-                    android:src="@drawable/add_product" />
-
-            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
-</android.support.v4.widget.NestedScrollView>
+
+</FrameLayout>

@@ -131,13 +131,9 @@ public class ProviderDetalle_Fragment extends Fragment {
                 if (ID != 0) {
                     Supplier pro = (Supplier) sql.SelectWithId("Provider", DBHelper.TABLE_PROVEEDORES, ID);
                     String sharedStr = GlobalUttilities.shareDataText(getActivity(), pro);
-                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                    shareIntent.setType("*/*");
-                    shareIntent.putExtra(Intent.EXTRA_TEXT, sharedStr);
-
-                    startActivity(Intent.createChooser(shareIntent, getString(R.string.share_recipe_use)));
+                    GlobalUttilities.shareIntenttext(getActivity(),sharedStr);
                 }
-                //Toast.makeText(getActivity(), "Share", Toast.LENGTH_LONG).show();
+
 
                 break;
             default:

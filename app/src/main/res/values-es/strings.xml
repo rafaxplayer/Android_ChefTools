@@ -184,7 +184,7 @@
     <string name="share_cost">Compartir escandallo</string>
     <string name="share">Compartir</string>
     <string name="date">Fecha</string>
-    <string name="backup_path">Su copia de seguridad se encuentra en la raiz de su dispositivo o targeta sd /ChefTols_Backup</string>
+    <string name="backup_path">Su copia de seguridad se encuentra en la raiz de su dispositivo /ChefTols_Backup</string>
     <string name="white_permission">Declinaste permiso para escrivir archivos en el dispositivo</string>
     <string name="backup_cretaed">Ok, Copia de seguridad realizada</string>
     <string name="backup_images_cretaed">Ok, Copia de seguridad de imagenes realizada</string>
@@ -192,4 +192,13 @@
     <string name="backup_images_deleted">Se ha eliminado la copia de seguridad de las imágenes</string>
     <string name="permission_whrite_failed">No tienes permisos para escribir archivos en este dispositivo</string>
     <string name="permission_camera_failed">No tienes permisos para usar la cámara en este dispositivo</string>
+    <string name="activity_detalleescandallo">Detalle escandallo</string>
+    <string name="activity_neweditescandallo">Nuevo/Editar escandallo</string>
+    <string name="save_cost">Guardar escandallo</string>
+    <string name="dlgerror_emptyproducts">no hay productos en tu escandallo.</string>
+    <string name="Escandallo_name">Nombre del Escandallo</string>
+    <string name="new_element">Añadir Nuevo</string>
+    <string name="new_escandallo">Nuevo escandallo</string>
+    <string name="share_escandallo">Compartir Escandallo</string>
+    <string name="edit_escandallo">Editar escandallo</string>
 </resources>

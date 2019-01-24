@@ -1,5 +1,6 @@
 package rafaxplayer.cheftools.Globalclasses;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -55,12 +56,15 @@ public class GlobalUttilities {
     public static final int SELECT_PICTURE = 1;
     public static final int SELECT_PHOTO = 2;
     public static final int RECIPE_WITH_CAPTURE = 3;
+
+    public static final int CONTACT_SELECT = 4;
     public static final int PERMISSION_REQUEST = 10001;
     public static final String APP_TAG = "ChefTools";
     public static final String CALCULATOR_PACKAGE_2 = "com.sec.android.app.popupcalculator";
     public static final String CALCULATOR_CLASS_2 = "com.sec.android.app.popupcalculator.Calculator";
     public static final String CALCULATOR_PACKAGE = "com.android.calculator2";
     public static final String CALCULATOR_CLASS = "com.android.calculator2.Calculator";
+
 
     public static Boolean backup(Context con) {
         boolean ret;
@@ -194,10 +198,10 @@ public class GlobalUttilities {
     public static Map backup_image_recipe(Context con, Uri imageFile) {
 
         Map ret = new HashMap<>();
-
-        File mFile = new File(uriGetPath(con, imageFile));
+        Log.e("UriPath", uriGetPath(con, imageFile));
 
         try {
+            File mFile = new File(uriGetPath(con, imageFile));
 
             FileInputStream fis = new FileInputStream(mFile);
 
@@ -227,13 +231,13 @@ public class GlobalUttilities {
                 ret.put("IsCreate", false);
             }
         } catch (FileNotFoundException e) {
-
+            Log.e("FileNotFoundException", e.getMessage());
             Toast.makeText(con, "No existe la imagen", Toast.LENGTH_LONG).show();
             ret.put("Uri", null);
             ret.put("IsCreate", false);
+
         } catch (Exception ex) {
-
-
+            Log.e("Exception", ex.getMessage());
             Toast.makeText(con, "Error image", Toast.LENGTH_LONG).show();
             ret.put("Uri", null);
             ret.put("IsCreate", false);
@@ -301,11 +305,12 @@ public class GlobalUttilities {
         return s;
     }
 
-    public static String shareEscandalloText(Context con, Escandallo esc) {
+    public static String shareEscandalloText(Context con, Escandallo esc, ArrayList<Escandallo_Product> products) {
+
         StringBuilder str = new StringBuilder();
         str.append(esc.getName());
         str.append("\n");
-        str.append(String.format("%s: %s", con.getString(R.string.date), esc.getDate()));
+        str.append(String.format("%s: %s", con.getString(R.string.date), esc.getFecha()));
         str.append("\n");
         str.append("-=-=-=-=-=-=-=-=-=-=");
         str.append("\n");
@@ -314,7 +319,7 @@ public class GlobalUttilities {
         str.append("--------------------");
         str.append("\n");
 
-        for (Escandallo_Product pr : esc.getProducts()) {
+        for (Escandallo_Product pr : products) {
             str.append(pr.getProductoname());
             str.append("\n");
             str.append(String.format("%s: %s%s", con.getString(R.string.product_uni), pr.getCantidad(), pr.getFormato()));
@@ -492,9 +497,17 @@ public class GlobalUttilities {
         return str.toString();
     }
 
+    public static void shareIntenttext(Activity act,String content){
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, content);
+
+        act.startActivity(Intent.createChooser(shareIntent, act.getString(R.string.share_recipe_use)));
+    }
+
     public static String getDateTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                "dd/MM/yyyy HH:mm:ss", Locale.getDefault());
         Date date = new Date();
         return dateFormat.format(date);
     }

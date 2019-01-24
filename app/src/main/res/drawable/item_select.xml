@@ -13,4 +13,6 @@
         android:bottom="1dp"
         />
 
+    <corners android:radius="10dip"/>
+
 </shape>

@@ -287,7 +287,7 @@ public class StocksNewEdit_Fragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
         this.menu = menu;
-        inflater.inflate(R.menu.menu_orders_list, menu);
+        inflater.inflate(R.menu.menu_lists, menu);
         menu.findItem(R.id.search).setVisible(false);
 
 
@@ -295,7 +295,7 @@ public class StocksNewEdit_Fragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.neworder) {
+        if (item.getItemId() == R.id.newelement) {
 
             refresh();
             onResume();
@@ -329,7 +329,7 @@ public class StocksNewEdit_Fragment extends Fragment {
         }
         String name = sql.getSimpleData(id, DBHelper.NAME, DBHelper.TABLE_INVENTARIOS);
         NameStock.setText(name.toString());
-        ArrayList<Stock_Product> listProducts = sql.getProductListStock(id);
+        ArrayList<Stock_Product> listProducts = (ArrayList<Stock_Product>) (Object) sql.getProductListWithListId("Stock_product",id);
         if (listProducts.size() > 0) {
             StocksList.setAdapter(new RecyclerAdapter(listProducts));
         }

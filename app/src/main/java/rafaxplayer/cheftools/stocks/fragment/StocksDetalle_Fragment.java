@@ -145,7 +145,7 @@ public class StocksDetalle_Fragment extends Fragment {
 
             stockName.setText(ord.getName());
             stockComment.setText(ord.getComentario());
-            ArrayList<Stock_Product> listProducts = sql.getProductListStock(id);
+            ArrayList<Stock_Product> listProducts =  (ArrayList<Stock_Product>) (Object)sql.getProductListWithListId("Stock_product",id);
 
             listStock.setAdapter(new RecyclerAdapter(listProducts));
 

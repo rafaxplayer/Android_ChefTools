@@ -41,7 +41,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rafaxplayer.cheftools.Globalclasses.BaseActivity;
-import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
 import rafaxplayer.cheftools.Globalclasses.models.Recipe;
 import rafaxplayer.cheftools.R;
 import rafaxplayer.cheftools.database.DBHelper;
@@ -232,7 +231,7 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
-        inflater.inflate(R.menu.menu_list_recipes, menu);
+        inflater.inflate(R.menu.menu_lists, menu);
 
         if (!recipesFound) {
 
@@ -245,7 +244,7 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.newrecipe:
+            case R.id.newelement:
                 Intent in = new Intent(getActivity(), NewEditRecipe_Activity.class);
                 in.putExtra("id", 0);
                 in.putExtra("uri", "");

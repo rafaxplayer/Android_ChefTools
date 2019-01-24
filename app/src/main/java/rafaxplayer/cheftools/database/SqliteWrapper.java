@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import rafaxplayer.cheftools.Globalclasses.models.Escandallo;
+import rafaxplayer.cheftools.Globalclasses.models.Escandallo_Product;
 import rafaxplayer.cheftools.Globalclasses.models.ImageGalleryModel;
 import rafaxplayer.cheftools.Globalclasses.models.Menu;
 import rafaxplayer.cheftools.Globalclasses.models.Order_Product;
@@ -98,6 +100,7 @@ public class SqliteWrapper {
         String selectQuery = "SELECT * FROM " + Table + " WHERE " + DBHelper.ID + "=" + id;
         try {
             Cursor cursor = db.rawQuery(selectQuery, null);
+
             if (clase.equals("Recipe")) {
                 Recipe rec = new Recipe();
                 if (cursor != null) {
@@ -186,6 +189,18 @@ public class SqliteWrapper {
 
                 }
                 return stock;
+            } else if (clase.equals("Escandallo")) {
+
+                Escandallo esc = new Escandallo();
+                if (cursor != null) {
+                    cursor.moveToFirst();
+                    esc.setId(Integer.parseInt(cursor.getString(0)));
+                    esc.setName(cursor.getString(1));
+                    esc.setCostetotal(Double.parseDouble(cursor.getString(2)));
+                    esc.setFecha(cursor.getString(3));
+
+                }
+                return esc;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -200,6 +215,19 @@ public class SqliteWrapper {
 
             count = db.delete(Table, DBHelper.ID + " = ?",
                     new String[]{String.valueOf(id)});
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return count;
+    }
+
+    public int DeleteWithValue(String camp, String value, String Table) {
+        int count = 0;
+        try {
+
+            count = db.delete(Table, camp + " = ?",
+                    new String[]{String.valueOf(value)});
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -270,6 +298,14 @@ public class SqliteWrapper {
                 values.put(DBHelper.PRODUCTO_PROVEEDOR_ID, ((Product) ob).getSupplierid());
 
                 count = db.update(DBHelper.TABLE_PRODUCTOS, values, DBHelper.ID + " = ?",
+                        new String[]{String.valueOf(id)});
+            } else if (ob instanceof Escandallo) {
+
+                ContentValues values = new ContentValues();
+                values.put(DBHelper.NAME, ((Escandallo) ob).getName());
+                values.put(DBHelper.COSTE_TOTAL, ((Escandallo) ob).getCostetotal());
+
+                count = db.update(DBHelper.TABLE_ESCANDALLOS, values, DBHelper.ID + " = ?",
                         new String[]{String.valueOf(id)});
             }
         } catch (SQLException e) {
@@ -402,6 +438,42 @@ public class SqliteWrapper {
                     } while (cursor.moveToNext());
                 }
 
+            } else if (clase.equals("Escandallos")) {
+                String selectQuery = "SELECT * FROM " + DBHelper.TABLE_ESCANDALLOS + " ORDER BY " + DBHelper.NAME + " DESC";
+
+                Cursor cursor = db.rawQuery(selectQuery, null);
+
+                if (cursor.moveToFirst()) {
+                    do {
+                        Escandallo escandallo = new Escandallo();
+                        escandallo.setId(Integer.parseInt(cursor.getString(0)));
+                        escandallo.setName(cursor.getString(1));
+                        escandallo.setCostetotal(cursor.getDouble(2));
+                        escandallo.setFecha(cursor.getString(3));
+
+                        ObjectList.add(escandallo);
+                    } while (cursor.moveToNext());
+                }
+
+            } else if (clase.equals("Escandallos_product")) {
+                String selectQuery = "SELECT * FROM " + DBHelper.TABLE_ESCANDALLOS_PRODUCTS + " ORDER BY " + DBHelper.NAME + " DESC";
+
+                Cursor cursor = db.rawQuery(selectQuery, null);
+
+                if (cursor.moveToFirst()) {
+                    do {
+                        Escandallo_Product escandallo_pr = new Escandallo_Product();
+
+                        escandallo_pr.setProductoname(cursor.getString(1));
+                        escandallo_pr.setCantidad(cursor.getString(2));
+                        escandallo_pr.setCantidad(cursor.getString(3));
+                        escandallo_pr.setFormato(cursor.getString(4));
+                        escandallo_pr.setCostforuni(cursor.getString(5));
+                        escandallo_pr.setCoste(cursor.getDouble(6));
+
+                        ObjectList.add(escandallo_pr);
+                    } while (cursor.moveToNext());
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -448,15 +520,33 @@ public class SqliteWrapper {
 
                 id = db.insert(DBHelper.TABLE_PROVEEDORES, null, values);
 
+            } else if (ob instanceof Escandallo) {
+
+                values.put(DBHelper.NAME, ((Escandallo) ob).getName());
+                values.put(DBHelper.COSTE_TOTAL, ((Escandallo) ob).getCostetotal());
+
+                id = db.insert(DBHelper.TABLE_ESCANDALLOS, null, values);
+
+            } else if (ob instanceof Escandallo_Product) {
+
+                values.put(DBHelper.NAME, ((Escandallo_Product) ob).getProductoname());
+                values.put(DBHelper.ESCANDALLO_ID, ((Escandallo_Product) ob).getEscandalloid());
+                values.put(DBHelper.ESCANDALLO_PRODUCT_FORMAT, ((Escandallo_Product) ob).getFormato());
+                values.put(DBHelper.ESCANDALLO_PRODUCT_COST_FOR_UNI, ((Escandallo_Product) ob).getCostforuni());
+                values.put(DBHelper.ESCANDALLO_PRODUCT_QUANTITY, ((Escandallo_Product) ob).getCantidad());
+                values.put(DBHelper.ESCANDALLO_PRODUCT_COSTE, ((Escandallo_Product) ob).getCoste());
+
+                id = db.insert(DBHelper.TABLE_ESCANDALLOS_PRODUCTS, null, values);
+
             }
             values.clear();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        if (db.isOpen()) {
+       /* if (db.isOpen()) {
             db.close();
-        }
+        }*/
 
         return id;
     }
@@ -643,7 +733,7 @@ public class SqliteWrapper {
         return id;
     }
 
-    public ArrayList<Order_Product> getProductListOrder(int listID) {
+   /* public ArrayList<Order_Product> getProductListOrder(int listID) {
 
         ArrayList<Order_Product> ObjectList = new ArrayList<Order_Product>();
 
@@ -692,6 +782,76 @@ public class SqliteWrapper {
                     ObjectList.add(stock);
                 } while (cursor.moveToNext());
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ObjectList;
+    }*/
+
+    public ArrayList<Object> getProductListWithListId(String clase,int listID) {
+
+        ArrayList<Object> ObjectList = new ArrayList<>();
+        String selectQuery = "";
+        Cursor cursor;
+        try {
+
+            if(clase.equals("Escandallo_product")){
+
+                selectQuery = "SELECT * FROM " + DBHelper.TABLE_ESCANDALLOS_PRODUCTS + " WHERE " + DBHelper.ESCANDALLO_ID + "=" + listID;
+                cursor = db.rawQuery(selectQuery, null);
+
+                if (cursor.moveToFirst()) {
+                    do {
+                        Escandallo_Product escandallo_pr = new Escandallo_Product();
+
+                        escandallo_pr.setProductoname(cursor.getString(1));
+                        escandallo_pr.setCantidad(cursor.getString(2));
+                        escandallo_pr.setCantidad(cursor.getString(3));
+                        escandallo_pr.setFormato(cursor.getString(4));
+                        escandallo_pr.setCostforuni(cursor.getString(5));
+                        escandallo_pr.setCoste(cursor.getDouble(6));
+
+                        ObjectList.add(escandallo_pr);
+                    } while (cursor.moveToNext());
+                }
+
+            } else if(clase.equals("Stock_product")){
+
+                selectQuery = "SELECT * FROM " + DBHelper.TABLE_INVENTARIOS_LISTAS + " WHERE " + DBHelper.INVENTARIO_ID + "=" + listID;
+                cursor = db.rawQuery(selectQuery, null);
+                if (cursor.moveToFirst()) {
+                    do {
+                        Stock_Product stock = new Stock_Product();
+                        stock.setID(cursor.getInt(0));
+                        stock.setStockId(cursor.getInt(1));
+                        stock.setProductoId(cursor.getInt(2));
+                        stock.setCantidad(cursor.getInt(3));
+                        stock.setCategoriaid(cursor.getInt(4));
+                        stock.setFormatoid(cursor.getInt(5));
+
+                        ObjectList.add(stock);
+                    } while (cursor.moveToNext());
+                }
+
+            }else if(clase.equals("Order_product")){
+                selectQuery = "SELECT * FROM " + DBHelper.TABLE_PEDIDOS_LISTAS + " WHERE " + DBHelper.PEDIDO_ID + "=" + listID;
+                cursor = db.rawQuery(selectQuery, null);
+
+                if (cursor.moveToFirst()) {
+                    do {
+                        Order_Product ordP = new Order_Product();
+                        ordP.setID(cursor.getInt(0));
+                        ordP.setListaId(cursor.getInt(1));
+                        ordP.setProductoId(cursor.getInt(2));
+                        ordP.setCantidad(cursor.getInt(3));
+                        ordP.setCategoriaid(cursor.getInt(4));
+                        ordP.setFormatoid(cursor.getInt(5));
+
+                        ObjectList.add(ordP);
+                    } while (cursor.moveToNext());
+                }
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

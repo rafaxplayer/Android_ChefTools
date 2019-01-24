@@ -5,24 +5,34 @@ package rafaxplayer.cheftools.Globalclasses.models;
  */
 public class Escandallo_Product {
 
+    int escandalloid;
     String productoname;
     String cantidad;
     String formato;
     String costforuni;
     double coste;
 
+
+
     public Escandallo_Product() {
 
     }
 
-    public Escandallo_Product(String costforuni, String productoname, String cantidad, double coste) {
-
+    public Escandallo_Product(int escandalloid,String costforuni, String productoname, String cantidad, double coste) {
+        this.escandalloid= escandalloid;
         this.costforuni = costforuni;
         this.productoname = productoname;
         this.cantidad = cantidad;
         this.coste = coste;
     }
 
+    public int getEscandalloid() {
+        return escandalloid;
+    }
+
+    public void setEscandalloid(int escandalloid) {
+        this.escandalloid = escandalloid;
+    }
     public String getFormato() {
         return formato;
     }

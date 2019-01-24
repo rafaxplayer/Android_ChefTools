@@ -237,7 +237,7 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
     @Override
     public void onCreateOptionsMenu(android.view.Menu menu, MenuInflater inflater) {
 
-        inflater.inflate(R.menu.menu_orders_list, menu);
+        inflater.inflate(R.menu.menu_lists, menu);
 
         if (!itemsFound) {
 
@@ -250,7 +250,7 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.neworder:
+            case R.id.newelement:
                 Intent in = new Intent(getActivity(), OrdersNewEdit_Activity.class);
                 in.putExtra("id", 0);
                 startActivity(in);
@@ -504,7 +504,6 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
             @Override
             public void onClick(View v) {
 
-
                 if (v.getId() == R.id.ButtonDelete) {
                     new MaterialDialog.Builder(getActivity())
                             .title(R.string.order_delete)
@@ -532,7 +531,7 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
                     return;
                 } else if (v.getId() == R.id.ButtonEdit) {
                     Intent in = new Intent(getActivity(), OrdersNewEdit_Activity.class);
-                    in.putExtra("id", ((Orders) mDataset.get(ViewHolder.this.getLayoutPosition())).getId());
+                    in.putExtra("id", ( mDataset.get(ViewHolder.this.getLayoutPosition())).getId());
                     getActivity().startActivity(in);
                 } else {
                     if (mActionMode != null) {

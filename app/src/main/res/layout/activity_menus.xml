@@ -2,7 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:orientation="vertical">
 
     <include layout="@layout/toolbar" />
@@ -21,7 +20,7 @@
 
         <fragment
             android:id="@+id/detallemenu"
-            android:name="rafaxplayer.cheftools.menus.fragments.DetalleMenu_Fragment"
+            android:name="rafaxplayer.cheftools.menus.fragments.MenuDetalle_Fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="40"

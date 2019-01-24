@@ -265,9 +265,9 @@ public class ProductosMannager_Fragment extends DialogFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
-        inflater.inflate(R.menu.menu_list_recipes, menu);
+        inflater.inflate(R.menu.menu_lists, menu);
         //menu.findItem(R.id.refresh).setVisible(false);
-        menu.findItem(R.id.newrecipe).setVisible(false);
+        menu.findItem(R.id.newelement).setVisible(false);
 
 
     }

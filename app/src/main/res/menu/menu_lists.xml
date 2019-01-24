@@ -9,9 +9,9 @@
         myapp:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/newrecipe"
-        android:icon="@drawable/ic_add_recipe"
-        android:title="@string/menu_new_recipe"
+        android:id="@+id/newelement"
+        android:icon="@drawable/ic_add"
+        android:title="@string/new_element"
         myapp:showAsAction="ifRoom" />
 
 </menu>

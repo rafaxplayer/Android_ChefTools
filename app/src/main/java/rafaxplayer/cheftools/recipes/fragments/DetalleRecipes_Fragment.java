@@ -4,8 +4,10 @@ package rafaxplayer.cheftools.recipes.fragments;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -120,13 +124,15 @@ public class DetalleRecipes_Fragment extends Fragment {
                     Recipe rec = (Recipe) sql.SelectWithId("Recipe", DBHelper.TABLE_RECETAS, ID);
                     String sharedStr = GlobalUttilities.shareDataText(getActivity(), rec);
                     Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                    shareIntent.setType("*/*");
                     shareIntent.putExtra(Intent.EXTRA_TEXT, sharedStr);
                     if (!rec.getImg().equals("null")) {
                         Uri uri = Uri.parse(rec.getImg());
                         shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+                        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        shareIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                     }
-                    startActivity(Intent.createChooser(shareIntent, getString(R.string.share_recipe_use)));
+                    shareIntent.setType("*/*");
+                    getActivity().startActivity(Intent.createChooser(shareIntent, getString(R.string.share_recipe_use)));
                 }
 
                 break;
@@ -143,6 +149,10 @@ public class DetalleRecipes_Fragment extends Fragment {
         super.onCreate(savedInstanceState);
         sql = new SqliteWrapper(getActivity());
         sql.open();
+
+        // Codigo para poder compartir la imagen de la receta y no salte error FileIOexposeException
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder ();
+        StrictMode.setVmPolicy (builder.build ());
 
     }
 

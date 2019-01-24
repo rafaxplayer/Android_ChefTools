@@ -3,6 +3,7 @@ package rafaxplayer.cheftools.menus.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,10 +18,10 @@ import rafaxplayer.cheftools.Globalclasses.models.Menu;
 import rafaxplayer.cheftools.R;
 import rafaxplayer.cheftools.database.DBHelper;
 import rafaxplayer.cheftools.database.SqliteWrapper;
-import rafaxplayer.cheftools.menus.DetalleMenu_Activity;
+import rafaxplayer.cheftools.menus.MenuDetalle_Activity;
 import rafaxplayer.cheftools.menus.Menus_Activity;
 
-public class DetalleMenu_Fragment extends Fragment {
+public class MenuDetalle_Fragment extends Fragment {
 
     @BindView(R.id.menunamedetalle)
     TextView menuName;
@@ -37,8 +38,8 @@ public class DetalleMenu_Fragment extends Fragment {
     private SqliteWrapper sql;
     private int ID;
 
-    public static DetalleMenu_Fragment newInstance(int id) {
-        DetalleMenu_Fragment fr = new DetalleMenu_Fragment();
+    public static MenuDetalle_Fragment newInstance(int id) {
+        MenuDetalle_Fragment fr = new MenuDetalle_Fragment();
         Bundle args = new Bundle();
         args.putInt("id", id);
         fr.setArguments(args);
@@ -82,7 +83,7 @@ public class DetalleMenu_Fragment extends Fragment {
                     if (getResources().getBoolean(R.bool.dual_pane) && islayout) {
                         ((Menus_Activity) getActivity()).showMenuEdit(ID);
                     } else {
-                        ((DetalleMenu_Activity) getActivity()).showMenuEdit(ID);
+                        ((MenuDetalle_Activity) getActivity()).showMenuEdit(ID);
                     }
 
                 }
@@ -95,13 +96,8 @@ public class DetalleMenu_Fragment extends Fragment {
                 if (ID != 0) {
                     Menu men = (Menu) sql.SelectWithId("Menu", DBHelper.TABLE_MENUSCARTAS, ID);
                     String sharedStr = GlobalUttilities.shareDataText(getActivity(), men);
-                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                    shareIntent.setType("*/*");
-                    shareIntent.putExtra(Intent.EXTRA_TEXT, sharedStr);
-
-                    startActivity(Intent.createChooser(shareIntent, getString(R.string.share_recipe_use)));
+                    GlobalUttilities.shareIntenttext(getActivity(),sharedStr);
                 }
-                //Toast.makeText(getActivity(), "Share", Toast.LENGTH_LONG).show();
 
                 break;
             default:

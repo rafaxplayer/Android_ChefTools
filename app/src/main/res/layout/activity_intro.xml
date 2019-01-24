@@ -4,13 +4,6 @@
     android:background="@drawable/back_kitchen"
     android:id="@+id/background">
 
-    <!--<FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha="0.5"
-        android:background="@android:color/black">
-
-    </FrameLayout>-->
 
     <rafaxplayer.cheftools.Globalclasses.MyTextView
         android:id="@+id/textIntro1"

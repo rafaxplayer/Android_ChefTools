@@ -5,19 +5,19 @@
     android:background="@drawable/selector_imagebutton_call"
     android:clickable="true"
     android:orientation="horizontal"
-    android:padding="5dp">
+    android:padding="2dp">
 
     <FrameLayout
-        android:layout_width="@dimen/fab_size_mini"
-        android:layout_height="@dimen/fab_size_mini"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_gravity="center_vertical"
         android:background="#e38b4513"
         android:padding="1dp">
 
         <ImageView
             android:id="@+id/imageList"
-            android:layout_width="@dimen/fab_size_mini"
-            android:layout_height="@dimen/fab_size_mini"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
             android:layout_margin="10dp"
             android:background="#ffb8860b"
@@ -29,10 +29,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:elevation="1dp"
         android:orientation="vertical"
         android:padding="5dp"
-        android:layout_weight="1"
-        android:elevation="1dp">
+        android:paddingLeft="6dp">
 
         <TextView
             android:id="@+id/text1"
@@ -45,13 +46,13 @@
             android:text="Large Text"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/textNameColor"
-            android:textSize="@dimen/text_large"
+            android:textSize="18sp"
             android:textStyle="bold|italic" />
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/text2"
@@ -59,9 +60,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="8dp"
+                android:elevation="1dp"
                 android:text="Medium Text"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:elevation="1dp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/text3"
@@ -69,10 +71,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="8dp"
+                android:elevation="1dp"
                 android:text="Medium Text"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="italic"
-                android:elevation="1dp" />
+                android:textSize="14sp"
+                android:textStyle="italic" />
         </LinearLayout>
 
     </LinearLayout>

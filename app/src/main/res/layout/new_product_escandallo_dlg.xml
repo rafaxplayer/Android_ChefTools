@@ -116,7 +116,7 @@
                     android:singleLine="true"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="#ff4c4c48"
-                    android:textColorHint="@color/textTitletColor"
+                    android:textColorHint="@color/colorPrimary"
                     android:textStyle="italic" />
 
                 <TextView

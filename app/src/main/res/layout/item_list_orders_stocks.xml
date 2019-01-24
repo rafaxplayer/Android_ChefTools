@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
     android:background="@drawable/itemlist_selector"
     android:focusable="false"
     android:orientation="horizontal"
@@ -56,6 +57,7 @@
             android:text="Medium Text"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#ff565656"
+            android:textSize="14sp"
             android:textStyle="italic" />
     </LinearLayout>
 
