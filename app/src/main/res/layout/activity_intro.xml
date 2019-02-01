@@ -46,7 +46,7 @@
         android:alpha="0.0"
         android:text="For Professionals"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="@android:color/background_light"
         android:textStyle="normal|italic"
         android:typeface="sans" />
 

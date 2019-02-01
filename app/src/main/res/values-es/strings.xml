@@ -201,4 +201,7 @@
     <string name="new_escandallo">Nuevo escandallo</string>
     <string name="share_escandallo">Compartir Escandallo</string>
     <string name="edit_escandallo">Editar escandallo</string>
+    <string name="menu_new_escandallo">Nombre nuevo escandallo</string>
+
+    <string name="productdeleted">Ok,Producto eliminado</string>
 </resources>

@@ -1,9 +1,7 @@
 package rafaxplayer.cheftools.menus.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -96,7 +94,7 @@ public class MenuDetalle_Fragment extends Fragment {
                 if (ID != 0) {
                     Menu men = (Menu) sql.SelectWithId("Menu", DBHelper.TABLE_MENUSCARTAS, ID);
                     String sharedStr = GlobalUttilities.shareDataText(getActivity(), men);
-                    GlobalUttilities.shareIntenttext(getActivity(),sharedStr);
+                    GlobalUttilities.shareIntenttext(getActivity(), sharedStr);
                 }
 
                 break;

@@ -1,6 +1,5 @@
 package rafaxplayer.cheftools.escandallos.fragments;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -28,10 +28,10 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -51,21 +51,27 @@ public class EscandalloNewEdit_Fragment extends Fragment {
     RecyclerView listProducts;
     @BindView(R.id.texttotal)
     TextView texttotal;
+    @BindView(R.id.comments)
+    EditText comments;
     @BindString(R.string.product_cost)
     String productCost;
     @BindString(R.string.cost_total)
     String costTotal;
     @BindView(R.id.escandalloName)
-    EditText editName;
+    TextView escandalloName;
 
     @OnClick(R.id.fab)
-    public void submit(View view) {
-        if (TextUtils.isEmpty(editName.getText())) {
-            Toast.makeText(getActivity(), getString(R.string.dlgerror_namerecipe), Toast.LENGTH_LONG).show();
-
-        } else {
+    public void showDialogProduct(View v) {
+        if (this.ID != 0) {
             dialogNewProduct.show();
+        } else {
+            Toast.makeText(getActivity(), getString(R.string.dlgerror_namerecipe), Toast.LENGTH_LONG).show();
         }
+    }
+
+    @OnClick(R.id.escandalloName)
+    public void showDialogName(View v) {
+        dialogNewEscandallo.show();
     }
 
     private MaterialDialog dialogNewProduct;
@@ -79,6 +85,9 @@ public class EscandalloNewEdit_Fragment extends Fragment {
     private double dataUni = 1000;
     private int ID;
     private SqliteWrapper sql;
+    private MaterialDialog dialogNewEscandallo;
+    private EditText newName;
+    private EditText newComment;
 
     public EscandalloNewEdit_Fragment() {
         // Required empty public constructor
@@ -95,16 +104,6 @@ public class EscandalloNewEdit_Fragment extends Fragment {
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        sql = new SqliteWrapper(getActivity());
-        sql.open();
-        if (getArguments() != null) {
-            this.ID = getArguments().getInt("id");
-        }
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -112,12 +111,117 @@ public class EscandalloNewEdit_Fragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_escandallo_new_edit, container, false);
         ButterKnife.bind(this, v);
-        dialogNewProduct = createDilaogNewProduct();
+        dialogNewProduct = createDialogNewProduct();
         listProducts.setHasFixedSize(true);
         listProducts.setLayoutManager(new LinearLayoutManager(getActivity()));
         listProducts.setItemAnimator(new DefaultItemAnimator());
         listProducts.setAdapter(new EscandalloNewEdit_Fragment.RecyclerAdapter(new ArrayList<Escandallo_Product>()));
         return v;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        dialogNewEscandallo = new MaterialDialog.Builder(getActivity())
+                .customView(R.layout.new_list_order_dlg, true)
+                .positiveText(R.string.done)
+                .negativeText(R.string.cancel)
+                .showListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+
+                        ((TextView) dialogNewEscandallo.getCustomView().findViewById(R.id.textnewlist)).setText(getString(R.string.menu_new_escandallo));
+                        ((LinearLayout) dialogNewEscandallo.getCustomView().findViewById(R.id.providerpanel)).setVisibility(View.GONE);
+
+                        if (ID != 0) {
+                            ((EditText) dialogNewEscandallo.getCustomView().findViewById(R.id.editnameorder)).setText(escandalloName.getText().toString());
+                            ((EditText) dialogNewEscandallo.getCustomView().findViewById(R.id.editcomment)).setText(comments.getText().toString());
+                        }
+                    }
+                })
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        Log.e("ID", String.valueOf(ID));
+                        if (!sql.IsOpen()) {
+                            sql.open();
+                        }
+                        newName = dialog.getCustomView().findViewById(R.id.editnameorder);
+                        newComment = dialog.getCustomView().findViewById(R.id.editcomment);
+                        String newNametext = newName.getText().toString();
+                        String newCommenttext = newComment.getText().toString();
+                        if (TextUtils.isEmpty(newNametext)) {
+
+                            Toast.makeText(getActivity(), getString(R.string.dlgerror_namerecipe), Toast.LENGTH_LONG).show();
+                            GlobalUttilities.animateView(getActivity(), newName);
+
+                            return;
+                        }
+
+                        Escandallo esc = new Escandallo();
+                        esc.setName(newNametext);
+                        esc.setComment(newCommenttext);
+                        double costtotal = ((RecyclerAdapter) listProducts.getAdapter()).calculatecostetotal();
+                        esc.setCostetotal(costtotal);
+
+                        if (ID != 0) {
+
+                            long count = sql.UpdateWithId(esc, ID);
+
+                            if (count > 0) {
+                                Toast.makeText(getActivity(), getString(R.string.dlgok_update), Toast.LENGTH_LONG).show();
+                            }
+
+                        } else {
+
+                            if (sql.CheckIsDataAlreadyInDBorNot(DBHelper.TABLE_ESCANDALLOS, DBHelper.NAME, newNametext)) {
+                                Toast.makeText(getActivity(), getString(R.string.dlgerror_dataexist), Toast.LENGTH_LONG).show();
+                                GlobalUttilities.animateView(getActivity(), newName);
+                                getActivity().onBackPressed();
+                                return;
+                            }
+
+                            long ret = sql.InsertObject(esc);
+
+                            if (ret != -1) {
+                                ID = (int) ret;
+                                Toast.makeText(getActivity(), "Ok, Escandallo guardado con Nombre : " + newNametext, Toast.LENGTH_LONG).show();
+                                escandalloName.setText(newNametext);
+                                comments.setText(newCommenttext);
+
+                            } else {
+                                Toast.makeText(getActivity(), getString(R.string.dlgerror_namerecipe), Toast.LENGTH_LONG).show();
+                            }
+
+                        }
+
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                        getActivity().onBackPressed();
+                    }
+                })
+                .build();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        sql = new SqliteWrapper(getActivity());
+        sql.open();
+        if (getArguments() != null) {
+            this.ID = getArguments().getInt("id");
+        } else {
+
+            this.ID = 0;
+            dialogNewEscandallo.show();
+        }
+
+
     }
 
     @Override
@@ -129,25 +233,27 @@ public class EscandalloNewEdit_Fragment extends Fragment {
         if (this.ID != 0) {
             displayWithId(this.ID);
         } else {
+            dialogNewEscandallo.show();
             ((BaseActivity) getActivity()).setTittleDinamic(getString(R.string.new_escandallo));
         }
 
     }
 
 
-
     @Override
     public void onCreateOptionsMenu(android.view.Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_save, menu);
-        MenuItem share = menu.findItem(R.id.action_save);
-        share.setTitle(R.string.save_cost);
+
+        inflater.inflate(R.menu.menu_lists, menu);
+        menu.findItem(R.id.search).setVisible(false);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_save:
-                save();
+            case R.id.newelement:
+                refresh();
+                onResume();
+
                 break;
             default:
                 break;
@@ -163,107 +269,27 @@ public class EscandalloNewEdit_Fragment extends Fragment {
     }
 
 
-    private void save() {
-
-        if (!sql.IsOpen()) {
-            sql.open();
-        }
-        ArrayList<Escandallo_Product> list = ((RecyclerAdapter) listProducts.getAdapter()).getProducts();
-
-        Escandallo esc = new Escandallo();
-        esc.setName(editName.getText().toString());
-        esc.setFecha( GlobalUttilities.getDateTime());
-        String cost = texttotal.getText().toString().replace(costTotal, "").replace("€", "");
-
-        if (cost.length() > 0)
-            esc.setCostetotal(Double.valueOf(cost));
-
-        if (TextUtils.isEmpty(editName.getText())) {
-            Toast.makeText(getActivity(), getString(R.string.dlgerror_namerecipe), Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        if (!(list.size() > 0)) {
-            Toast.makeText(getActivity(), getString(R.string.dlgerror_emptyproducts), Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        if (this.ID == 0) {
-
-            long id = sql.InsertObject(esc);
-            if (id != -1) {
-
-                for(Escandallo_Product pr : list){
-                    pr.setEscandalloid((int)id);
-                    sql.InsertObject(pr);
-                }
-
-                new MaterialDialog.Builder(getActivity())
-                        .title(getString(R.string.dlgsucces_saved))
-                        .content(getString(R.string.dlgnew_saved))
-                        .positiveText(R.string.yes)
-
-                        .negativeText(R.string.not)
-
-                        .callback(new MaterialDialog.ButtonCallback() {
-                            @Override
-                            public void onPositive(MaterialDialog dialog) {
-                                refresh();
-                                dialog.dismiss();
-                            }
-
-                            @Override
-                            public void onNegative(MaterialDialog dialog) {
-                                getActivity().onBackPressed();
-                                dialog.dismiss();
-
-                            }
-                        })
-                        .show();
-            }
-        } else {
-
-            long count = sql.UpdateWithId(esc, this.ID);
-            if (count > 0) {
-
-                sql.DeleteWithValue(DBHelper.ESCANDALLO_ID,String.valueOf(this.ID),DBHelper.TABLE_ESCANDALLOS_PRODUCTS);
-                for(Escandallo_Product pr : list){
-                    pr.setEscandalloid((int)this.ID);
-                    sql.InsertObject(pr);
-                }
-
-                Toast.makeText(getActivity(), getString(R.string.dlgok_update), Toast.LENGTH_LONG).show();
-                if ((getActivity().getSupportFragmentManager().findFragmentByTag("escandallodetalle")) != null) {
-                    (getActivity().getSupportFragmentManager().findFragmentByTag("escandallodetalle")).onResume();
-                }
-                getActivity().onBackPressed();
-            }
-
-        }
-
-    }
-
     private void refresh() {
-        editName.setText("");
-        editquantity.setText("");
+        escandalloName.setText(getString(R.string.Escandallo_name));
         ((RecyclerAdapter) listProducts.getAdapter()).clear();
-        texttotal.setText("");
+        texttotal.setText(costTotal);
+        this.ID = 0;
 
     }
 
     private ArrayList<HashMap<String, Object>> generateSpinnerDta() {
-        ArrayList<HashMap<String, Object>> lst = new ArrayList<HashMap<String, Object>>();
-        HashMap<String, Object> mp = new HashMap<String, Object>();
+        ArrayList<HashMap<String, Object>> lst = new ArrayList<>();
+        HashMap<String, Object> mp = new HashMap<>();
         mp.put("Cant", 1000);
         mp.put("Uni", "Gr");
         mp.put("Name", "KG");
         lst.add(mp);
-        HashMap<String, Object> mp2 = new HashMap<String, Object>();
+        HashMap<String, Object> mp2 = new HashMap<>();
         mp2.put("Cant", 1000);
         mp2.put("Uni", "Cl");
         mp2.put("Name", "Ltr");
         lst.add(mp2);
-        HashMap<String, Object> mp3 = new HashMap<String, Object>();
+        HashMap<String, Object> mp3 = new HashMap<>();
         mp3.put("Cant", 1);
         mp3.put("Uni", "Uni");
         mp3.put("Name", "Uni");
@@ -271,7 +297,8 @@ public class EscandalloNewEdit_Fragment extends Fragment {
         return lst;
     }
 
-    private MaterialDialog createDilaogNewProduct() {
+    private MaterialDialog createDialogNewProduct() {
+
         return new MaterialDialog.Builder(getActivity())
                 .customView(R.layout.new_product_escandallo_dlg, true)
                 .positiveText(R.string.done)
@@ -338,11 +365,13 @@ public class EscandalloNewEdit_Fragment extends Fragment {
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull final MaterialDialog dialog, @NonNull DialogAction which) {
+
                         if (TextUtils.isEmpty(editnameProduct.getText().toString())) {
                             Toast.makeText(getActivity(), getString(R.string.dlgerror_namerecipe), Toast.LENGTH_LONG).show();
                             return;
 
                         }
+
                         if (TextUtils.isEmpty(editcostuni.getText().toString())) {
                             Toast.makeText(getActivity(), getString(R.string.dlgerror_costuni), Toast.LENGTH_LONG).show();
                             return;
@@ -391,6 +420,28 @@ public class EscandalloNewEdit_Fragment extends Fragment {
 
     }
 
+    private void displayWithId(int id) {
+
+        if (!sql.IsOpen()) {
+            sql.open();
+        }
+        Escandallo esc = (Escandallo) sql.SelectWithId("Escandallo", DBHelper.TABLE_ESCANDALLOS, id);
+        if (esc != null) {
+            escandalloName.setText(esc.getName());
+            texttotal.setText(String.format("%s %s%s", costTotal, esc.getCostetotal(), "€"));
+            comments.setText(esc.getComment());
+            ArrayList<Escandallo_Product> listpr = (ArrayList<Escandallo_Product>) (Object) sql.getProductListWithListId("Escandallo_product", esc.getId());
+            listProducts.setAdapter(new RecyclerAdapter(listpr));
+        }
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        sql.close();
+    }
+
 
     public class RecyclerAdapter extends RecyclerView.Adapter<EscandalloNewEdit_Fragment.RecyclerAdapter.ViewHolder> {
 
@@ -408,19 +459,42 @@ public class EscandalloNewEdit_Fragment extends Fragment {
 
         public void deleteItem(int pos) {
 
-            mDataset.remove(pos);
+            int count = sql.DeleteWithId(mDataset.get(pos).getId(), DBHelper.TABLE_ESCANDALLOS_PRODUCTS);
 
-            Toast.makeText(getActivity(), "Ok , item deleted", Toast.LENGTH_LONG).show();
+            if (count > 0) {
+                mDataset.remove(pos);
+                Toast.makeText(getActivity(), getString(R.string.productdeleted), Toast.LENGTH_LONG).show();
+            }
 
             notifyItemRemoved(pos);
         }
 
         public void addItem(Escandallo_Product escPr) {
 
-            mDataset.add(escPr);
+            if (!sql.IsOpen()) {
+                sql.open();
+            }
+
+            escPr.setEscandalloid(ID);
+
+            String query = "SELECT * FROM " + DBHelper.TABLE_ESCANDALLOS_PRODUCTS + " WHERE " + DBHelper.NAME + " = '" + escPr.getProductoname() + "' AND " + DBHelper.ESCANDALLO_ID + " = " + escPr.getEscandalloid();
+            if (sql.freeQueryExistsorNot(query)) {
+                Toast.makeText(getActivity(), getString(R.string.product_exist), Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            long id = sql.InsertObject(escPr);
+
+            if (id > 0) {
+                escPr.setId((int) id);
+
+                mDataset.add(escPr);
+
+                Toast.makeText(getActivity(), "Ok , Product added", Toast.LENGTH_LONG).show();
+
+            }
 
             notifyDataSetChanged();
-            Toast.makeText(getActivity(), "Ok, Product added", Toast.LENGTH_LONG).show();
 
         }
 
@@ -430,17 +504,17 @@ public class EscandalloNewEdit_Fragment extends Fragment {
 
         public double calculatecostetotal() {
 
-            double sum = 0;
+            double coste = 0;
             try {
                 for (int i = 0; i < mDataset.size(); i++) {
 
-                    sum = sum + mDataset.get(i).getCoste();
+                    coste = coste + mDataset.get(i).getCoste();
                 }
             } catch (Exception e) {
                 Log.e("error :", e.getMessage());
             }
 
-            return Double.valueOf(sum);
+            return Double.valueOf(coste);
         }
 
         @Override
@@ -484,34 +558,39 @@ public class EscandalloNewEdit_Fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.ButtonDeleteProduct) {
-                    deleteItem(EscandalloNewEdit_Fragment.RecyclerAdapter.ViewHolder.this.getLayoutPosition());
-                    double sum = calculatecostetotal();
-                    texttotal.setText(String.format("%s %s%s", costTotal, String.valueOf(sum), "€"));
+
+                    new MaterialDialog.Builder(getActivity())
+                            .title(R.string.deleteproducttitle)
+                            .content(R.string.deleteproductmsg)
+                            .theme(Theme.LIGHT)
+                            .positiveText(R.string.yes)
+                            .negativeText(R.string.not)
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                                    deleteItem(ViewHolder.this.getLayoutPosition());
+                                    double sum = calculatecostetotal();
+                                    texttotal.setText(String.format("%s %s%s", costTotal, String.valueOf(sum), "€"));
+                                    dialog.dismiss();
+                                }
+                            })
+
+                            .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                                    dialog.dismiss();
+                                }
+                            })
+
+                            .show();
+
+
                 }
 
             }
         }
-    }
-
-    private void displayWithId(int id) {
-
-        if (!sql.IsOpen()) {
-            sql.open();
-        }
-        Escandallo esc = (Escandallo) sql.SelectWithId("Escandallo", DBHelper.TABLE_ESCANDALLOS, id);
-        if(esc != null){
-            editName.setText(esc.getName());
-            texttotal.setText(String.format("%s %s%s", costTotal, esc.getCostetotal(), "€"));
-            ArrayList<Escandallo_Product> listpr = (ArrayList<Escandallo_Product>) (Object)sql.getProductListWithListId("Escandallo_product",esc.getId());
-            listProducts.setAdapter(new RecyclerAdapter(listpr));
-        }
-
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-
     }
 
 

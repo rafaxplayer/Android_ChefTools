@@ -10,7 +10,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +25,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,8 +55,8 @@ public class OrdersNewEdit_Fragment extends Fragment {
     ImageButton saveProduct;
     @BindView(R.id.list_items)
     RecyclerView OrdersList;
+
     private SqliteWrapper sql;
-    private Menu menu;
     private ImageButton addSupplierOrder;
     private Spinner suppliersSpinner;
     private EditText name;
@@ -263,7 +263,7 @@ public class OrdersNewEdit_Fragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(android.view.Menu menu, MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        this.menu = menu;
+
         inflater.inflate(R.menu.menu_lists, menu);
         menu.findItem(R.id.search).setVisible(false);
 
@@ -289,7 +289,7 @@ public class OrdersNewEdit_Fragment extends Fragment {
         }
         try {
             Product pr = (Product) sql.SelectWithId("Product", DBHelper.TABLE_PRODUCTOS, id);
-            NameProduct.setText(pr.getName().toString());
+            NameProduct.setText(pr.getName());
             this.prod = pr;
 
         } catch (Exception e) {
@@ -305,7 +305,7 @@ public class OrdersNewEdit_Fragment extends Fragment {
         }
         String name = sql.getSimpleData(id, DBHelper.NAME, DBHelper.TABLE_PEDIDOS);
         NameOrder.setText(name.toString());
-        ArrayList<Order_Product> listProducts = (ArrayList<Order_Product>) (Object)sql.getProductListWithListId("Order_product",id);
+        ArrayList<Order_Product> listProducts = (ArrayList<Order_Product>) (Object) sql.getProductListWithListId("Order_product", id);
         if (listProducts.size() > 0) {
             OrdersList.setAdapter(new RecyclerAdapter(listProducts));
         }
@@ -335,11 +335,6 @@ public class OrdersNewEdit_Fragment extends Fragment {
         sql.close();
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-
-    }
 
     public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
@@ -355,7 +350,7 @@ public class OrdersNewEdit_Fragment extends Fragment {
 
             if (count > 0) {
                 mDataset.remove(pos);
-                Toast.makeText(getActivity(), "Ok , item deleted", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), getString(R.string.productdeleted), Toast.LENGTH_LONG).show();
             }
             //notifyItemInserted(mDataset.size() - 1);
             notifyItemRemoved(pos);
@@ -433,14 +428,35 @@ public class OrdersNewEdit_Fragment extends Fragment {
             public ViewHolder(View v) {
                 super(v);
                 ButterKnife.bind(this, v);
-
                 delButton.setOnClickListener(this);
             }
 
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.ButtonDeleteProduct) {
-                    deleteItem(ViewHolder.this.getLayoutPosition());
+                    new MaterialDialog.Builder(getActivity())
+                            .title(R.string.deleteproducttitle)
+                            .content(R.string.deleteproductmsg)
+                            .theme(Theme.LIGHT)
+                            .positiveText(R.string.yes)
+                            .negativeText(R.string.not)
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    deleteItem(ViewHolder.this.getLayoutPosition());
+                                    dialog.dismiss();
+                                }
+                            })
+
+                            .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                                    dialog.dismiss();
+                                }
+                            })
+
+                            .show();
                 }
 
             }

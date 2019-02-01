@@ -268,7 +268,7 @@ public class ProviderNewEdit_Fragment extends Fragment {
                         ContactsContract.CommonDataKinds.Email.CONTACT_ID + "=?",
                         new String[]{result.getLastPathSegment()},
                         ContactsContract.CommonDataKinds.Email.DATA
-                        );
+                );
 
                 String phone = getContactData(result,
                         ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
@@ -278,7 +278,7 @@ public class ProviderNewEdit_Fragment extends Fragment {
                 );
 
                 String name = getContactData(result,
-                       result,
+                        result,
                         null,
                         null,
                         ContactsContract.Contacts.DISPLAY_NAME
@@ -306,9 +306,9 @@ public class ProviderNewEdit_Fragment extends Fragment {
     }
 
 
-    private String getContactData(Uri data , Uri uri , String selection, String[] args , String column){
+    private String getContactData(Uri data, Uri uri, String selection, String[] args, String column) {
 
-        String infoContact="";
+        String infoContact = "";
         Cursor cursor = null;
 
         try {

@@ -1,28 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/windowBackgroundColor"
+    android:orientation="vertical"
     android:padding="15dp">
 
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fillViewport="false"
-        >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/escandallonamedetalle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:capitalize="words"
                 android:ellipsize="end"
                 android:text="@string/Escandallo_name"
@@ -50,7 +39,6 @@
                     android:layout_height="wrap_content"
                     android:text="@string/date"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-
                     android:textColor="@color/colorPrimary"
                     android:textStyle="normal|italic" />
 
@@ -75,7 +63,39 @@
                 android:layout_marginBottom="5dp"
                 android:background="@color/textTitletColor" />
 
-            <TextView
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/comments"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/text_medium"
+        android:textStyle="normal|bold|italic" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/textTitletColor"
+        android:textStyle="bold|italic" />
+
+    <EditText
+        android:id="@+id/comments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:focusable="false"
+        android:inputType="none"
+        android:maxHeight="70dp"
+        android:text="Comments"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/common_google_signin_btn_text_light_focused"
+        android:textSize="@dimen/text_medium"
+        android:textStyle="normal" />
+
+    <TextView
                 android:id="@+id/titleescandalloproducts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -113,10 +133,8 @@
                 android:padding="10dp"
                 android:text="Coste Total :"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
 
-        </LinearLayout>
 
-    </ScrollView>
-
-</FrameLayout>
+</LinearLayout>

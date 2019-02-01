@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -329,7 +330,7 @@ public class StocksNewEdit_Fragment extends Fragment {
         }
         String name = sql.getSimpleData(id, DBHelper.NAME, DBHelper.TABLE_INVENTARIOS);
         NameStock.setText(name.toString());
-        ArrayList<Stock_Product> listProducts = (ArrayList<Stock_Product>) (Object) sql.getProductListWithListId("Stock_product",id);
+        ArrayList<Stock_Product> listProducts = (ArrayList<Stock_Product>) (Object) sql.getProductListWithListId("Stock_product", id);
         if (listProducts.size() > 0) {
             StocksList.setAdapter(new RecyclerAdapter(listProducts));
         }
@@ -378,7 +379,7 @@ public class StocksNewEdit_Fragment extends Fragment {
 
             if (count > 0) {
                 mDataset.remove(pos);
-                Toast.makeText(getActivity(), "Ok , item deleted", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), getString(R.string.productdeleted), Toast.LENGTH_LONG).show();
             }
 
             notifyItemRemoved(pos);
@@ -447,20 +448,20 @@ public class StocksNewEdit_Fragment extends Fragment {
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-            public ImageButton delButton;
-            public ImageButton editButton;
-            public TextView txtProd;
-            public TextView txtCantidad;
-            public TextView txtFormat;
+            @BindView(R.id.ButtonDeleteProduct)
+            ImageButton delButton;
+            @BindView(R.id.ButtonEditProduct)
+            ImageButton editButton;
+            @BindView(R.id.text1)
+            TextView txtProd;
+            @BindView(R.id.text2)
+            TextView txtCantidad;
+            @BindView(R.id.text3)
+            TextView txtFormat;
 
             public ViewHolder(View v) {
                 super(v);
-                delButton = (ImageButton) v.findViewById(R.id.ButtonDeleteProduct);
-                editButton = (ImageButton) v.findViewById(R.id.ButtonEditProduct);
-                txtProd = (TextView) v.findViewById(R.id.text1);
-                txtCantidad = (TextView) v.findViewById(R.id.text2);
-                txtFormat = (TextView) v.findViewById(R.id.text3);
+                ButterKnife.bind(this, v);
                 delButton.setOnClickListener(this);
                 editButton.setOnClickListener(this);
             }
@@ -468,11 +469,35 @@ public class StocksNewEdit_Fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.ButtonDeleteProduct) {
-                    deleteItem(ViewHolder.this.getLayoutPosition());
+
+                    new MaterialDialog.Builder(getActivity())
+                            .title(R.string.deleteproducttitle)
+                            .content(R.string.deleteproductmsg)
+                            .theme(Theme.LIGHT)
+                            .positiveText(R.string.yes)
+                            .negativeText(R.string.not)
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                                    deleteItem(ViewHolder.this.getLayoutPosition());
+                                    dialog.dismiss();
+                                }
+                            })
+
+                            .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                                    dialog.dismiss();
+                                }
+                            })
+
+                            .show();
                     return;
                 }
                 if (v.getId() == R.id.ButtonEditProduct) {
-                    stProd = (Stock_Product) mDataset.get(ViewHolder.this.getLayoutPosition());
+                    stProd = mDataset.get(ViewHolder.this.getLayoutPosition());
                     dialogEditProduct.show();
                     Toast.makeText(getActivity(), String.valueOf(mDataset.get(ViewHolder.this.getLayoutPosition()).getID()), Toast.LENGTH_LONG).show();
                 }

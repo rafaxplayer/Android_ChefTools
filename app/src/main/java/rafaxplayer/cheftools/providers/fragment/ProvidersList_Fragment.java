@@ -180,14 +180,17 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                if (dy >= 0 || dy <= 0 && fab.isShown())
+                if (dy <= 0 && fab.isShown()) {
                     fab.hide();
+                } else {
+                    fab.show();
+                }
             }
 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
 
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                     fab.show();
                 }
                 super.onScrollStateChanged(recyclerView, newState);

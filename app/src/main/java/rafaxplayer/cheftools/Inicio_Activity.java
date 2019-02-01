@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -50,18 +49,16 @@ public class Inicio_Activity extends BaseActivity implements ProductosMannager_F
         File folderBack = new File(GlobalUttilities.PATH_BACKUPS);
         if (!folderBack.exists()) {
             if (folderBack.mkdirs()) {
-
             }
         }
 
         File folderImg = new File(GlobalUttilities.PATH_IMAGES_RECIPES);
         if (!folderImg.exists()) {
             if (folderImg.mkdirs()) {
-
             }
         }
 
-        
+
     }
 
     @Override

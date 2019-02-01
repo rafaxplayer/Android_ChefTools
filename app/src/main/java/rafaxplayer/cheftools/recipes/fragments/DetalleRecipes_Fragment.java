@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,8 +16,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-
-import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -151,15 +148,18 @@ public class DetalleRecipes_Fragment extends Fragment {
         sql.open();
 
         // Codigo para poder compartir la imagen de la receta y no salte error FileIOexposeException
-        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder ();
-        StrictMode.setVmPolicy (builder.build ());
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        sql.open();
+        if (!sql.IsOpen()) {
+            sql.open();
+        }
+
         if (getArguments() != null) {
             displayWithId(getArguments().getInt("id"));
             this.ID = getArguments().getInt("id");

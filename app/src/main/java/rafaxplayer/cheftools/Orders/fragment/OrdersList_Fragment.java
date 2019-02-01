@@ -183,14 +183,17 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                if (dy >= 0 || dy <= 0 && fab.isShown())
+                if (dy <= 0 && fab.isShown()) {
                     fab.hide();
+                } else {
+                    fab.show();
+                }
             }
 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
 
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                     fab.show();
                 }
                 super.onScrollStateChanged(recyclerView, newState);
@@ -531,7 +534,7 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
                     return;
                 } else if (v.getId() == R.id.ButtonEdit) {
                     Intent in = new Intent(getActivity(), OrdersNewEdit_Activity.class);
-                    in.putExtra("id", ( mDataset.get(ViewHolder.this.getLayoutPosition())).getId());
+                    in.putExtra("id", (mDataset.get(ViewHolder.this.getLayoutPosition())).getId());
                     getActivity().startActivity(in);
                 } else {
                     if (mActionMode != null) {

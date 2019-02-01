@@ -172,14 +172,17 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                if (dy >= 0 || dy <= 0 && fab.isShown())
+                if (dy <= 0 && fab.isShown()) {
                     fab.hide();
+                } else {
+                    fab.show();
+                }
             }
 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
 
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                     fab.show();
                 }
                 super.onScrollStateChanged(recyclerView, newState);
@@ -314,7 +317,7 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
         } catch (ClassCastException e) {
 
 
-                throw new ClassCastException(activity.toString()
+            throw new ClassCastException(activity.toString()
                     + " must implement OnHeadlineSelectedListener");
         }
 
@@ -345,7 +348,7 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
     }
 
     public interface OnSelectedCallback {
-         void onSelect(int id);
+        void onSelect(int id);
     }
 
     public class MenusAdapter extends RecyclerView.Adapter<MenusAdapter.ViewHolder> implements Filterable {

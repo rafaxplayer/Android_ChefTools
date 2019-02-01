@@ -417,7 +417,7 @@ public class ProductosMannager_Fragment extends DialogFragment {
 
             if (count > 0) {
                 mDataset.remove(pos);
-                Toast.makeText(getActivity(), "Ok , Product deleted", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), getString(R.string.productdeleted), Toast.LENGTH_LONG).show();
             }
 
             notifyItemRemoved(pos);

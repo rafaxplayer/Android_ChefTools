@@ -149,7 +149,8 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
         }
     };
 
-    public RecipesList_Fragment() {}
+    public RecipesList_Fragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -175,10 +176,10 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                Log.e("scroll", String.valueOf(dy));
-                if ( dy <= 0 && fab.isShown()) {
+
+                if (dy <= 0 && fab.isShown()) {
                     fab.hide();
-                }else{
+                } else {
                     fab.show();
                 }
 
@@ -379,7 +380,7 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
 
             //comprovamos que la imagen este en los datos de la app no en el dispositivo
             if ((mDataset.get(pos)).getImg().contains("Android/data")) {
-                File imageFile = new File((mDataset.get(pos)).getImg().replace("file://",""));
+                File imageFile = new File((mDataset.get(pos)).getImg().replace("file://", ""));
                 Log.e("Recipes list", String.valueOf(imageFile.exists()));
                 if (imageFile.exists()) {
                     if (imageFile.delete()) {

@@ -42,10 +42,10 @@ public class EscandallosDetalle_Activity extends BaseActivity {
     public void showMenuEdit(int id) {
 
         getSupportFragmentManager().beginTransaction()
-        .add(R.id.container, EscandalloNewEdit_Fragment.newInstance(id), "neweditescandallo")
-        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-        .addToBackStack(null)
-        .commit();
+                .add(R.id.container, EscandalloNewEdit_Fragment.newInstance(id), "neweditescandallo")
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .addToBackStack(null)
+                .commit();
 
 
     }

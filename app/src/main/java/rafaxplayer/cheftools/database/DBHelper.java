@@ -26,7 +26,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String TABLE_RECETAS_CATEGORIA = "tbl_Recetas_categoria";
     public static final String TABLE_PEDIDOS_LISTAS = "tbl_Pedidos_listas";
     public static final String TABLE_INVENTARIOS_LISTAS = "tbl_Inventarios_listas";
-    public static final String TABLE_ESCANDALLOS = "tbl_escandallos";
+    public static final String TABLE_ESCANDALLOS = "tbl_Escandallos";
     public static final String TABLE_ESCANDALLOS_PRODUCTS = "tbl_Escandallo_Products";
 
     //Campos generales...
@@ -84,7 +84,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String ESCANDALLO_PRODUCT_COSTE = "Escandallo_product_coste";
     public static final String ESCANDALLO_PRODUCT_QUANTITY = "Escandallo_quantity";
     public static final String ESCANDALLO_PRODUCT_FORMAT = "Escandallo_format";
-    public static final String ESCANDALLO_PRODUCT_COST_FOR_UNI = "escandallo_cost_for_uni";
+    public static final String ESCANDALLO_PRODUCT_COST_FOR_UNI = "Escandallo_cost_for_uni";
 
     //database version
     private static final int DATABASE_VERSION = 3;
@@ -185,16 +185,16 @@ public class DBHelper extends SQLiteOpenHelper {
             + NAME + " TEXT)";
 
 
-
     // Update for version 2
     private String SQLUpdate_Create_CampV2 = "ALTER TABLE " + TABLE_INVENTARIOS_LISTAS + " ADD COLUMN " + PRODUCTO_CANTIDAD_MIN + " INTEGER DEFAULT 0;";
 
 
     // Update version 3
-    private String SqlCreateTable_escandallos = "CREATE TABLE IF NOT EXISTS "
+    private String SqlCreateTable_Escandallos = "CREATE TABLE IF NOT EXISTS "
             + TABLE_ESCANDALLOS + "(" + ID + " INTEGER PRIMARY KEY,"
             + NAME + " TEXT, "
             + COSTE_TOTAL + " REAL, "
+            + COMENTARIO + " TEXT, "
             + FECHA + " DEFAULT CURRENT_TIMESTAMP)";
 
     private String SqlCreateTable_Escadallo_products = "CREATE TABLE IF NOT EXISTS "
@@ -238,7 +238,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(SqlCreateTable_productos_formato);
             db.execSQL(SqlCreateTable_productos_categoria);
             db.execSQL(SqlCreateTable_categoria_recetas);
-            db.execSQL(SqlCreateTable_escandallos);
+            db.execSQL(SqlCreateTable_Escandallos);
             db.execSQL(SqlCreateTable_Escadallo_products);
             db.execSQL(SqlCreateTrigger_OnDeletePedido);
             db.execSQL(SqlCreateTrigger_OnDeleteInventario);
@@ -286,8 +286,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 db.execSQL(SQLUpdate_Create_CampV2);
             }
             //update v3
-            if (oldVersion < 3){
-                db.execSQL(SqlCreateTable_escandallos);
+            if (oldVersion < 3) {
+                db.execSQL(SqlCreateTable_Escandallos);
                 db.execSQL(SqlCreateTable_Escadallo_products);
                 db.execSQL(SqlCreateTrigger_OnDeleteEscandallo);
             }

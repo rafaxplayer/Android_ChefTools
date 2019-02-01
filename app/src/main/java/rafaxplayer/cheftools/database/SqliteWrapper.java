@@ -39,6 +39,7 @@ public class SqliteWrapper {
 
     public void open() throws SQLException {
         db = dbHelper.getWritableDatabase();
+
     }
 
     public Boolean IsOpen() {
@@ -197,7 +198,8 @@ public class SqliteWrapper {
                     esc.setId(Integer.parseInt(cursor.getString(0)));
                     esc.setName(cursor.getString(1));
                     esc.setCostetotal(Double.parseDouble(cursor.getString(2)));
-                    esc.setFecha(cursor.getString(3));
+                    esc.setComment(cursor.getString(3));
+                    esc.setFecha(cursor.getString(4));
 
                 }
                 return esc;
@@ -221,6 +223,7 @@ public class SqliteWrapper {
 
         return count;
     }
+
 
     public int DeleteWithValue(String camp, String value, String Table) {
         int count = 0;
@@ -303,6 +306,7 @@ public class SqliteWrapper {
 
                 ContentValues values = new ContentValues();
                 values.put(DBHelper.NAME, ((Escandallo) ob).getName());
+                values.put(DBHelper.COMENTARIO, ((Escandallo) ob).getComment());
                 values.put(DBHelper.COSTE_TOTAL, ((Escandallo) ob).getCostetotal());
 
                 count = db.update(DBHelper.TABLE_ESCANDALLOS, values, DBHelper.ID + " = ?",
@@ -449,7 +453,8 @@ public class SqliteWrapper {
                         escandallo.setId(Integer.parseInt(cursor.getString(0)));
                         escandallo.setName(cursor.getString(1));
                         escandallo.setCostetotal(cursor.getDouble(2));
-                        escandallo.setFecha(cursor.getString(3));
+                        escandallo.setComment(cursor.getString(3));
+                        escandallo.setFecha(cursor.getString(4));
 
                         ObjectList.add(escandallo);
                     } while (cursor.moveToNext());
@@ -463,7 +468,7 @@ public class SqliteWrapper {
                 if (cursor.moveToFirst()) {
                     do {
                         Escandallo_Product escandallo_pr = new Escandallo_Product();
-
+                        escandallo_pr.setId(Integer.parseInt(cursor.getString(0)));
                         escandallo_pr.setProductoname(cursor.getString(1));
                         escandallo_pr.setCantidad(cursor.getString(2));
                         escandallo_pr.setCantidad(cursor.getString(3));
@@ -523,6 +528,7 @@ public class SqliteWrapper {
             } else if (ob instanceof Escandallo) {
 
                 values.put(DBHelper.NAME, ((Escandallo) ob).getName());
+                values.put(DBHelper.COMENTARIO, ((Escandallo) ob).getComment());
                 values.put(DBHelper.COSTE_TOTAL, ((Escandallo) ob).getCostetotal());
 
                 id = db.insert(DBHelper.TABLE_ESCANDALLOS, null, values);
@@ -733,69 +739,14 @@ public class SqliteWrapper {
         return id;
     }
 
-   /* public ArrayList<Order_Product> getProductListOrder(int listID) {
-
-        ArrayList<Order_Product> ObjectList = new ArrayList<Order_Product>();
-
-        String selectQuery = "SELECT * FROM " + DBHelper.TABLE_PEDIDOS_LISTAS + " WHERE " + DBHelper.PEDIDO_ID + "=" + listID;
-
-        try {
-            Cursor cursor = db.rawQuery(selectQuery, null);
-            if (cursor.moveToFirst()) {
-                do {
-                    Order_Product ordP = new Order_Product();
-                    ordP.setID(cursor.getInt(0));
-                    ordP.setListaId(cursor.getInt(1));
-                    ordP.setProductoId(cursor.getInt(2));
-                    ordP.setCantidad(cursor.getInt(3));
-                    ordP.setCategoriaid(cursor.getInt(4));
-                    ordP.setFormatoid(cursor.getInt(5));
-
-                    ObjectList.add(ordP);
-                } while (cursor.moveToNext());
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return ObjectList;
-    }
-
-    public ArrayList<Stock_Product> getProductListStock(int listID) {
-
-        ArrayList<Stock_Product> ObjectList = new ArrayList<Stock_Product>();
-
-        String selectQuery = "SELECT * FROM " + DBHelper.TABLE_INVENTARIOS_LISTAS + " WHERE " + DBHelper.INVENTARIO_ID + "=" + listID;
-
-        try {
-            Cursor cursor = db.rawQuery(selectQuery, null);
-
-            if (cursor.moveToFirst()) {
-                do {
-                    Stock_Product stock = new Stock_Product();
-                    stock.setID(cursor.getInt(0));
-                    stock.setStockId(cursor.getInt(1));
-                    stock.setProductoId(cursor.getInt(2));
-                    stock.setCantidad(cursor.getInt(3));
-                    stock.setCategoriaid(cursor.getInt(4));
-                    stock.setFormatoid(cursor.getInt(5));
-
-                    ObjectList.add(stock);
-                } while (cursor.moveToNext());
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return ObjectList;
-    }*/
-
-    public ArrayList<Object> getProductListWithListId(String clase,int listID) {
+    public ArrayList<Object> getProductListWithListId(String clase, int listID) {
 
         ArrayList<Object> ObjectList = new ArrayList<>();
         String selectQuery = "";
         Cursor cursor;
         try {
 
-            if(clase.equals("Escandallo_product")){
+            if (clase.equals("Escandallo_product")) {
 
                 selectQuery = "SELECT * FROM " + DBHelper.TABLE_ESCANDALLOS_PRODUCTS + " WHERE " + DBHelper.ESCANDALLO_ID + "=" + listID;
                 cursor = db.rawQuery(selectQuery, null);
@@ -803,7 +754,7 @@ public class SqliteWrapper {
                 if (cursor.moveToFirst()) {
                     do {
                         Escandallo_Product escandallo_pr = new Escandallo_Product();
-
+                        escandallo_pr.setId(Integer.parseInt(cursor.getString(0)));
                         escandallo_pr.setProductoname(cursor.getString(1));
                         escandallo_pr.setCantidad(cursor.getString(2));
                         escandallo_pr.setCantidad(cursor.getString(3));
@@ -815,7 +766,7 @@ public class SqliteWrapper {
                     } while (cursor.moveToNext());
                 }
 
-            } else if(clase.equals("Stock_product")){
+            } else if (clase.equals("Stock_product")) {
 
                 selectQuery = "SELECT * FROM " + DBHelper.TABLE_INVENTARIOS_LISTAS + " WHERE " + DBHelper.INVENTARIO_ID + "=" + listID;
                 cursor = db.rawQuery(selectQuery, null);
@@ -833,7 +784,7 @@ public class SqliteWrapper {
                     } while (cursor.moveToNext());
                 }
 
-            }else if(clase.equals("Order_product")){
+            } else if (clase.equals("Order_product")) {
                 selectQuery = "SELECT * FROM " + DBHelper.TABLE_PEDIDOS_LISTAS + " WHERE " + DBHelper.PEDIDO_ID + "=" + listID;
                 cursor = db.rawQuery(selectQuery, null);
 

@@ -31,12 +31,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 import rafaxplayer.cheftools.Globalclasses.models.Escandallo;
 import rafaxplayer.cheftools.Globalclasses.models.Escandallo_Product;
@@ -74,8 +74,8 @@ public class GlobalUttilities {
         try {
 
             FileInputStream fis = new FileInputStream(dbFile);
-
-            String outFileName = PATH_BACKUPS + DBHelper.DATABASE_NAME + "_" + getDateTime();
+            String time = getTime();
+            String outFileName = PATH_BACKUPS + DBHelper.DATABASE_NAME + "_" + time;
 
             OutputStream output = new FileOutputStream(outFileName);
 
@@ -88,11 +88,13 @@ public class GlobalUttilities {
             output.flush();
             output.close();
             fis.close();
+
             File back = new File(outFileName);
+
             if (back.exists()) {
                 ret = true;
                 Toast.makeText(con, con.getString(R.string.backup_cretaed), Toast.LENGTH_LONG).show();
-                if (backup_images(con)) {
+                if (backup_images(con, time)) {
                     Toast.makeText(con, con.getString(R.string.backup_images_cretaed), Toast.LENGTH_LONG).show();
                 }
             } else {
@@ -101,11 +103,12 @@ public class GlobalUttilities {
             }
         } catch (FileNotFoundException e) {
 
+            e.printStackTrace();
             Toast.makeText(con, "No existe la BD", Toast.LENGTH_LONG).show();
             ret = false;
         } catch (Exception ex) {
 
-
+            ex.printStackTrace();
             Toast.makeText(con, con.getString(R.string.backup_error), Toast.LENGTH_LONG).show();
             ret = false;
         }
@@ -114,11 +117,11 @@ public class GlobalUttilities {
         return ret;
     }
 
-    public static Boolean backup_images(Context con) {
+    public static Boolean backup_images(Context con, String time) {
         Boolean ret;
         try {
 
-            copyDirectoryOneLocationToAnotherLocation(new File(PATH_IMAGES_RECIPES), new File(PATH_BACKUPS + "/" + getDateTime()));
+            copyDirectoryOneLocationToAnotherLocation(new File(PATH_IMAGES_RECIPES), new File(PATH_BACKUPS + "/" + time));
             ret = true;
         } catch (IOException ex) {
             Toast.makeText(con, "Error al copiar directorio", Toast.LENGTH_SHORT).show();
@@ -139,6 +142,7 @@ public class GlobalUttilities {
                 ret = true;
 
             } catch (IOException ex) {
+                ex.printStackTrace();
                 Toast.makeText(con, "Error al copiar directorio", Toast.LENGTH_SHORT).show();
                 ret = false;
             }
@@ -182,12 +186,12 @@ public class GlobalUttilities {
 
 
         } catch (FileNotFoundException e) {
-
+            e.printStackTrace();
             Toast.makeText(con, con.getString(R.string.dialog_backup_restore_error), Toast.LENGTH_LONG).show();
             ret = false;
         } catch (Exception ex) {
 
-
+            ex.printStackTrace();
             Toast.makeText(con, con.getString(R.string.dialog_backup_restore_error), Toast.LENGTH_LONG).show();
             ret = false;
         }
@@ -195,54 +199,46 @@ public class GlobalUttilities {
 
     }
 
-    public static Map backup_image_recipe(Context con, Uri imageFile) {
+    public static Uri backup_image_recipe(Context con, Uri imageFile) {
 
-        Map ret = new HashMap<>();
-        Log.e("UriPath", uriGetPath(con, imageFile));
-
+        Uri ret;
+        File mFile = new File(uriGetPath(con, imageFile));
         try {
-            File mFile = new File(uriGetPath(con, imageFile));
 
             FileInputStream fis = new FileInputStream(mFile);
+            Log.e("exists", String.valueOf(mFile.getName()));
+            String outFileName = PATH_IMAGES_RECIPES + "Recipe_" + getTime();
+            Log.e("outfile", outFileName);
+            FileOutputStream output = new FileOutputStream(outFileName);
 
-            String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-
-            String outFileName = PATH_IMAGES_RECIPES + "/Recipe_" + timeStamp + ".bmp";
-
-            OutputStream output = new FileOutputStream(outFileName);
-
-            byte[] buffer = new byte[1024];
-            int length;
-            while ((length = fis.read(buffer)) > 0) {
-                output.write(buffer, 0, length);
-            }
-
-            output.flush();
-            output.close();
+            FileChannel inChannel = fis.getChannel();
+            FileChannel outChannel = output.getChannel();
+            inChannel.transferTo(0, inChannel.size(), outChannel);
             fis.close();
+            output.close();
+
             File back = new File(outFileName);
+            Log.e("outfile exists", String.valueOf(back.exists()));
             if (back.exists()) {
-                ret.put("Uri", Uri.fromFile(back));
-                ret.put("IsCreate", true);
+                ret = Uri.fromFile(back);
                 Toast.makeText(con, "Ok image saved", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(con, "Error image save", Toast.LENGTH_LONG).show();
-                ret.put("Uri", null);
-                ret.put("IsCreate", false);
+                ret = null;
+
             }
         } catch (FileNotFoundException e) {
-            Log.e("FileNotFoundException", e.getMessage());
+            e.printStackTrace();
             Toast.makeText(con, "No existe la imagen", Toast.LENGTH_LONG).show();
-            ret.put("Uri", null);
-            ret.put("IsCreate", false);
+            ret = null;
+
 
         } catch (Exception ex) {
-            Log.e("Exception", ex.getMessage());
+            ex.printStackTrace();
             Toast.makeText(con, "Error image", Toast.LENGTH_LONG).show();
-            ret.put("Uri", null);
-            ret.put("IsCreate", false);
-        }
+            ret = null;
 
+        }
 
         return ret;
     }
@@ -282,7 +278,7 @@ public class GlobalUttilities {
     public static boolean deleteDir(File dir) {
         if (dir.isDirectory()) {
             String[] children = dir.list();
-            for (int i=0; i<children.length; i++) {
+            for (int i = 0; i < children.length; i++) {
                 boolean success = deleteDir(new File(dir, children[i]));
                 if (!success) {
                     return false;
@@ -295,15 +291,18 @@ public class GlobalUttilities {
     }
 
     public static String uriGetPath(Context con, Uri uri) {
-        String[] projection = {MediaStore.Images.Media.DATA};
-        Cursor cursor = con.getContentResolver().query(uri, projection, null, null, null);
-        if (cursor == null) return null;
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = con.getContentResolver().query(uri,
+                proj, // Which columns to return
+                null,       // WHERE clause; which rows to return (all rows)
+                null,       // WHERE clause selection arguments (none)
+                null); // Order-by clause (ascending by name)
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
-        String s = cursor.getString(column_index);
-        cursor.close();
-        return s;
+
+        return cursor.getString(column_index);
     }
+
 
     public static String shareEscandalloText(Context con, Escandallo esc, ArrayList<Escandallo_Product> products) {
 
@@ -497,12 +496,16 @@ public class GlobalUttilities {
         return str.toString();
     }
 
-    public static void shareIntenttext(Activity act,String content){
+    public static void shareIntenttext(Activity act, String content) {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
         shareIntent.putExtra(Intent.EXTRA_TEXT, content);
 
         act.startActivity(Intent.createChooser(shareIntent, act.getString(R.string.share_recipe_use)));
+    }
+
+    public static String getTime() {
+        return String.valueOf(new Date().getTime());
     }
 
     public static String getDateTime() {

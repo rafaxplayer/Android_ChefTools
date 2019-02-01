@@ -1,6 +1,7 @@
 package rafaxplayer.cheftools.recipes;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -47,49 +48,43 @@ public class DetalleRecipes_Activity extends BaseActivity {
     public void showRecipeEdit(int id) {
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.container, NewEditRecipe_Fragment.newInstance(id), "editrecipe");
+        ft.add(R.id.container, NewEditRecipe_Fragment.newInstance(id), "neweditrecipe");
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.addToBackStack(null);
         ft.commit();
 
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.e("onActivityResult", "onActivityResult: ");
+
         if (resultCode == RESULT_OK) {
 
-            final Uri selectedImageUri = data.getData();
+            NewEditRecipe_Fragment fr = (NewEditRecipe_Fragment) getSupportFragmentManager().findFragmentByTag("neweditrecipe");
 
-            if (requestCode == GlobalUttilities.SELECT_PICTURE || requestCode == GlobalUttilities.SELECT_PHOTO) {
-
+            if (requestCode == GlobalUttilities.SELECT_PICTURE) {
+                Uri selectedImageUri = data.getData();
                 if (selectedImageUri != null) {
-                    final NewEditRecipe_Fragment fr = (NewEditRecipe_Fragment) getSupportFragmentManager().findFragmentByTag("editrecipe");
+                    Log.e("selectedImageUri", data.getData().toString());
                     if (fr != null) {
-
-                        new android.os.Handler().postDelayed(
-                                new Runnable() {
-                                    public void run() {
-
-                                        fr.updateImage(selectedImageUri);
-                                    }
-                                }, 1000);
-
-                    }
-                }
-            } else if (requestCode == GlobalUttilities.RECIPE_WITH_CAPTURE) {
-
-                if (selectedImageUri != null) {
-                    NewEditRecipe_Fragment fr = (NewEditRecipe_Fragment) getSupportFragmentManager().findFragmentByTag("editrecipe");
-                    if (fr != null) {
-                        fr.refresh();
                         fr.updateImage(selectedImageUri);
                     }
                 }
+
+            } else if (requestCode == GlobalUttilities.SELECT_PHOTO) {
+
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                Log.e("Data", photo.toString());
+                if (photo != null) {
+                    Uri imageBmpUri = GlobalUttilities.getBmpUri(this, photo);
+                    fr.updateImage(imageBmpUri);
+                }
+
             }
         }
-    }
 
+    }
 
 }

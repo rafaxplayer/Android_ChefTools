@@ -15,7 +15,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -175,15 +174,18 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                Log.e("scroll", String.valueOf(dy));
-                if (dy >= 0 || dy <= 0 && fab.isShown())
+
+                if (dy <= 0 && fab.isShown()) {
                     fab.hide();
+                } else {
+                    fab.show();
+                }
             }
 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
 
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                     fab.show();
                 }
                 super.onScrollStateChanged(recyclerView, newState);

@@ -140,7 +140,7 @@ public class OrdersDetalle_Fragment extends Fragment {
                 if (ID != 0) {
                     Orders ord = (Orders) sql.SelectWithId("Orders", DBHelper.TABLE_PEDIDOS, ID);
                     String sharedStr = GlobalUttilities.shareDataText(getActivity(), ord);
-                    GlobalUttilities.shareIntenttext(getActivity(),sharedStr);
+                    GlobalUttilities.shareIntenttext(getActivity(), sharedStr);
 
                 }
 
@@ -169,7 +169,7 @@ public class OrdersDetalle_Fragment extends Fragment {
             orderSupplier.setVisibility(TextUtils.isEmpty(supplierName) ? View.GONE : View.VISIBLE);
             this.supplierTlf = sql.getSimpleData(ord.getSupplierid(), DBHelper.PROVEEDOR_TELEFONO, DBHelper.TABLE_PROVEEDORES);
             orderSupplier.setText(supplierName);
-            ArrayList<Order_Product> listProducts = (ArrayList<Order_Product>) (Object)sql.getProductListWithListId("Order_product",id);
+            ArrayList<Order_Product> listProducts = (ArrayList<Order_Product>) (Object) sql.getProductListWithListId("Order_product", id);
             listOrder.setAdapter(new RecyclerAdapter(listProducts));
 
         }

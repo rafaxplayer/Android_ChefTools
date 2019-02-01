@@ -4,99 +4,93 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/windowBackgroundColor"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="10dp">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/escandalloName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:layout_marginTop="10dp"
+        android:imeOptions="actionGo"
+        android:text="@string/Escandallo_name"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp"
+        android:textStyle="normal|bold|italic" />
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:imeOptions="actionGo"
-            android:text="@string/Escandallo_name"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/text_medium"
-            android:textStyle="normal|bold|italic" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/textTitletColor"
+        android:textStyle="bold|italic" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:background="@color/textTitletColor"
-            android:textStyle="bold|italic" />
-
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1">
-
-            <EditText
-                android:id="@+id/escandalloName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#89c7aa80"
-                android:imeOptions="actionDone"
-                android:inputType="textCapWords"
-                android:padding="10dp"
-                android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="#ff4c4c48"
-                android:textColorHint="@color/textTitletColor"
-                android:textStyle="italic" />
-        </android.support.design.widget.TextInputLayout>
-
-
-    </LinearLayout>
-
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:layout_marginTop="20dp"
+        android:text="@string/comments"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/text_medium"
+        android:textStyle="normal|bold|italic" />
 
-        <TextView
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/textTitletColor"
+        android:textStyle="bold|italic" />
 
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="@string/products"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/text_medium"
-            android:textStyle="normal|bold|italic" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:background="@color/textTitletColor"
-            android:textStyle="bold|italic" />
-    </LinearLayout>
+    <EditText
+        android:id="@+id/comments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:focusable="false"
+        android:inputType="none"
+        android:maxHeight="70dp"
+        android:text="Comments"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/common_google_signin_btn_text_light_focused"
+        android:textSize="@dimen/text_medium"
+        android:textStyle="normal" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/products"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/text_medium"
+        android:textStyle="normal|bold|italic" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/textTitletColor"
+        android:textStyle="bold|italic" />
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/list_items"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="56dp"
-            android:paddingLeft="6dp"
+            android:layout_marginBottom="40dp"
+            android:paddingLeft="5dp"
             android:paddingTop="5dp"
-            android:paddingRight="6dp"
+            android:paddingRight="5dp"
             android:scrollbars="vertical" />
 
         <android.support.design.widget.FloatingActionButton
@@ -119,8 +113,12 @@
             android:padding="10dp"
             android:text="Coste Total :"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@android:color/white" />
+            android:textColor="@color/common_google_signin_btn_text_dark_pressed"
+            android:textSize="18sp" />
+
     </FrameLayout>
+
+
 </LinearLayout>
 
 

@@ -24,16 +24,20 @@ import com.afollestad.materialdialogs.Theme;
 import com.cocosw.bottomsheet.BottomSheet;
 
 import java.io.File;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
 import rafaxplayer.cheftools.R;
+import rafaxplayer.cheftools.database.SqliteWrapper;
 
 
 public class Fragment_backups_dlg extends DialogFragment {
@@ -43,6 +47,7 @@ public class Fragment_backups_dlg extends DialogFragment {
     TextView texttile;
     @BindView(R.id.fab)
     FloatingActionButton fab;
+    private SqliteWrapper sql;
 
     @OnClick(R.id.logo)
     public void back() {
@@ -64,6 +69,7 @@ public class Fragment_backups_dlg extends DialogFragment {
         listItems.setHasFixedSize(true);
         listItems.setLayoutManager(new LinearLayoutManager(getActivity()));
         listItems.setItemAnimator(new DefaultItemAnimator());
+        sql = new SqliteWrapper(getActivity());
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,14 +83,14 @@ public class Fragment_backups_dlg extends DialogFragment {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 if (GlobalUttilities.checkPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) && GlobalUttilities.checkPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
-
+                                    sql.close();
                                     if (GlobalUttilities.backup(getActivity())) {
                                         new MaterialDialog.Builder(getActivity()).title(R.string.backups)
                                                 .content(R.string.backup_path)
                                                 .positiveText("Ok").show();
 
                                     }
-                                    ;
+
                                     onResume();
                                 } else {
                                     Toast.makeText(getActivity(), R.string.white_permission, Toast.LENGTH_SHORT).show();
@@ -128,6 +134,7 @@ public class Fragment_backups_dlg extends DialogFragment {
                     ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
+
     }
 
     @Override
@@ -148,9 +155,11 @@ public class Fragment_backups_dlg extends DialogFragment {
             for (int i = 0; i < files.length; i++) {
                 if (!files[i].isDirectory()) {
                     HashMap<String, String> map = new HashMap<String, String>();
-                    map.put("name", files[i].getName().toString());
+                    map.put("name", files[i].getName());
                     map.put("path", files[i].getAbsolutePath());
-                    map.put("date", files[i].getName().toString().replace("ChefToolsDB_", ""));
+                    String date = files[i].getName().replace("ChefToolsDB_", "");
+                    map.put("date", date.contains(":") ? date : new SimpleDateFormat(
+                            "dd/MM/yyyy HH:mm:ss", Locale.getDefault()).format(new Date(Long.valueOf(date))));
                     listBackups.add(map);
                     if ((i + 1) >= maxBackups) {
                         files[i].delete();

@@ -33,7 +33,7 @@ public class IntroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
         ButterKnife.bind(this);
-        //Log.d("intro", String.format("V%s",BuildConfig.VERSION_NAME));
+
         version.setText(String.format("V%s", BuildConfig.VERSION_NAME));
         translateX1 = ObjectAnimator.ofFloat(textIntro1, "translationX", -100, 0);
         translateX2 = ObjectAnimator.ofFloat(textIntro2, "translationX", 100, 0);

@@ -43,7 +43,6 @@ public class Recipes_Activity extends BaseActivity implements RecipesList_Fragme
     protected void onResume() {
         super.onResume();
 
-
     }
 
     public void showRecipeEdit(int num) {

@@ -1,7 +1,6 @@
 package rafaxplayer.cheftools.escandallos.fragments;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -13,14 +12,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.sql.Date;
 import java.util.ArrayList;
-import java.util.List;
-
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -28,7 +23,6 @@ import butterknife.ButterKnife;
 import rafaxplayer.cheftools.Globalclasses.GlobalUttilities;
 import rafaxplayer.cheftools.Globalclasses.models.Escandallo;
 import rafaxplayer.cheftools.Globalclasses.models.Escandallo_Product;
-import rafaxplayer.cheftools.Globalclasses.models.Menu;
 import rafaxplayer.cheftools.R;
 import rafaxplayer.cheftools.database.DBHelper;
 import rafaxplayer.cheftools.database.SqliteWrapper;
@@ -40,6 +34,8 @@ public class EscandalloDetalle_Fragment extends Fragment {
     TextView escandalloName;
     @BindView(R.id.dateescandallo)
     TextView escandalloDate;
+    @BindView(R.id.comments)
+    EditText escandalloComments;
     @BindView(R.id.list_items)
     RecyclerView listProducts;
     @BindView(R.id.detalletexttotal)
@@ -76,7 +72,7 @@ public class EscandalloDetalle_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v= inflater.inflate(R.layout.fragment_escandallo_detalle, container, false);
+        View v = inflater.inflate(R.layout.fragment_escandallo_detalle, container, false);
         ButterKnife.bind(this, v);
         listProducts.setHasFixedSize(true);
         listProducts.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -128,10 +124,10 @@ public class EscandalloDetalle_Fragment extends Fragment {
                 }
                 if (ID != 0) {
                     try {
-                        Escandallo esc = (Escandallo)sql.SelectWithId("Escandallo",DBHelper.TABLE_ESCANDALLOS,ID);
+                        Escandallo esc = (Escandallo) sql.SelectWithId("Escandallo", DBHelper.TABLE_ESCANDALLOS, ID);
                         ArrayList<Escandallo_Product> products = new ArrayList<>();
-                        String strShared = GlobalUttilities.shareEscandalloText(getActivity(), esc,products);
-                        GlobalUttilities.shareIntenttext(getActivity(),strShared);
+                        String strShared = GlobalUttilities.shareEscandalloText(getActivity(), esc, products);
+                        GlobalUttilities.shareIntenttext(getActivity(), strShared);
 
                     } catch (Exception e) {
                         Log.e("Error :", e.getMessage());
@@ -147,7 +143,7 @@ public class EscandalloDetalle_Fragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public void displayWithId(int id){
+    public void displayWithId(int id) {
 
         if (!sql.IsOpen()) {
             sql.open();
@@ -157,9 +153,10 @@ public class EscandalloDetalle_Fragment extends Fragment {
 
         if (esc != null) {
             escandalloName.setText(esc.getName());
+            escandalloComments.setText(esc.getComment());
             escandalloDate.setText(esc.getFecha());
             escandalloCoste.setText(String.format("%s %s%s", costTotal, String.valueOf(esc.getCostetotal()), "€"));
-            ArrayList<Escandallo_Product> listpr = (ArrayList<Escandallo_Product>) (Object)sql.getProductListWithListId("Escandallo_product",esc.getId());
+            ArrayList<Escandallo_Product> listpr = (ArrayList<Escandallo_Product>) (Object) sql.getProductListWithListId("Escandallo_product", esc.getId());
             listProducts.setAdapter(new RecyclerAdapter(listpr));
         }
 
@@ -201,6 +198,7 @@ public class EscandalloDetalle_Fragment extends Fragment {
             public TextView txtProd;
             public TextView txtCantidad;
             public TextView txtCoste;
+
             public ViewHolder(View v) {
                 super(v);
                 v.findViewById(R.id.ButtonDeleteProduct).setVisibility(View.GONE);

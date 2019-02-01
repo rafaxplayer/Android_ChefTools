@@ -8,7 +8,9 @@ public class Escandallo {
     int id;
     String Name;
     String Fecha;
+    String comment;
     double Costetotal;
+
 
     public String getFecha() {
         return Fecha;
@@ -24,6 +26,7 @@ public class Escandallo {
 
     public Escandallo(String name, String comentario, String fecha, double costetotal) {
         Name = name;
+        comentario = comentario;
         Costetotal = costetotal;
         Fecha = fecha;
     }
@@ -44,6 +47,13 @@ public class Escandallo {
         Name = name;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 
     public double getCostetotal() {
         return Costetotal;

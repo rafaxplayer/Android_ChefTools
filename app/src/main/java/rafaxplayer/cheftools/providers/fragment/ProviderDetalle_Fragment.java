@@ -1,6 +1,5 @@
 package rafaxplayer.cheftools.providers.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -131,7 +130,7 @@ public class ProviderDetalle_Fragment extends Fragment {
                 if (ID != 0) {
                     Supplier pro = (Supplier) sql.SelectWithId("Provider", DBHelper.TABLE_PROVEEDORES, ID);
                     String sharedStr = GlobalUttilities.shareDataText(getActivity(), pro);
-                    GlobalUttilities.shareIntenttext(getActivity(),sharedStr);
+                    GlobalUttilities.shareIntenttext(getActivity(), sharedStr);
                 }
 
 

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
@@ -75,9 +76,7 @@ public class NewEditRecipe_Fragment extends Fragment {
         NewEditRecipe_Fragment f = new NewEditRecipe_Fragment();
         Bundle args = new Bundle();
         args.putInt("id", recipeid);
-
         f.setArguments(args);
-
         return f;
     }
 
@@ -106,19 +105,48 @@ public class NewEditRecipe_Fragment extends Fragment {
         }
         this.setRetainInstance(true);
 
+
     }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (this.imgUri != null) {
+            outState.putString("ImgUrl", this.imgUri.toString());
+        }
+    }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        if (savedInstanceState != null) {
+            if (savedInstanceState.getString("ImgUrl") != null) {
+                this.imgUri = Uri.parse(savedInstanceState.getString("ImgUrl"));
+                Picasso.get().load(this.imgUri).into(img);
+            }
+        }
+
         setHasOptionsMenu(true);
+
     }
 
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        catsarr = sql.getFormatsOrCategorysData(DBHelper.TABLE_RECETAS_CATEGORIA);
+        SimpleAdapter my_Adapter = new SimpleAdapter(getActivity(), catsarr, R.layout.spinnerrow, new String[]{"Name"}, new int[]{R.id.spinnertext});
+        cats.setAdapter(my_Adapter);
+
+        if (this.ID != 0) {
+            displayWithId(this.ID);
+        } else {
+            ((BaseActivity) getActivity()).setTittleDinamic(getString(R.string.menu_new_recipe));
+        }
+
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -185,24 +213,14 @@ public class NewEditRecipe_Fragment extends Fragment {
         );
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-    }
 
+    }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (!sql.IsOpen()) {
-            sql.open();
-        }
-        catsarr = sql.getFormatsOrCategorysData(DBHelper.TABLE_RECETAS_CATEGORIA);
-        SimpleAdapter my_Adapter = new SimpleAdapter(getActivity(), catsarr, R.layout.spinnerrow, new String[]{"Name"}, new int[]{R.id.spinnertext});
-        cats.setAdapter(my_Adapter);
 
-        if (this.ID != 0) {
-            displayWithId(this.ID);
-        } else {
-            ((BaseActivity) getActivity()).setTittleDinamic(getString(R.string.menu_new_recipe));
-        }
+
     }
 
     @Override
@@ -262,15 +280,11 @@ public class NewEditRecipe_Fragment extends Fragment {
 
         String cat = ((HashMap<String, Object>) cats.getSelectedItem()).get("Name").toString();
 
-        String imageTosave = null;
+        String imageTosave = saveImage(imgUri);
 
-        if(imgUri != null){
-            //Si la imagen ya es un backup no es necesario backup_image_recipe()
-            imageTosave = imgUri.toString().contains("Android/data") ? imgUri.toString() : GlobalUttilities.backup_image_recipe(getActivity(), imgUri).get("Uri").toString();
-        }
 
         Recipe rec = new Recipe(nametxt.getText().toString(),
-                imageTosave == null ? "null" :  imageTosave,
+                imageTosave,
                 ingtxt.getText().toString(),
                 elatxt.getText().toString(),
                 url.getText().toString(),
@@ -341,7 +355,7 @@ public class NewEditRecipe_Fragment extends Fragment {
         }
         Recipe rec = (Recipe) sql.SelectWithId("Recipe", DBHelper.TABLE_RECETAS, id);
         if (rec != null) {
-            Picasso.get().load(Uri.parse(rec.getImg().toString()))
+            Picasso.get().load(Uri.parse(rec.getImg()))
                     .resize(getResources().getDimensionPixelOffset(R.dimen.image_dimen_width), getResources().getDimensionPixelOffset(R.dimen.image_dimen_height))
                     .placeholder(R.drawable.item_image_placeholder)
                     .into(img);
@@ -351,9 +365,8 @@ public class NewEditRecipe_Fragment extends Fragment {
             url.setText(rec.getUrl());
             ingtxt.setText(rec.getIngredients());
             elatxt.setText(rec.getElaboration());
-
-            this.ID = id;
-            this.imgUri = Uri.parse(rec.getImg());
+            ID = id;
+            imgUri = Uri.parse(rec.getImg());
             ((BaseActivity) getActivity()).setTittleDinamic(getString(R.string.menu_edit_recipe) + " " + rec.getName());
         }
         sql.close();
@@ -362,23 +375,21 @@ public class NewEditRecipe_Fragment extends Fragment {
     public void updateImage(final Uri ur) {
 
         if (ur != null) {
-
             Picasso.get()
                     .load(ur)
                     .placeholder(R.drawable.item_image_placeholder)
                     .resize(getResources().getDimensionPixelOffset(R.dimen.image_dimen_width), getResources().getDimensionPixelOffset(R.dimen.image_dimen_height))
-                    .into(this.img);
-            this.imgUri = ur;
-
+                    .into(img);
+            imgUri = ur;
+            Log.e("Thi image uri", imgUri.toString());
         }
     }
-
 
     public void refresh() {
         Picasso.get()
                 .load(Uri.parse(""))
                 .placeholder(R.drawable.item_image_placeholder)
-                .noFade()
+                .resize(getResources().getDimensionPixelOffset(R.dimen.image_dimen_width), getResources().getDimensionPixelOffset(R.dimen.image_dimen_height))
                 .into(this.img);
         imgUri = null;
         nametxt.setText("");
@@ -401,10 +412,27 @@ public class NewEditRecipe_Fragment extends Fragment {
         ((BaseActivity) getActivity()).setTittleDinamic(getString(R.string.activity_newedit));
     }
 
-    @Override
-    public void onPause() {
-        sql.close();
-        super.onPause();
+    public String saveImage(Uri imguri) {
+        Log.e("saveImage ImgUri", imguri.toString());
+
+        if (imguri == null) {
+            Log.e("saveImage return ", "null");
+            return null;
+        }
+        if (imguri.toString().contains("Android/data") || imguri.toString().contains("http")) {
+            Log.e("saveImage return ", imgUri.toString());
+            return imguri.toString();
+        }
+        Uri ret = GlobalUttilities.backup_image_recipe(getActivity(), imguri);
+
+        if (ret != null) {
+            Log.e("saveImage return ", "isCreate");
+            return ret.toString();
+        }
+        Log.e("saveImage return ", "noCreate");
+        return imguri.toString();
+
+
     }
 
     @Override

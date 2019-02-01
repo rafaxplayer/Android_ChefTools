@@ -201,4 +201,7 @@
     <string name="new_escandallo">New Cost Evaluation</string>
     <string name="share_escandallo">Share Cost evaluation</string>
     <string name="edit_escandallo">Edit Cost evaluation</string>
+    <string name="menu_new_escandallo">Name new cost evaluation</string>
+
+    <string name="productdeleted">Ok, product deleted</string>
 </resources>
