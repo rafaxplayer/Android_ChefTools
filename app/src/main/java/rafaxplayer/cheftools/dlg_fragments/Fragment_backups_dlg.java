@@ -14,7 +14,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,7 +58,7 @@ public class Fragment_backups_dlg extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_backups_dlg, container, false);
@@ -111,7 +110,7 @@ public class Fragment_backups_dlg extends DialogFragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         texttile.setText(R.string.backups);
     }
@@ -154,7 +153,7 @@ public class Fragment_backups_dlg extends DialogFragment {
             Collections.sort(Arrays.asList(files), Collections.reverseOrder());
             for (int i = 0; i < files.length; i++) {
                 if (!files[i].isDirectory()) {
-                    HashMap<String, String> map = new HashMap<String, String>();
+                    HashMap<String, String> map = new HashMap<>();
                     map.put("name", files[i].getName());
                     map.put("path", files[i].getAbsolutePath());
                     String date = files[i].getName().replace("ChefToolsDB_", "");
@@ -176,13 +175,13 @@ public class Fragment_backups_dlg extends DialogFragment {
 
     public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
-        private ArrayList<HashMap<String, String>> mDataset;
+        private final ArrayList<HashMap<String, String>> mDataset;
 
-        public RecyclerAdapter(ArrayList<HashMap<String, String>> myDataset) {
+        RecyclerAdapter(ArrayList<HashMap<String, String>> myDataset) {
             mDataset = myDataset;
         }
 
-        public void deleteItem(int pos) {
+        void deleteItem(int pos) {
 
             File fileBackup = new File(mDataset.get(pos).get("path"));
             File folderImagesBackup = new File(mDataset.get(pos).get("path").replace("ChefToolsDB_", ""));
@@ -205,15 +204,15 @@ public class Fragment_backups_dlg extends DialogFragment {
 
         }
 
+        @NonNull
         @Override
-        public RecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public RecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_backups, parent, false);
-            RecyclerAdapter.ViewHolder vh = new RecyclerAdapter.ViewHolder(v);
-            return vh;
+            return new ViewHolder(v);
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             holder.mTextView.setText(R.string.backups);
             holder.mTextView2.setText(getString(R.string.created) + mDataset.get(position).get("date"));
         }
@@ -224,15 +223,15 @@ public class Fragment_backups_dlg extends DialogFragment {
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-            public ImageView img;
-            public TextView mTextView;
-            public TextView mTextView2;
 
-            public ViewHolder(View v) {
+            final TextView mTextView;
+            final TextView mTextView2;
+
+            ViewHolder(View v) {
                 super(v);
-                img = (ImageView) v.findViewById(R.id.imageList);
-                mTextView = (TextView) v.findViewById(R.id.text1);
-                mTextView2 = (TextView) v.findViewById(R.id.text2);
+
+                mTextView = v.findViewById(R.id.text1);
+                mTextView2 = v.findViewById(R.id.text2);
                 v.setOnClickListener(this);
             }
 

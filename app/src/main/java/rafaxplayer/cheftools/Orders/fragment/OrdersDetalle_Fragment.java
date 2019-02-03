@@ -2,6 +2,7 @@ package rafaxplayer.cheftools.Orders.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -79,7 +80,7 @@ public class OrdersDetalle_Fragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_orders_detalle, container, false);
         ButterKnife.bind(this, v);
@@ -123,7 +124,7 @@ public class OrdersDetalle_Fragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.edit:
                 if (ID != 0) {
-                    Boolean islayout = (getActivity().getSupportFragmentManager().findFragmentById(R.id.detalleorders) != null);
+                    boolean islayout = (getActivity().getSupportFragmentManager().findFragmentById(R.id.detalleorders) != null);
                     if (getResources().getBoolean(R.bool.dual_pane) && islayout) {
                         ((Orders_Activity) getActivity()).showMenuEdit(ID);
                     } else {
@@ -188,30 +189,30 @@ public class OrdersDetalle_Fragment extends Fragment {
 
     public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
-        private ArrayList<Order_Product> mDataset;
+        private final ArrayList<Order_Product> mDataset;
 
-        public RecyclerAdapter(ArrayList<Order_Product> myDataset) {
+        RecyclerAdapter(ArrayList<Order_Product> myDataset) {
             mDataset = myDataset;
         }
 
+        @NonNull
         @Override
-        public RecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public RecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_simple, parent, false);
 
-            ViewHolder vh = new ViewHolder(v);
-            return vh;
+            return new ViewHolder(v);
         }
 
         @Override
-        public void onBindViewHolder(RecyclerAdapter.ViewHolder viewHolder, int i) {
+        public void onBindViewHolder(@NonNull RecyclerAdapter.ViewHolder viewHolder, int i) {
             if (!sql.IsOpen()) {
                 sql.open();
             }
-            String productName = sql.getSimpleData(((Order_Product) mDataset.get(i)).getProductoId(), DBHelper.NAME, DBHelper.TABLE_PRODUCTOS);
-            String formatName = sql.getSimpleData(((Order_Product) mDataset.get(i)).getProductoId(), DBHelper.PRODUCTO_FORMATO_NAME, DBHelper.TABLE_PRODUCTOS);
+            String productName = sql.getSimpleData(mDataset.get(i).getProductoId(), DBHelper.NAME, DBHelper.TABLE_PRODUCTOS);
+            String formatName = sql.getSimpleData(mDataset.get(i).getProductoId(), DBHelper.PRODUCTO_FORMATO_NAME, DBHelper.TABLE_PRODUCTOS);
             viewHolder.delbut.setVisibility(View.GONE);
             viewHolder.txtProd.setText(productName);
-            viewHolder.txtCantidad.setText(String.valueOf(((Order_Product) mDataset.get(i)).getCantidad()));
+            viewHolder.txtCantidad.setText(String.valueOf(mDataset.get(i).getCantidad()));
             viewHolder.txtFormat.setText(formatName);
         }
 
@@ -223,17 +224,17 @@ public class OrdersDetalle_Fragment extends Fragment {
 
         public class ViewHolder extends RecyclerView.ViewHolder {
 
-            public TextView txtProd;
-            public TextView txtCantidad;
-            public TextView txtFormat;
-            public ImageButton delbut;
+            final TextView txtProd;
+            final TextView txtCantidad;
+            final TextView txtFormat;
+            final ImageButton delbut;
 
-            public ViewHolder(View v) {
+            ViewHolder(View v) {
                 super(v);
-                delbut = (ImageButton) v.findViewById(R.id.ButtonDeleteProduct);
-                txtProd = (TextView) v.findViewById(R.id.text1);
-                txtCantidad = (TextView) v.findViewById(R.id.text2);
-                txtFormat = (TextView) v.findViewById(R.id.text3);
+                delbut = v.findViewById(R.id.ButtonDeleteProduct);
+                txtProd = v.findViewById(R.id.text1);
+                txtCantidad = v.findViewById(R.id.text2);
+                txtFormat = v.findViewById(R.id.text3);
             }
         }
     }

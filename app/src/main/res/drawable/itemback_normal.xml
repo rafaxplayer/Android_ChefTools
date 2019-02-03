@@ -7,5 +7,5 @@
         android:angle="360.0"
         android:type="linear"
         android:centerX="99.9%"
-        android:centerColor="#FFD2B48C"></gradient>
+        android:centerColor="#FFD2B48C" />
 </shape>

@@ -1,6 +1,7 @@
 package rafaxplayer.cheftools.providers.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -48,7 +49,7 @@ public class ProviderDetalle_Fragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_provider_detalle, container, false);
         ButterKnife.bind(this, v);
@@ -56,7 +57,7 @@ public class ProviderDetalle_Fragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         proTelefono.setOnClickListener(new View.OnClickListener() {
 
@@ -113,7 +114,7 @@ public class ProviderDetalle_Fragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.edit:
                 if (ID != 0) {
-                    Boolean islayout = (getActivity().getSupportFragmentManager().findFragmentById(R.id.detalleprovider) != null);
+                    boolean islayout = (getActivity().getSupportFragmentManager().findFragmentById(R.id.detalleprovider) != null);
                     if (getResources().getBoolean(R.bool.dual_pane) && islayout) {
                         ((Providers_Activity) getActivity()).showMenuEdit(ID);
                     } else {

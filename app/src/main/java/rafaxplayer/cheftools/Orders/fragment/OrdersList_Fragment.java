@@ -1,6 +1,5 @@
 package rafaxplayer.cheftools.Orders.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -66,7 +65,7 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
     private ActionMode mActionMode;
     private SqliteWrapper sql;
     private Boolean itemsFound;
-    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+    private final ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 
         OrdersAdapter adp;
 
@@ -124,7 +123,7 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
                 case R.id.action_edit:
                     if (adp.getSelectedItemCount() > 0) {
                         int pos = adp.getSelectedItems().get(0);
-                        ((Orders_Activity) getActivity()).showMenuEdit(((Orders) adp.mDataset.get(pos)).getId());
+                        ((Orders_Activity) getActivity()).showMenuEdit(adp.mDataset.get(pos).getId());
 
                     }
                     mode.finish();
@@ -149,7 +148,7 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_list, container, false);
         ButterKnife.bind(this, v);
@@ -180,7 +179,7 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
         listOrders.setItemAnimator(new DefaultItemAnimator());
         listOrders.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
                 if (dy <= 0 && fab.isShown()) {
@@ -191,7 +190,7 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
             }
 
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
 
                 if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                     fab.show();
@@ -214,6 +213,15 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
         sql = new SqliteWrapper(getActivity());
         sql.open();
         itemsFound = false;
+
+        try {
+            mCallback = (OnSelectedCallback) getActivity();
+        } catch (ClassCastException e) {
+
+
+            throw new ClassCastException(getActivity().toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
     }
 
     @Override
@@ -223,7 +231,7 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
             sql.open();
         }
 
-        List<Orders> list = loadValues(null);
+        List<Orders> list = loadValues();
         if (list.size() > 0) {
             itemsFound = true;
             empty.setVisibility(View.GONE);
@@ -289,7 +297,7 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
                         .inputType(InputType.TYPE_CLASS_TEXT)
                         .input("Text to search...", "", new MaterialDialog.InputCallback() {
                             @Override
-                            public void onInput(MaterialDialog dialog, CharSequence input) {
+                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                                 ((OrdersAdapter) listOrders.getAdapter()).getFilter().filter(input);
                                 getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                                 dialog.dismiss();
@@ -309,27 +317,15 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
 
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        try {
-            mCallback = (OnSelectedCallback) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnHeadlineSelectedListener");
-        }
-
-    }
 
     @Override
     public void onRefresh() {
         onResume();
     }
 
-    private List<Orders> loadValues(String order) {
+    private List<Orders> loadValues() {
 
-        return (List<Orders>) (Object) sql.getAllObjects("Orders", order);
+        return (List<Orders>) (Object) sql.getAllObjects("Orders", null);
 
     }
 
@@ -347,27 +343,25 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
     }
 
     public interface OnSelectedCallback {
-        public void onSelect(int id);
+        void onSelect(int id);
     }
 
     public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder> implements Filterable {
 
-        public Boolean searchResultsok;
         private List<Orders> mDataset;
-        private List<Orders> listorigin;
+        private final List<Orders> listorigin;
         private FilesFilter filefilter;
-        private SparseBooleanArray selectedItems;
+        private final SparseBooleanArray selectedItems;
 
         // Adapter's Constructor
-        public OrdersAdapter(List<Orders> myDataset) {
+        OrdersAdapter(List<Orders> myDataset) {
             mDataset = myDataset;
             listorigin = myDataset;
-            this.searchResultsok = false;
             selectedItems = new SparseBooleanArray();
         }
 
 
-        public void toggleSelection(int pos, ImageView img) {
+        void toggleSelection(int pos, ImageView img) {
 
             if (selectedItems.get(pos, false)) {
                 selectedItems.delete(pos);
@@ -384,9 +378,9 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
 
         }
 
-        public void deleteItem(int pos) {
+        void deleteItem(int pos) {
 
-            int count = sql.DeleteWithId(((Orders) mDataset.get(pos)).getId(), DBHelper.TABLE_PEDIDOS);
+            int count = sql.DeleteWithId(mDataset.get(pos).getId(), DBHelper.TABLE_PEDIDOS);
 
             if (count > 0) {
                 mDataset.remove(pos);
@@ -396,19 +390,19 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
             notifyItemRemoved(pos);
         }
 
-        public void clearSelections() {
+        void clearSelections() {
 
             selectedItems.clear();
             notifyDataSetChanged();
         }
 
 
-        public int getSelectedItemCount() {
+        int getSelectedItemCount() {
             return selectedItems.size();
         }
 
 
-        public void deleteSelectedItems() {
+        void deleteSelectedItems() {
             final List<Integer> items = getSelectedItems();
 
             for (int i = items.size() - 1; i >= 0; i--) {
@@ -418,34 +412,34 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
 
         }
 
-        public List<Integer> getSelectedItems() {
+        List<Integer> getSelectedItems() {
             List<Integer> items =
-                    new ArrayList<Integer>(selectedItems.size());
+                    new ArrayList<>(selectedItems.size());
             for (int i = 0; i < selectedItems.size(); i++) {
                 items.add(selectedItems.keyAt(i));
             }
             return items;
         }
 
+        @NonNull
         @Override
-        public OrdersAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+        public OrdersAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                                            int viewType) {
             // Create a new view by inflating the row item xml.
             View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_list_orders_stocks, parent, false);
 
             // Set the view to the ViewHolder
-            ViewHolder holder = new ViewHolder(v);
 
 
-            return holder;
+            return new ViewHolder(v);
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             Picasso.get().load(R.drawable.purchase).into(holder.img);
-            holder.sName.setText(((Orders) mDataset.get(position)).getName());
-            holder.sDate.setText(((Orders) mDataset.get(position)).getFecha());
+            holder.sName.setText(mDataset.get(position).getName());
+            holder.sDate.setText(mDataset.get(position).getFecha());
             boolean state = selectedItems.get(position, false);
             holder.itemView.setSelected(state);
             if (mActionMode != null) {
@@ -493,9 +487,7 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
             @BindView(R.id.text2)
             TextView sDate;
 
-            int ID;
-
-            public ViewHolder(View v) {
+            ViewHolder(View v) {
                 super(v);
                 ButterKnife.bind(this, v);
                 v.setOnClickListener(this);
@@ -531,7 +523,6 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
                             })
 
                             .show();
-                    return;
                 } else if (v.getId() == R.id.ButtonEdit) {
                     Intent in = new Intent(getActivity(), OrdersNewEdit_Activity.class);
                     in.putExtra("id", (mDataset.get(ViewHolder.this.getLayoutPosition())).getId());
@@ -542,7 +533,7 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
                         toggleSelection(ViewHolder.this.getLayoutPosition(), img);
                         if (getResources().getBoolean(R.bool.dual_pane)) {
                             if (mCallback != null) {
-                                mCallback.onSelect(((Orders) mDataset.get(ViewHolder.this.getLayoutPosition())).getId());
+                                mCallback.onSelect(mDataset.get(ViewHolder.this.getLayoutPosition()).getId());
                             }
                         }
 
@@ -551,7 +542,7 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
                         toggleSelection(ViewHolder.this.getLayoutPosition(), img);
                         v.setSelected(true);
                         if (mCallback != null) {
-                            mCallback.onSelect(((Orders) mDataset.get(ViewHolder.this.getLayoutPosition())).getId());
+                            mCallback.onSelect(mDataset.get(ViewHolder.this.getLayoutPosition()).getId());
                         }
 
                     }
@@ -588,7 +579,7 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
                     results.count = mDataset.size();
                 } else {
 
-                    List<Orders> nFilesList = new ArrayList<Orders>();
+                    List<Orders> nFilesList = new ArrayList<>();
 
                     for (Orders p : mDataset) {
                         if (p.getName().toLowerCase().contains(constraint.toString().toLowerCase()))
@@ -608,10 +599,8 @@ public class OrdersList_Fragment extends Fragment implements SwipeRefreshLayout.
                 if (results.count == 0) {
                     mDataset = listorigin;
                     Toast.makeText(getActivity(), getString(R.string.noresults), Toast.LENGTH_LONG).show();
-                    searchResultsok = false;
                 } else {
                     mDataset = (ArrayList<Orders>) results.values;
-                    searchResultsok = true;
                 }
                 notifyDataSetChanged();
             }

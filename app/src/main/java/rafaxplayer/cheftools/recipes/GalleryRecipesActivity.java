@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -29,7 +30,7 @@ public class GalleryRecipesActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mRecyclerView = (RecyclerView) findViewById(R.id.imageList);
+        mRecyclerView = findViewById(R.id.imageList);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         mRecyclerView.setHasFixedSize(true);
         sql = new SqliteWrapper(this);
@@ -57,23 +58,23 @@ public class GalleryRecipesActivity extends BaseActivity {
 
     public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
 
-        List<ImageGalleryModel> listImages;
-        Context context;
+        final List<ImageGalleryModel> listImages;
+        final Context context;
 
-        public GalleryAdapter(Context con, List<ImageGalleryModel> list) {
+        GalleryAdapter(Context con, List<ImageGalleryModel> list) {
 
             this.listImages = list;
             this.context = con;
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
-            Picasso.get().load(((ImageGalleryModel) listImages.get(position)).ImagePath)
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            Picasso.get().load(listImages.get(position).ImagePath)
                     .resizeDimen(R.dimen.dimen_gallery_thumbnail_min, R.dimen.dimen_gallery_thumbnail_min)
                     .centerCrop()
                     .placeholder(R.drawable.placeholder_recetas)
                     .into(holder.img);
-            holder.txtTitle.setText(((ImageGalleryModel) listImages.get(position)).Title);
+            holder.txtTitle.setText(listImages.get(position).Title);
         }
 
         @Override
@@ -81,25 +82,25 @@ public class GalleryRecipesActivity extends BaseActivity {
             return listImages.size();
         }
 
+        @NonNull
         @Override
-        public GalleryAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+        public GalleryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                                             int viewType) {
             // Create a new view by inflating the row item xml.
             View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.image_gallery_recipes, parent, false);
             // Set the view to the ViewHolder
-            ViewHolder holder = new ViewHolder(v);
-            return holder;
+            return new ViewHolder(v);
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-            public ImageView img;
-            public TextView txtTitle;
+            final ImageView img;
+            final TextView txtTitle;
 
-            public ViewHolder(View v) {
+            ViewHolder(View v) {
                 super(v);
-                img = (ImageView) v.findViewById(R.id.imageGallery);
-                txtTitle = (TextView) v.findViewById(R.id.textImageGallery);
+                img = v.findViewById(R.id.imageGallery);
+                txtTitle = v.findViewById(R.id.textImageGallery);
                 v.setOnClickListener(this);
             }
 

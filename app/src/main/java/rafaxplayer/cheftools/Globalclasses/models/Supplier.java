@@ -1,13 +1,13 @@
 package rafaxplayer.cheftools.Globalclasses.models;
 
 public class Supplier {
-    int id;
-    String Name;
-    String Telefono;
-    String Email;
-    String Direccion;
-    String Comentario;
-    String Categoria;
+    private int id;
+    private String Name;
+    private String Telefono;
+    private String Email;
+    private String Direccion;
+    private String Comentario;
+    private String Categoria;
 
     public Supplier() {
 

@@ -55,11 +55,9 @@ public class GlobalUttilities {
     public static final String PATH_IMAGES_RECIPES = Environment.getExternalStorageDirectory() + "/Android/data/rafaxplayer.cheftools/files/Pictures/";
     public static final int SELECT_PICTURE = 1;
     public static final int SELECT_PHOTO = 2;
-    public static final int RECIPE_WITH_CAPTURE = 3;
 
     public static final int CONTACT_SELECT = 4;
     public static final int PERMISSION_REQUEST = 10001;
-    public static final String APP_TAG = "ChefTools";
     public static final String CALCULATOR_PACKAGE_2 = "com.sec.android.app.popupcalculator";
     public static final String CALCULATOR_CLASS_2 = "com.sec.android.app.popupcalculator.Calculator";
     public static final String CALCULATOR_PACKAGE = "com.android.calculator2";
@@ -117,8 +115,8 @@ public class GlobalUttilities {
         return ret;
     }
 
-    public static Boolean backup_images(Context con, String time) {
-        Boolean ret;
+    private static Boolean backup_images(Context con, String time) {
+        boolean ret;
         try {
 
             copyDirectoryOneLocationToAnotherLocation(new File(PATH_IMAGES_RECIPES), new File(PATH_BACKUPS + "/" + time));
@@ -131,9 +129,9 @@ public class GlobalUttilities {
         return ret;
     }
 
-    public static Boolean restore_backup_images(Context con, String filename) {
+    private static Boolean restore_backup_images(Context con, String filename) {
 
-        Boolean ret;
+        boolean ret;
         String folderImagesPath = PATH_BACKUPS + filename.replace(DBHelper.DATABASE_NAME + "_", "");
         if (new File(folderImagesPath).exists()) {
             try {
@@ -157,7 +155,7 @@ public class GlobalUttilities {
     }
 
     public static Boolean backupRestore(Context con, String filename) {
-        Boolean ret;
+        boolean ret;
         try {
 
             File dbFile = new File(PATH_BACKUPS + filename);
@@ -243,7 +241,7 @@ public class GlobalUttilities {
         return ret;
     }
 
-    public static void copyDirectoryOneLocationToAnotherLocation(File sourceLocation, File targetLocation)
+    private static void copyDirectoryOneLocationToAnotherLocation(File sourceLocation, File targetLocation)
             throws IOException {
 
         if (sourceLocation.isDirectory()) {
@@ -278,8 +276,8 @@ public class GlobalUttilities {
     public static boolean deleteDir(File dir) {
         if (dir.isDirectory()) {
             String[] children = dir.list();
-            for (int i = 0; i < children.length; i++) {
-                boolean success = deleteDir(new File(dir, children[i]));
+            for (String aChildren : children) {
+                boolean success = deleteDir(new File(dir, aChildren));
                 if (!success) {
                     return false;
                 }
@@ -290,7 +288,7 @@ public class GlobalUttilities {
         return dir.delete();
     }
 
-    public static String uriGetPath(Context con, Uri uri) {
+    private static String uriGetPath(Context con, Uri uri) {
         String[] proj = {MediaStore.Images.Media.DATA};
         Cursor cursor = con.getContentResolver().query(uri,
                 proj, // Which columns to return
@@ -332,7 +330,7 @@ public class GlobalUttilities {
         str.append(String.format("%s %s€", con.getString(R.string.cost_total), esc.getCostetotal()));
         str.append("\n");
         str.append("\n");
-        str.append("Shared with " + con.getString(R.string.app_name));
+        str.append("Shared with ").append(con.getString(R.string.app_name));
 
         return str.toString();
     }
@@ -344,16 +342,16 @@ public class GlobalUttilities {
             str.append("\n");
             str.append("-=-=-=-=-=-=-=-=-=-=");
             str.append("\n");
-            str.append(con.getString(R.string.recipe_ingredients) + " :");
+            str.append(con.getString(R.string.recipe_ingredients)).append(" :");
             str.append("\n");
             str.append(((Recipe) obj).getIngredients());
             str.append("\n");
-            str.append(con.getString(R.string.recipe_elaboration) + " :");
+            str.append(con.getString(R.string.recipe_elaboration)).append(" :");
             str.append(((Recipe) obj).getElaboration());
             str.append("\n");
             if (!((Recipe) obj).getUrl().isEmpty()) {
 
-                str.append(con.getString(R.string.recipe_url) + " :");
+                str.append(con.getString(R.string.recipe_url)).append(" :");
                 str.append(((Recipe) obj).getUrl());
             }
             str.append("\n");
@@ -362,35 +360,35 @@ public class GlobalUttilities {
             str.append("\n");
             str.append("-=-=-=-=-=-=-=-=-=-=");
             str.append("\n");
-            str.append(con.getString(R.string.menu_entrantes) + " :");
+            str.append(con.getString(R.string.menu_entrantes)).append(" :");
             str.append("\n");
             str.append("--------------------");
             str.append("\n");
             str.append(((Menu) obj).getEntrantes());
             str.append("\n");
             str.append("\n");
-            str.append(con.getString(R.string.menu_primeros) + " :");
+            str.append(con.getString(R.string.menu_primeros)).append(" :");
             str.append("\n");
             str.append("--------------------");
             str.append("\n");
             str.append(((Menu) obj).getPrimeros());
             str.append("\n");
             str.append("\n");
-            str.append(con.getString(R.string.menu_segundos) + " :");
+            str.append(con.getString(R.string.menu_segundos)).append(" :");
             str.append("\n");
             str.append("--------------------");
             str.append("\n");
             str.append(((Menu) obj).getSegundos());
             str.append("\n");
             str.append("\n");
-            str.append(con.getString(R.string.menu_postres) + " :");
+            str.append(con.getString(R.string.menu_postres)).append(" :");
             str.append("\n");
             str.append("--------------------");
             str.append("\n");
             str.append(((Menu) obj).getPostre());
             str.append("\n");
             str.append("\n");
-            str.append(con.getString(R.string.comments) + " :");
+            str.append(con.getString(R.string.comments)).append(" :");
             str.append("\n");
             str.append("--------------------");
             str.append("\n");
@@ -402,21 +400,21 @@ public class GlobalUttilities {
             str.append("\n");
             str.append("-=-=-=-=-=-=-=-=-=-=");
             str.append("\n");
-            str.append(con.getString(R.string.phone) + " :");
+            str.append(con.getString(R.string.phone)).append(" :");
             str.append("\n");
             str.append("--------------------");
             str.append("\n");
             str.append(((Supplier) obj).getTelefono());
             str.append("\n");
             str.append("\n");
-            str.append(con.getString(R.string.address) + " :");
+            str.append(con.getString(R.string.address)).append(" :");
             str.append("\n");
             str.append("--------------------");
             str.append("\n");
             str.append(((Supplier) obj).getDireccion());
             str.append("\n");
             str.append("\n");
-            str.append(con.getString(R.string.provider_category) + " :");
+            str.append(con.getString(R.string.provider_category)).append(" :");
             str.append("\n");
             str.append("--------------------");
             str.append("\n");
@@ -431,7 +429,7 @@ public class GlobalUttilities {
             str.append("-=-=-=-=-=-=-=-=-=-=");
             str.append("\n");
             str.append("\n");
-            str.append(con.getString(R.string.comments) + " :");
+            str.append(con.getString(R.string.comments)).append(" :");
             str.append("\n");
             str.append("--------------------");
             str.append("\n");
@@ -444,7 +442,7 @@ public class GlobalUttilities {
             str.append("--------------------");
             str.append("\n");
             str.append("\n");
-            str.append(con.getString(R.string.order_list) + "");
+            str.append(con.getString(R.string.order_list));
             str.append("\n");
             str.append("--------------------");
             str.append("\n");
@@ -463,7 +461,7 @@ public class GlobalUttilities {
             str.append("-=-=-=-=-=-=-=-=-=-=");
             str.append("\n");
             str.append("\n");
-            str.append(con.getString(R.string.comments) + " :");
+            str.append(con.getString(R.string.comments)).append(" :");
             str.append("\n");
             str.append("--------------------");
             str.append("\n");
@@ -475,7 +473,7 @@ public class GlobalUttilities {
             str.append("\n");
             str.append("\n");
             str.append("\n");
-            str.append(con.getString(R.string.stock_lis) + "");
+            str.append(con.getString(R.string.stock_lis));
             str.append("\n");
             str.append("--------------------");
             str.append("\n");
@@ -491,7 +489,7 @@ public class GlobalUttilities {
 
         }
 
-        str.append("Shared with " + con.getString(R.string.app_name));
+        str.append("Shared with ").append(con.getString(R.string.app_name));
 
         return str.toString();
     }
@@ -504,7 +502,7 @@ public class GlobalUttilities {
         act.startActivity(Intent.createChooser(shareIntent, act.getString(R.string.share_recipe_use)));
     }
 
-    public static String getTime() {
+    private static String getTime() {
         return String.valueOf(new Date().getTime());
     }
 
@@ -576,7 +574,7 @@ public class GlobalUttilities {
         if (str.charAt(0) == '.') str = "0" + str;
         int max = str.length();
 
-        String rFinal = "";
+        StringBuilder rFinal = new StringBuilder();
         boolean after = false;
         int i = 0, up = 0, decimal = 0;
         char t;
@@ -584,18 +582,18 @@ public class GlobalUttilities {
             t = str.charAt(i);
             if (t != '.' && after == false) {
                 up++;
-                if (up > MAX_BEFORE_POINT) return rFinal;
+                if (up > MAX_BEFORE_POINT) return rFinal.toString();
             } else if (t == '.') {
                 after = true;
             } else {
                 decimal++;
                 if (decimal > MAX_DECIMAL)
-                    return rFinal;
+                    return rFinal.toString();
             }
-            rFinal = rFinal + t;
+            rFinal.append(t);
             i++;
         }
-        return rFinal;
+        return rFinal.toString();
     }
 
     public static String FormatDecimal(double decimal) {

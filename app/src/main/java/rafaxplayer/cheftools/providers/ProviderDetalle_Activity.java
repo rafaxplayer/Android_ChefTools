@@ -10,13 +10,12 @@ import rafaxplayer.cheftools.providers.fragment.ProviderDetalle_Fragment;
 import rafaxplayer.cheftools.providers.fragment.ProviderNewEdit_Fragment;
 
 public class ProviderDetalle_Activity extends BaseActivity {
-    private int ID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ID = getIntent().getExtras().getInt("id");
+        int ID = getIntent().getExtras().getInt("id");
         Log.e("ID", String.valueOf(ID));
         if (savedInstanceState == null) {
 

@@ -1,6 +1,5 @@
 package rafaxplayer.cheftools.products.fragments;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -62,16 +61,12 @@ public class ProductosMannager_Fragment extends DialogFragment {
     private SqliteWrapper sql;
     private EditText editName;
     private int productID;
-    private int CatId;
-    private int ID;
-    private int formatId;
-    private int provId;
     private ArrayList<HashMap<String, Object>> arrCats;
     private ArrayList<HashMap<String, Object>> arrFormats;
     private ArrayList<HashMap<String, Object>> arrSuppliers;
     private boolean modeSelect;
-    private int TYPECATEGORY = 1;
-    private int TYPENAME = 2;
+    private final int TYPECATEGORY = 1;
+    private final int TYPENAME = 2;
     private boolean firstShowSpinner;
     private MaterialDialog dialogNewProduct;
 
@@ -90,10 +85,10 @@ public class ProductosMannager_Fragment extends DialogFragment {
         ProductosMannager_Fragment.this.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
         sql = new SqliteWrapper(getActivity());
         sql.open();
-        CatId = 0;
-        ID = 0;
-        formatId = 0;
-        provId = 0;
+        int catId = 0;
+        int ID = 0;
+        int formatId = 0;
+        int provId = 0;
         firstShowSpinner = true;
         if (getArguments() != null) {
 
@@ -101,10 +96,17 @@ public class ProductosMannager_Fragment extends DialogFragment {
             this.modeSelect = getArguments().getBoolean("modeselect");
         }
         this.setRetainInstance(true);
+
+        try {
+            mCallback = (OnSelectedCallback) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_productos_mannager, container, false);
@@ -119,7 +121,7 @@ public class ProductosMannager_Fragment extends DialogFragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         dialogNewProduct = new MaterialDialog.Builder(getActivity())
                 .customView(R.layout.new_product_dlg, true)
@@ -204,10 +206,10 @@ public class ProductosMannager_Fragment extends DialogFragment {
                 })
 
                 .build();
-        editName = ButterKnife.findById(dialogNewProduct.getCustomView(), R.id.editnameproduct);
-        catsSpinner = ButterKnife.findById(dialogNewProduct.getCustomView(), R.id.spinnerCategory);
-        provSpinner = ButterKnife.findById(dialogNewProduct.getCustomView(), R.id.spinnerSupplier);
-        formatsSpinner = ButterKnife.findById(dialogNewProduct.getCustomView(), R.id.spinnerFormat);
+        editName = dialogNewProduct.getCustomView().findViewById(R.id.editnameproduct);
+        catsSpinner = dialogNewProduct.getCustomView().findViewById(R.id.spinnerCategory);
+        provSpinner = dialogNewProduct.getCustomView().findViewById(R.id.spinnerSupplier);
+        formatsSpinner = dialogNewProduct.getCustomView().findViewById(R.id.spinnerFormat);
         addNewProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -285,7 +287,7 @@ public class ProductosMannager_Fragment extends DialogFragment {
                         .inputType(InputType.TYPE_CLASS_TEXT)
                         .input("Text to search...", "", new MaterialDialog.InputCallback() {
                             @Override
-                            public void onInput(MaterialDialog dialog, CharSequence input) {
+                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                                 if (input.length() > 0) {
                                     ProductsAdapter.FilesFilter f = ((ProductsAdapter.FilesFilter) ((ProductsAdapter) ListProducts.getAdapter()).getFilter());
                                     f.addtype(TYPENAME);
@@ -348,7 +350,7 @@ public class ProductosMannager_Fragment extends DialogFragment {
 
     }
 
-    public void displayWithId(int id) {
+    private void displayWithId(int id) {
         if (!sql.IsOpen()) {
             sql.open();
         }
@@ -367,25 +369,6 @@ public class ProductosMannager_Fragment extends DialogFragment {
 
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        try {
-            mCallback = (OnSelectedCallback) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnHeadlineSelectedListener");
-        }
-
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
         sql.close();
@@ -398,22 +381,22 @@ public class ProductosMannager_Fragment extends DialogFragment {
 
     public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHolder> implements Filterable {
 
-        public Boolean searchResultsok;
+        Boolean searchResultsok;
         private List<Product> mDataset;
-        private List<Product> listorigin;
+        private final List<Product> listorigin;
         private FilesFilter filefilter;
 
 
         // Adapter's Constructor
-        public ProductsAdapter(List<Product> myDataset) {
+        ProductsAdapter(List<Product> myDataset) {
             mDataset = myDataset;
             listorigin = myDataset;
             this.searchResultsok = false;
         }
 
-        public void deleteItem(int pos) {
+        void deleteItem(int pos) {
 
-            int count = sql.DeleteWithId(((Product) mDataset.get(pos)).getId(), DBHelper.TABLE_PRODUCTOS);
+            int count = sql.DeleteWithId(mDataset.get(pos).getId(), DBHelper.TABLE_PRODUCTOS);
 
             if (count > 0) {
                 mDataset.remove(pos);
@@ -423,25 +406,25 @@ public class ProductosMannager_Fragment extends DialogFragment {
             notifyItemRemoved(pos);
         }
 
+        @NonNull
         @Override
-        public ProductsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+        public ProductsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                                              int viewType) {
             // Create a new view by inflating the row item xml.
             View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_list_dialogs, parent, false);
 
             // Set the view to the ViewHolder
-            ViewHolder holder = new ViewHolder(v);
 
 
-            return holder;
+            return new ViewHolder(v);
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-            holder.sName.setText(((Product) mDataset.get(position)).getName());
-            holder.sCat.setText(((Product) mDataset.get(position)).getCategoryname());
+            holder.sName.setText(mDataset.get(position).getName());
+            holder.sCat.setText(mDataset.get(position).getCategoryname());
 
         }
 
@@ -462,17 +445,17 @@ public class ProductosMannager_Fragment extends DialogFragment {
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-            public ImageButton edit;
-            public ImageButton delete;
-            public TextView sName;
-            public TextView sCat;
+            final ImageButton edit;
+            final ImageButton delete;
+            final TextView sName;
+            final TextView sCat;
 
-            public ViewHolder(View v) {
+            ViewHolder(View v) {
                 super(v);
-                edit = (ImageButton) v.findViewById(R.id.ButtonEdit);
-                delete = (ImageButton) v.findViewById(R.id.ButtonDelete);
-                sName = (TextView) v.findViewById(R.id.text1);
-                sCat = (TextView) v.findViewById(R.id.text2);
+                edit = v.findViewById(R.id.ButtonEdit);
+                delete = v.findViewById(R.id.ButtonDelete);
+                sName = v.findViewById(R.id.text1);
+                sCat = v.findViewById(R.id.text2);
 
                 v.setOnClickListener(this);
                 delete.setOnClickListener(this);
@@ -509,7 +492,7 @@ public class ProductosMannager_Fragment extends DialogFragment {
                 }
 
                 if (v.getId() == R.id.ButtonEdit) {
-                    productID = ((Product) mDataset.get(ViewHolder.this.getLayoutPosition())).getId();
+                    productID = mDataset.get(ViewHolder.this.getLayoutPosition()).getId();
                     dialogNewProduct.show();
                     //displayWithId(((Product) mDataset.get(ViewHolder.this.getLayoutPosition())).getId());
 
@@ -534,7 +517,7 @@ public class ProductosMannager_Fragment extends DialogFragment {
             int type;
             String strSearch;
 
-            public void addtype(int type) {
+            void addtype(int type) {
                 this.type = type;
             }
 
@@ -548,7 +531,7 @@ public class ProductosMannager_Fragment extends DialogFragment {
                     results.count = mDataset.size();
                 } else {
 
-                    List<Product> nFilesList = new ArrayList<Product>();
+                    List<Product> nFilesList = new ArrayList<>();
 
                     for (Product p : listorigin) {
                         strSearch = type == TYPECATEGORY ? p.getCategoryname() : p.getName();

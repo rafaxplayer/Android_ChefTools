@@ -1,8 +1,8 @@
 package rafaxplayer.cheftools.menus.fragments;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -63,7 +63,7 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
     private SqliteWrapper sql;
     private Boolean menusFound;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+    private final ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 
         MenusAdapter adp;
 
@@ -122,7 +122,7 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
                 case R.id.action_edit:
                     if (adp.getSelectedItemCount() > 0) {
                         int pos = adp.getSelectedItems().get(0);
-                        ((Menus_Activity) getActivity()).showMenuEdit(((Menu) adp.mDataset.get(pos)).getId());
+                        ((Menus_Activity) getActivity()).showMenuEdit(adp.mDataset.get(pos).getId());
 
                     }
                     mode.finish();
@@ -147,7 +147,7 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_list, container, false);
         ButterKnife.bind(this, v);
@@ -169,7 +169,7 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
         listMenus.setItemAnimator(new DefaultItemAnimator());
         listMenus.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
                 if (dy <= 0 && fab.isShown()) {
@@ -180,7 +180,7 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
             }
 
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
 
                 if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                     fab.show();
@@ -188,7 +188,7 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
                 super.onScrollStateChanged(recyclerView, newState);
             }
         });
-        swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout = v.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.post(new Runnable() {
                                     @Override
@@ -214,13 +214,22 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
         super.onCreate(savedInstanceState);
         sql = new SqliteWrapper(getActivity());
         sql.open();
+
+        try {
+            mCallback = (OnSelectedCallback) getActivity();
+        } catch (ClassCastException e) {
+
+
+            throw new ClassCastException(getActivity().toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
         sql.open();
-        List<Menu> lstMenuss = loadMenus(null);
+        List<Menu> lstMenuss = loadMenus();
         if (lstMenuss.size() > 0) {
             menusFound = true;
             empty.setVisibility(View.GONE);
@@ -288,7 +297,7 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
                         .inputType(InputType.TYPE_CLASS_TEXT)
                         .input("Text to search...", "", new MaterialDialog.InputCallback() {
                             @Override
-                            public void onInput(MaterialDialog dialog, CharSequence input) {
+                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                                 ((MenusAdapter) listMenus.getAdapter()).getFilter().filter(input);
                                 getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                                 dialog.dismiss();
@@ -308,29 +317,15 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
 
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        try {
-            mCallback = (OnSelectedCallback) activity;
-        } catch (ClassCastException e) {
-
-
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnHeadlineSelectedListener");
-        }
-
-    }
 
     @Override
     public void onRefresh() {
         onResume();
     }
 
-    private List<Menu> loadMenus(String order) {
+    private List<Menu> loadMenus() {
 
-        return (List<Menu>) (Object) sql.getAllObjects("Menu", order);
+        return (List<Menu>) (Object) sql.getAllObjects("Menu", null);
 
     }
 
@@ -353,22 +348,20 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
 
     public class MenusAdapter extends RecyclerView.Adapter<MenusAdapter.ViewHolder> implements Filterable {
 
-        public Boolean searchResultsok;
         private List<Menu> mDataset;
-        private List<Menu> listorigin;
+        private final List<Menu> listorigin;
         private FilesFilter filefilter;
-        private SparseBooleanArray selectedItems;
+        private final SparseBooleanArray selectedItems;
 
         // Adapter's Constructor
-        public MenusAdapter(List<Menu> myDataset) {
+        MenusAdapter(List<Menu> myDataset) {
             mDataset = myDataset;
             listorigin = myDataset;
-            this.searchResultsok = false;
             selectedItems = new SparseBooleanArray();
         }
 
 
-        public void toggleSelection(int pos, ImageView img) {
+        void toggleSelection(int pos, ImageView img) {
 
             if (selectedItems.get(pos, false)) {
                 selectedItems.delete(pos);
@@ -385,9 +378,9 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
 
         }
 
-        public void deleteItem(int pos) {
+        void deleteItem(int pos) {
 
-            int count = sql.DeleteWithId(((Menu) mDataset.get(pos)).getId(), DBHelper.TABLE_MENUSCARTAS);
+            int count = sql.DeleteWithId(mDataset.get(pos).getId(), DBHelper.TABLE_MENUSCARTAS);
 
             if (count > 0) {
                 mDataset.remove(pos);
@@ -397,19 +390,19 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
             notifyItemRemoved(pos);
         }
 
-        public void clearSelections() {
+        void clearSelections() {
 
             selectedItems.clear();
             notifyDataSetChanged();
         }
 
 
-        public int getSelectedItemCount() {
+        int getSelectedItemCount() {
             return selectedItems.size();
         }
 
 
-        public void deleteSelectedItems() {
+        void deleteSelectedItems() {
             final List<Integer> items = getSelectedItems();
 
             for (int i = items.size() - 1; i >= 0; i--) {
@@ -420,33 +413,33 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
         }
 
 
-        public List<Integer> getSelectedItems() {
+        List<Integer> getSelectedItems() {
             List<Integer> items =
-                    new ArrayList<Integer>(selectedItems.size());
+                    new ArrayList<>(selectedItems.size());
             for (int i = 0; i < selectedItems.size(); i++) {
                 items.add(selectedItems.keyAt(i));
             }
             return items;
         }
 
+        @NonNull
         @Override
-        public MenusAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+        public MenusAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                                           int viewType) {
             // Create a new view by inflating the row item xml.
             View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_list, parent, false);
 
             // Set the view to the ViewHolder
-            ViewHolder holder = new ViewHolder(v);
 
-            return holder;
+            return new ViewHolder(v);
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             Picasso.get().load(R.drawable.menus).into(holder.img);
-            holder.sName.setText(((Menu) mDataset.get(position)).getName());
-            holder.sDate.setText(((Menu) mDataset.get(position)).getFecha());
+            holder.sName.setText(mDataset.get(position).getName());
+            holder.sDate.setText(mDataset.get(position).getFecha());
             boolean state = selectedItems.get(position, false);
             holder.itemView.setSelected(state);
             if (mActionMode != null) {
@@ -483,17 +476,15 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
 
         // Create the ViewHolder class to keep references to your views
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-            public ImageView img;
-            public TextView sName;
-            public TextView sDate;
+            final ImageView img;
+            final TextView sName;
+            final TextView sDate;
 
-            int ID;
-
-            public ViewHolder(View v) {
+            ViewHolder(View v) {
                 super(v);
-                img = (ImageView) v.findViewById(R.id.imageList);
-                sName = (TextView) v.findViewById(R.id.text1);
-                sDate = (TextView) v.findViewById(R.id.text2);
+                img = v.findViewById(R.id.imageList);
+                sName = v.findViewById(R.id.text1);
+                sDate = v.findViewById(R.id.text2);
 
                 v.setOnClickListener(this);
                 v.setOnLongClickListener(this);
@@ -508,7 +499,7 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
                     toggleSelection(ViewHolder.this.getLayoutPosition(), img);
                     if (getResources().getBoolean(R.bool.dual_pane)) {
                         if (mCallback != null) {
-                            mCallback.onSelect(((Menu) mDataset.get(ViewHolder.this.getLayoutPosition())).getId());
+                            mCallback.onSelect(mDataset.get(ViewHolder.this.getLayoutPosition()).getId());
                         }
                     }
 
@@ -517,7 +508,7 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
                     toggleSelection(ViewHolder.this.getLayoutPosition(), img);
                     v.setSelected(true);
                     if (mCallback != null) {
-                        mCallback.onSelect(((Menu) mDataset.get(ViewHolder.this.getLayoutPosition())).getId());
+                        mCallback.onSelect(mDataset.get(ViewHolder.this.getLayoutPosition()).getId());
                     }
 
                 }
@@ -552,7 +543,7 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
                     results.count = mDataset.size();
                 } else {
 
-                    List<Menu> nFilesList = new ArrayList<Menu>();
+                    List<Menu> nFilesList = new ArrayList<>();
 
                     for (Menu p : mDataset) {
                         if (p.getName().toLowerCase().contains(constraint.toString().toLowerCase()))
@@ -572,10 +563,8 @@ public class MenusList_Fragment extends Fragment implements SwipeRefreshLayout.O
                 if (results.count == 0) {
                     mDataset = listorigin;
                     Toast.makeText(getActivity(), getString(R.string.noresults), Toast.LENGTH_LONG).show();
-                    searchResultsok = false;
                 } else {
                     mDataset = (ArrayList<Menu>) results.values;
-                    searchResultsok = true;
                 }
                 notifyDataSetChanged();
             }

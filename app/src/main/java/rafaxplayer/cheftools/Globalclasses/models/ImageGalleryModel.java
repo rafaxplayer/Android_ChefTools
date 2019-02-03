@@ -24,7 +24,7 @@ public class ImageGalleryModel implements Parcelable {
 
     }
 
-    public ImageGalleryModel(Parcel in) {
+    private ImageGalleryModel(Parcel in) {
         readToParcel(in);
     }
 
@@ -33,7 +33,7 @@ public class ImageGalleryModel implements Parcelable {
         return 0;
     }
 
-    public void readToParcel(Parcel in) {
+    private void readToParcel(Parcel in) {
         Title = in.readString();
         ImagePath = in.readString();
         ID = in.readInt();

@@ -1,8 +1,8 @@
 package rafaxplayer.cheftools.providers.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
@@ -69,7 +69,7 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
 
     private SqliteWrapper sql;
     private Boolean itemsFound;
-    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+    private final ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 
         ProvidersAdapter adp;
 
@@ -129,7 +129,7 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
                 case R.id.action_edit:
                     if (adp.getSelectedItemCount() > 0) {
                         int pos = adp.getSelectedItems().get(0);
-                        ((Providers_Activity) getActivity()).showMenuEdit(((Supplier) adp.mDataset.get(pos)).getId());
+                        ((Providers_Activity) getActivity()).showMenuEdit(adp.mDataset.get(pos).getId());
 
                     }
                     mode.finish();
@@ -155,7 +155,7 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_list, container, false);
         ButterKnife.bind(this, v);
@@ -177,7 +177,7 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
         listProviders.setItemAnimator(new DefaultItemAnimator());
         listProviders.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
                 if (dy <= 0 && fab.isShown()) {
@@ -188,7 +188,7 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
             }
 
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
 
                 if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                     fab.show();
@@ -220,13 +220,20 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
         super.onCreate(savedInstanceState);
         sql = new SqliteWrapper(getActivity());
         sql.open();
+
+        try {
+            mCallback = (OnSelectedCallback) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
         sql.open();
-        List<Supplier> lstProv = loadValues(null);
+        List<Supplier> lstProv = loadValues();
         if (lstProv.size() > 0) {
 
             itemsFound = true;
@@ -295,13 +302,13 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
                         .negativeText(getString(R.string.cancel))
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
-                            public void onClick(MaterialDialog dialog, DialogAction which) {
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 dialog.dismiss();
                             }
                         })
                         .onNegative(new MaterialDialog.SingleButtonCallback() {
                             @Override
-                            public void onClick(MaterialDialog dialog, DialogAction which) {
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 onResume();
                                 dialog.dismiss();
                             }
@@ -319,27 +326,15 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
 
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        try {
-            mCallback = (OnSelectedCallback) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnHeadlineSelectedListener");
-        }
-
-    }
 
     @Override
     public void onRefresh() {
         onResume();
     }
 
-    private List<Supplier> loadValues(String order) {
+    private List<Supplier> loadValues() {
 
-        return (List<Supplier>) (Object) sql.getAllObjects("Provider", order);
+        return (List<Supplier>) (Object) sql.getAllObjects("Provider", null);
 
     }
 
@@ -357,27 +352,25 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
     }
 
     public interface OnSelectedCallback {
-        public void onSelect(int id);
+        void onSelect(int id);
     }
 
     public class ProvidersAdapter extends RecyclerView.Adapter<ProvidersAdapter.ViewHolder> implements Filterable {
 
-        public Boolean searchResultsok;
         private List<Supplier> mDataset;
-        private List<Supplier> listorigin;
+        private final List<Supplier> listorigin;
         private FilesFilter filefilter;
-        private SparseBooleanArray selectedItems;
+        private final SparseBooleanArray selectedItems;
 
         // Adapter's Constructor
-        public ProvidersAdapter(List<Supplier> myDataset) {
+        ProvidersAdapter(List<Supplier> myDataset) {
             mDataset = myDataset;
             listorigin = myDataset;
-            this.searchResultsok = false;
             selectedItems = new SparseBooleanArray();
         }
 
 
-        public void toggleSelection(int pos, ImageView img) {
+        void toggleSelection(int pos, ImageView img) {
 
             if (selectedItems.get(pos, false)) {
                 selectedItems.delete(pos);
@@ -394,9 +387,9 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
 
         }
 
-        public void deleteItem(int pos) {
+        void deleteItem(int pos) {
 
-            int count = sql.DeleteWithId(((Supplier) mDataset.get(pos)).getId(), DBHelper.TABLE_PROVEEDORES);
+            int count = sql.DeleteWithId(mDataset.get(pos).getId(), DBHelper.TABLE_PROVEEDORES);
 
             if (count > 0) {
                 mDataset.remove(pos);
@@ -406,19 +399,19 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
             notifyItemRemoved(pos);
         }
 
-        public void clearSelections() {
+        void clearSelections() {
 
             selectedItems.clear();
             notifyDataSetChanged();
         }
 
 
-        public int getSelectedItemCount() {
+        int getSelectedItemCount() {
             return selectedItems.size();
         }
 
 
-        public void deleteSelectedItems() {
+        void deleteSelectedItems() {
             final List<Integer> items = getSelectedItems();
 
             for (int i = items.size() - 1; i >= 0; i--) {
@@ -428,30 +421,30 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
 
         }
 
-        public List<Integer> getSelectedItems() {
+        List<Integer> getSelectedItems() {
             List<Integer> items =
-                    new ArrayList<Integer>(selectedItems.size());
+                    new ArrayList<>(selectedItems.size());
             for (int i = 0; i < selectedItems.size(); i++) {
                 items.add(selectedItems.keyAt(i));
             }
             return items;
         }
 
+        @NonNull
         @Override
-        public ProvidersAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+        public ProvidersAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                                               int viewType) {
             View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_list_suppliers, parent, false);
 
-            ViewHolder holder = new ViewHolder(v);
-            return holder;
+            return new ViewHolder(v);
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             Picasso.get().load(R.drawable.providers).into(holder.img);
-            holder.sName.setText(((Supplier) mDataset.get(position)).getName());
-            holder.sCat.setText(((Supplier) mDataset.get(position)).getCategoria());
+            holder.sName.setText(mDataset.get(position).getName());
+            holder.sCat.setText(mDataset.get(position).getCategoria());
             boolean state = selectedItems.get(position, false);
             holder.itemView.setSelected(state);
             if (mActionMode != null) {
@@ -498,9 +491,8 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
             TextView sName;
             @BindView(R.id.text2)
             TextView sCat;
-            int ID;
 
-            public ViewHolder(View v) {
+            ViewHolder(View v) {
                 super(v);
                 ButterKnife.bind(this, v);
                 v.setOnClickListener(this);
@@ -521,7 +513,7 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
                     toggleSelection(ViewHolder.this.getLayoutPosition(), img);
                     if (getResources().getBoolean(R.bool.dual_pane)) {
                         if (mCallback != null) {
-                            mCallback.onSelect(((Supplier) mDataset.get(ViewHolder.this.getLayoutPosition())).getId());
+                            mCallback.onSelect(mDataset.get(ViewHolder.this.getLayoutPosition()).getId());
                         }
                     }
 
@@ -530,7 +522,7 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
                     toggleSelection(ViewHolder.this.getLayoutPosition(), img);
                     v.setSelected(true);
                     if (mCallback != null) {
-                        mCallback.onSelect(((Supplier) mDataset.get(ViewHolder.this.getLayoutPosition())).getId());
+                        mCallback.onSelect(mDataset.get(ViewHolder.this.getLayoutPosition()).getId());
                     }
 
                 }
@@ -565,7 +557,7 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
                     results.count = mDataset.size();
                 } else {
 
-                    List<Supplier> nFilesList = new ArrayList<Supplier>();
+                    List<Supplier> nFilesList = new ArrayList<>();
 
                     for (Supplier p : mDataset) {
                         if (p.getName().toLowerCase().contains(constraint.toString().toLowerCase()))
@@ -585,10 +577,8 @@ public class ProvidersList_Fragment extends DialogFragment implements SwipeRefre
                 if (results.count == 0) {
                     mDataset = listorigin;
                     Toast.makeText(getActivity(), getString(R.string.noresults), Toast.LENGTH_LONG).show();
-                    searchResultsok = false;
                 } else {
                     mDataset = (ArrayList<Supplier>) results.values;
-                    searchResultsok = true;
                 }
                 notifyDataSetChanged();
             }

@@ -2,6 +2,7 @@ package rafaxplayer.cheftools.escandallos.fragments;
 
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -69,7 +70,7 @@ public class EscandalloDetalle_Fragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_escandallo_detalle, container, false);
@@ -107,7 +108,7 @@ public class EscandalloDetalle_Fragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.edit:
                 if (ID != 0) {
-                    Boolean islayout = (getActivity().getSupportFragmentManager().findFragmentById(R.id.detalleescandallo) != null);
+                    boolean islayout = (getActivity().getSupportFragmentManager().findFragmentById(R.id.detalleescandallo) != null);
 
                     if (getResources().getBoolean(R.bool.dual_pane) && islayout) {
                         ((Escandallos_Activity) getActivity()).showMenuEdit(ID);
@@ -166,22 +167,22 @@ public class EscandalloDetalle_Fragment extends Fragment {
 
     public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
-        private ArrayList<Escandallo_Product> mDataset;
+        private final ArrayList<Escandallo_Product> mDataset;
 
-        public RecyclerAdapter(ArrayList<Escandallo_Product> myDataset) {
+        RecyclerAdapter(ArrayList<Escandallo_Product> myDataset) {
             mDataset = myDataset;
         }
 
+        @NonNull
         @Override
-        public RecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public RecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_simple, parent, false);
 
-            ViewHolder vh = new ViewHolder(v);
-            return vh;
+            return new ViewHolder(v);
         }
 
         @Override
-        public void onBindViewHolder(RecyclerAdapter.ViewHolder viewHolder, int i) {
+        public void onBindViewHolder(@NonNull RecyclerAdapter.ViewHolder viewHolder, int i) {
             Escandallo_Product escPr = mDataset.get(i);
             viewHolder.txtProd.setText(escPr.getProductoname());
             viewHolder.txtCantidad.setText(String.format("%s%s", escPr.getCantidad(), escPr.getFormato()));
@@ -195,11 +196,11 @@ public class EscandalloDetalle_Fragment extends Fragment {
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
-            public TextView txtProd;
-            public TextView txtCantidad;
-            public TextView txtCoste;
+            final TextView txtProd;
+            final TextView txtCantidad;
+            final TextView txtCoste;
 
-            public ViewHolder(View v) {
+            ViewHolder(View v) {
                 super(v);
                 v.findViewById(R.id.ButtonDeleteProduct).setVisibility(View.GONE);
                 v.findViewById(R.id.ButtonEditProduct).setVisibility(View.GONE);

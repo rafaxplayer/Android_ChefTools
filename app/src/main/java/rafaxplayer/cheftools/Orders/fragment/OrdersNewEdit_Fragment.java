@@ -57,7 +57,6 @@ public class OrdersNewEdit_Fragment extends Fragment {
     RecyclerView OrdersList;
 
     private SqliteWrapper sql;
-    private ImageButton addSupplierOrder;
     private Spinner suppliersSpinner;
     private EditText name;
     private EditText Comentariostxt;
@@ -66,7 +65,6 @@ public class OrdersNewEdit_Fragment extends Fragment {
     private int supplierId;
     private Product prod;
     private String nameorder;
-    private ArrayList<HashMap<String, Object>> arrSuppliers;
 
     public static OrdersNewEdit_Fragment newInstance(int id) {
         OrdersNewEdit_Fragment f = new OrdersNewEdit_Fragment();
@@ -77,7 +75,7 @@ public class OrdersNewEdit_Fragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_orders_new_edit, container, false);
         ButterKnife.bind(this, v);
@@ -90,7 +88,7 @@ public class OrdersNewEdit_Fragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         dialogNewOrder = new MaterialDialog.Builder(getActivity())
                 .customView(R.layout.new_list_order_dlg, true)
@@ -102,7 +100,7 @@ public class OrdersNewEdit_Fragment extends Fragment {
                         if (!sql.IsOpen()) {
                             sql.open();
                         }
-                        name = ButterKnife.findById(dialog.getCustomView(), R.id.editnameorder);
+                        name = dialog.getCustomView().findViewById(R.id.editnameorder);
                         if (sql.CheckIsDataAlreadyInDBorNot(DBHelper.TABLE_PEDIDOS, DBHelper.NAME, name.getText().toString())) {
 
                             Toast.makeText(getActivity(), getString(R.string.dlgerror_dataexist), Toast.LENGTH_LONG).show();
@@ -117,7 +115,7 @@ public class OrdersNewEdit_Fragment extends Fragment {
                             GlobalUttilities.animateView(getActivity(), name);
                             return;
                         }
-                        Comentariostxt = ButterKnife.findById(dialog.getCustomView(), R.id.editcomment);
+                        Comentariostxt = dialog.getCustomView().findViewById(R.id.editcomment);
                         long ret = sql.newOrdersListName(name.getText().toString(), supplierId, Comentariostxt.getText().toString());
                         if (ret != -1) {
                             ID = (int) ret;
@@ -141,8 +139,8 @@ public class OrdersNewEdit_Fragment extends Fragment {
                 })
                 .build();
 
-        suppliersSpinner = ButterKnife.findById(dialogNewOrder.getCustomView(), R.id.spinnerSuppliers);
-        addSupplierOrder = ButterKnife.findById(dialogNewOrder.getCustomView(), R.id.ButtonAddSupplier);
+        suppliersSpinner = dialogNewOrder.getCustomView().findViewById(R.id.spinnerSuppliers);
+        ImageButton addSupplierOrder = dialogNewOrder.getCustomView().findViewById(R.id.ButtonAddSupplier);
         suppliersSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -202,7 +200,7 @@ public class OrdersNewEdit_Fragment extends Fragment {
 
                 int cantidad = Integer.parseInt(Cantidadtxt.getText().toString());
 
-                ((RecyclerAdapter) OrdersList.getAdapter()).addItem(0, ID, cantidad, prod);
+                ((RecyclerAdapter) OrdersList.getAdapter()).addItem(ID, cantidad, prod);
                 GlobalUttilities.ocultateclado(getActivity(), Cantidadtxt);
             }
 
@@ -237,7 +235,7 @@ public class OrdersNewEdit_Fragment extends Fragment {
         if (!sql.IsOpen()) {
             sql.open();
         }
-        arrSuppliers = sql.getFormatsOrCategorysData(DBHelper.TABLE_PROVEEDORES);
+        ArrayList<HashMap<String, Object>> arrSuppliers = sql.getFormatsOrCategorysData(DBHelper.TABLE_PROVEEDORES);
         SimpleAdapter AdapterProv = new SimpleAdapter(getActivity(), arrSuppliers, R.layout.spinnerrow, new String[]{"ID", "Name"}, new int[]{R.id.iddata, R.id.spinnertext});
         suppliersSpinner.setAdapter(AdapterProv);
 
@@ -298,13 +296,13 @@ public class OrdersNewEdit_Fragment extends Fragment {
 
     }
 
-    public void displayWithId(int id) {
+    private void displayWithId(int id) {
 
         if (!sql.IsOpen()) {
             sql.open();
         }
         String name = sql.getSimpleData(id, DBHelper.NAME, DBHelper.TABLE_PEDIDOS);
-        NameOrder.setText(name.toString());
+        NameOrder.setText(name);
         ArrayList<Order_Product> listProducts = (ArrayList<Order_Product>) (Object) sql.getProductListWithListId("Order_product", id);
         if (listProducts.size() > 0) {
             OrdersList.setAdapter(new RecyclerAdapter(listProducts));
@@ -312,7 +310,7 @@ public class OrdersNewEdit_Fragment extends Fragment {
 
     }
 
-    public void refresh() {
+    private void refresh() {
 
         NameProduct.setText("");
 
@@ -323,7 +321,7 @@ public class OrdersNewEdit_Fragment extends Fragment {
 
     }
 
-    public void resetProduct() {
+    private void resetProduct() {
         NameProduct.setText("");
         Cantidadtxt.setText("");
 
@@ -338,15 +336,15 @@ public class OrdersNewEdit_Fragment extends Fragment {
 
     public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
-        private ArrayList<Order_Product> mDataset;
+        private final ArrayList<Order_Product> mDataset;
 
-        public RecyclerAdapter(ArrayList<Order_Product> myDataset) {
+        RecyclerAdapter(ArrayList<Order_Product> myDataset) {
             mDataset = myDataset;
         }
 
-        public void deleteItem(int pos) {
+        void deleteItem(int pos) {
 
-            int count = sql.DeleteWithId(((Order_Product) mDataset.get(pos)).getID(), DBHelper.TABLE_PEDIDOS_LISTAS);
+            int count = sql.DeleteWithId(mDataset.get(pos).getID(), DBHelper.TABLE_PEDIDOS_LISTAS);
 
             if (count > 0) {
                 mDataset.remove(pos);
@@ -356,7 +354,7 @@ public class OrdersNewEdit_Fragment extends Fragment {
             notifyItemRemoved(pos);
         }
 
-        public void addItem(int pos, int listID, int cantidad, Product pr) {
+        void addItem(int listID, int cantidad, Product pr) {
 
             if (!sql.IsOpen()) {
                 sql.open();
@@ -388,24 +386,24 @@ public class OrdersNewEdit_Fragment extends Fragment {
 
         }
 
+        @NonNull
         @Override
-        public RecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public RecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_simple, parent, false);
 
-            ViewHolder vh = new ViewHolder(v);
-            return vh;
+            return new ViewHolder(v);
         }
 
         @Override
-        public void onBindViewHolder(RecyclerAdapter.ViewHolder viewHolder, int i) {
+        public void onBindViewHolder(@NonNull RecyclerAdapter.ViewHolder viewHolder, int i) {
             if (!sql.IsOpen()) {
                 sql.open();
             }
-            String productName = sql.getSimpleData(((Order_Product) mDataset.get(i)).getProductoId(), DBHelper.NAME, DBHelper.TABLE_PRODUCTOS);
-            String formatName = sql.getSimpleData(((Order_Product) mDataset.get(i)).getProductoId(), DBHelper.PRODUCTO_FORMATO_NAME, DBHelper.TABLE_PRODUCTOS);
+            String productName = sql.getSimpleData(mDataset.get(i).getProductoId(), DBHelper.NAME, DBHelper.TABLE_PRODUCTOS);
+            String formatName = sql.getSimpleData(mDataset.get(i).getProductoId(), DBHelper.PRODUCTO_FORMATO_NAME, DBHelper.TABLE_PRODUCTOS);
 
             viewHolder.txtProd.setText(productName);
-            viewHolder.txtCantidad.setText(String.valueOf(((Order_Product) mDataset.get(i)).getCantidad()));
+            viewHolder.txtCantidad.setText(String.valueOf(mDataset.get(i).getCantidad()));
             viewHolder.txtFormat.setText(formatName);
         }
 
@@ -425,7 +423,7 @@ public class OrdersNewEdit_Fragment extends Fragment {
             @BindView(R.id.text3)
             TextView txtFormat;
 
-            public ViewHolder(View v) {
+            ViewHolder(View v) {
                 super(v);
                 ButterKnife.bind(this, v);
                 delButton.setOnClickListener(this);

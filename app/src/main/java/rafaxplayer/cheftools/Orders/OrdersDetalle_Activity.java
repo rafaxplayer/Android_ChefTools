@@ -12,13 +12,12 @@ import rafaxplayer.cheftools.R;
 import rafaxplayer.cheftools.products.fragments.ProductosMannager_Fragment;
 
 public class OrdersDetalle_Activity extends BaseActivity implements ProductosMannager_Fragment.OnSelectedCallback {
-    private int ID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ID = getIntent().getExtras().getInt("id");
+        int ID = getIntent().getExtras().getInt("id");
 
         if (savedInstanceState == null) {
 

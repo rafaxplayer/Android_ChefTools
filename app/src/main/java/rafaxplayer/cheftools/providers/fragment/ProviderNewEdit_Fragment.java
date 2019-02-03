@@ -66,7 +66,7 @@ public class ProviderNewEdit_Fragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_provider_new_edit, container, false);
         ButterKnife.bind(this, v);
@@ -75,7 +75,7 @@ public class ProviderNewEdit_Fragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -205,8 +205,8 @@ public class ProviderNewEdit_Fragment extends Fragment {
             if (count > 0) {
 
                 Toast.makeText(getActivity(), getString(R.string.dlgok_update), Toast.LENGTH_LONG).show();
-                if (((ProviderDetalle_Fragment) getActivity().getSupportFragmentManager().findFragmentByTag("detalle")) != null) {
-                    ((ProviderDetalle_Fragment) getActivity().getSupportFragmentManager().findFragmentByTag("detalle")).onResume();
+                if (getActivity().getSupportFragmentManager().findFragmentByTag("detalle") != null) {
+                    getActivity().getSupportFragmentManager().findFragmentByTag("detalle").onResume();
                 }
                 getActivity().onBackPressed();
             }
@@ -215,7 +215,7 @@ public class ProviderNewEdit_Fragment extends Fragment {
         sql.close();
     }
 
-    public void displayWithId(int id) {
+    private void displayWithId(int id) {
 
         if (!sql.IsOpen()) {
             sql.open();
@@ -236,7 +236,7 @@ public class ProviderNewEdit_Fragment extends Fragment {
         sql.close();
     }
 
-    public void refresh() {
+    private void refresh() {
 
         Nametxt.setText("");
         Telefonotxt.setText("");

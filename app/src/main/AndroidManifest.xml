@@ -48,7 +48,7 @@
             android:label="@string/activity_newedit_provider" />
         <activity
             android:name=".Orders.Orders_Activity"
-            android:label="@string/activity_orders"></activity>
+            android:label="@string/activity_orders" />
         <activity
             android:name=".Orders.OrdersDetalle_Activity"
             android:label="@string/activity_detalle_orders" />

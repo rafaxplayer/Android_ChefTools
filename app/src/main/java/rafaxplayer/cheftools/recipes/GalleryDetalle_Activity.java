@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -60,8 +61,8 @@ public class GalleryDetalle_Activity extends BaseActivity {
 
             @Override
             public void onPageSelected(int position) {
-                setTittleDinamic(((ImageGalleryModel) data.get(position)).Title);
-                id = ((ImageGalleryModel) data.get(position)).ID;
+                setTittleDinamic(data.get(position).Title);
+                id = data.get(position).ID;
 
             }
 
@@ -105,9 +106,9 @@ public class GalleryDetalle_Activity extends BaseActivity {
 
     class CustomPagerAdapter extends PagerAdapter {
 
-        Context mContext;
-        LayoutInflater mLayoutInflater;
-        List<ImageGalleryModel> data;
+        final Context mContext;
+        final LayoutInflater mLayoutInflater;
+        final List<ImageGalleryModel> data;
 
         public CustomPagerAdapter(Context context, List<ImageGalleryModel> dat) {
             mContext = context;
@@ -121,18 +122,19 @@ public class GalleryDetalle_Activity extends BaseActivity {
         }
 
         @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == ((View) object);
+        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
+            return view == object;
         }
 
+        @NonNull
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
+        public Object instantiateItem(@NonNull ViewGroup container, int position) {
 
             View itemView = mLayoutInflater.inflate(R.layout.pager_item, container, false);
-            ImageView imageView = ButterKnife.findById(itemView, R.id.imagePager);
-            TextView textView = ButterKnife.findById(itemView, R.id.textImage);
-            final String path = ((ImageGalleryModel) data.get(position)).ImagePath;
-            final String title = ((ImageGalleryModel) data.get(position)).Title;
+            ImageView imageView = itemView.findViewById(R.id.imagePager);
+            TextView textView = itemView.findViewById(R.id.textImage);
+            final String path = (data.get(position)).ImagePath;
+            final String title = (data.get(position)).Title;
             textView.setText(title);
             imageView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -153,7 +155,7 @@ public class GalleryDetalle_Activity extends BaseActivity {
         }
 
         @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
+        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
             container.removeView((View) object);
         }
     }

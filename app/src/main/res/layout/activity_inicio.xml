@@ -186,7 +186,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:text="@string/products"
-
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:textColor="@color/textColorDark"
                         android:textSize="@dimen/text_menu_size"

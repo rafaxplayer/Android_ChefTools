@@ -1,19 +1,13 @@
 package rafaxplayer.cheftools.Globalclasses.models;
 
 public class Stocks {
-    int id;
-    String Name;
-    String Comentario;
-    String Fecha;
+    private int id;
+    private String Name;
+    private String Comentario;
+    private String Fecha;
 
     public Stocks() {
 
-    }
-
-    public Stocks(String name, String comentario, String fecha) {
-        Name = name;
-        Comentario = comentario;
-        Fecha = fecha;
     }
 
     public int getId() {

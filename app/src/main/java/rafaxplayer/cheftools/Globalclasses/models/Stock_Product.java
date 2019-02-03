@@ -1,24 +1,15 @@
 package rafaxplayer.cheftools.Globalclasses.models;
 
 public class Stock_Product {
-    int ID;
-    int stockId;
-    int productoId;
-    int cantidad;
-    int formatoid;
-    int categoriaid;
+    private int ID;
+    private int stockId;
+    private int productoId;
+    private int cantidad;
+    private int formatoid;
+    private int categoriaid;
 
     public Stock_Product() {
 
-    }
-
-    public Stock_Product(int ID, int stockId, int productoId, int cantidad, int formatoid, int categoriaid) {
-        this.ID = ID;
-        this.stockId = stockId;
-        this.productoId = productoId;
-        this.cantidad = cantidad;
-        this.formatoid = formatoid;
-        this.categoriaid = categoriaid;
     }
 
     public int getID() {

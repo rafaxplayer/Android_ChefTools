@@ -5,11 +5,11 @@ package rafaxplayer.cheftools.Globalclasses.models;
  */
 public class Escandallo {
 
-    int id;
-    String Name;
-    String Fecha;
-    String comment;
-    double Costetotal;
+    private int id;
+    private String Name;
+    private String Fecha;
+    private String comment;
+    private double Costetotal;
 
 
     public String getFecha() {
@@ -22,13 +22,6 @@ public class Escandallo {
 
     public Escandallo() {
 
-    }
-
-    public Escandallo(String name, String comentario, String fecha, double costetotal) {
-        Name = name;
-        comentario = comentario;
-        Costetotal = costetotal;
-        Fecha = fecha;
     }
 
     public int getId() {

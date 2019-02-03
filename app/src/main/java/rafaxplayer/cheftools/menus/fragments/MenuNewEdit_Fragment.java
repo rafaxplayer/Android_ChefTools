@@ -1,6 +1,7 @@
 package rafaxplayer.cheftools.menus.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -22,7 +23,6 @@ import rafaxplayer.cheftools.Globalclasses.models.Menu;
 import rafaxplayer.cheftools.R;
 import rafaxplayer.cheftools.database.DBHelper;
 import rafaxplayer.cheftools.database.SqliteWrapper;
-import rafaxplayer.cheftools.recipes.fragments.DetalleRecipes_Fragment;
 
 
 public class MenuNewEdit_Fragment extends Fragment {
@@ -55,7 +55,7 @@ public class MenuNewEdit_Fragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_menu_new_edit, container, false);
         ButterKnife.bind(this, v);
@@ -63,7 +63,7 @@ public class MenuNewEdit_Fragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,7 +136,7 @@ public class MenuNewEdit_Fragment extends Fragment {
                 Segundostxt.getText().toString(),
                 Postrestxt.getText().toString(),
                 Comentariostxt.getText().toString(),
-                GlobalUttilities.getDateTime().toString()
+                GlobalUttilities.getDateTime()
 
         );
 
@@ -161,6 +161,7 @@ public class MenuNewEdit_Fragment extends Fragment {
                 new MaterialDialog.Builder(getActivity())
                         .title(getString(R.string.dlgsucces_saved))
                         .content(getString(R.string.dlgnew_saved))
+
                         .positiveText(R.string.yes)
 
                         .negativeText(R.string.not)
@@ -189,8 +190,8 @@ public class MenuNewEdit_Fragment extends Fragment {
             if (count > 0) {
 
                 Toast.makeText(getActivity(), getString(R.string.dlgok_update), Toast.LENGTH_LONG).show();
-                if (((DetalleRecipes_Fragment) getActivity().getSupportFragmentManager().findFragmentByTag("detalle")) != null) {
-                    ((DetalleRecipes_Fragment) getActivity().getSupportFragmentManager().findFragmentByTag("detalle")).onResume();
+                if (getActivity().getSupportFragmentManager().findFragmentByTag("detalle") != null) {
+                    getActivity().getSupportFragmentManager().findFragmentByTag("detalle").onResume();
                 }
                 getActivity().onBackPressed();
             }
@@ -201,7 +202,7 @@ public class MenuNewEdit_Fragment extends Fragment {
 
     }
 
-    public void displayWithId(int id) {
+    private void displayWithId(int id) {
         if (!sql.IsOpen()) {
             sql.open();
         }

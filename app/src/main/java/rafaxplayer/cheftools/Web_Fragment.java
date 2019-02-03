@@ -2,8 +2,8 @@ package rafaxplayer.cheftools;
 
 
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -26,9 +26,6 @@ public class Web_Fragment extends Fragment {
     Button save;
     @BindView(R.id.buttonCancelurl)
     Button cancel;
-    private String url;
-    private String urlimage = "http://www.google.com/advanced_image_search";
-    private String urlgoogle = "https://www.google.com/";
 
     public Web_Fragment() {
 
@@ -36,7 +33,7 @@ public class Web_Fragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_web, container, false);
@@ -60,8 +57,9 @@ public class Web_Fragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        String urlgoogle = "https://www.google.com/";
         load_url(getActivity(), urlgoogle);
     }
 
@@ -72,7 +70,7 @@ public class Web_Fragment extends Fragment {
         web.setWebChromeClient(new WebChromeClient() {
             public void onProgressChanged(WebView view, int progress) {
                 ((BaseActivity) activity).setTittleDinamic("Loading...");
-                ((BaseActivity) activity).setProgress(progress * 100);
+                activity.setProgress(progress * 100);
 
                 if (progress == 100) {
                     ((BaseActivity) activity).setTittleDinamic(Url);
@@ -88,25 +86,9 @@ public class Web_Fragment extends Fragment {
             }
 
             @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                // TODO Auto-generated method stub
-                super.onPageStarted(view, url, favicon);
-
-            }
-
-            @Override
-            public void onReceivedLoginRequest(WebView view, String realm,
-                                               String account, String args) {
-                // TODO Auto-generated method stub
-                super.onReceivedLoginRequest(view, realm, account, args);
-
-            }
-
-            @Override
             public void onLoadResource(WebView view, String url) {
                 // TODO Auto-generated method stub
                 super.onLoadResource(view, url);
-                Web_Fragment.this.url = url;
 
             }
 

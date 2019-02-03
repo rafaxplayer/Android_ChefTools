@@ -23,12 +23,6 @@ public class Menus_Activity extends BaseActivity implements MenusList_Fragment.O
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-
-    }
-
-    @Override
     protected int getLayoutResourceId() {
         if (getResources().getBoolean(R.bool.dual_pane)) {
             return R.layout.activity_menus;

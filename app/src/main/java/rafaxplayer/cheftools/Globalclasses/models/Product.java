@@ -4,25 +4,17 @@ package rafaxplayer.cheftools.Globalclasses.models;
  * Created by rafaxplayer on 17/06/2015.
  */
 public class Product {
-    int Id;
-    int formatoid;
-    int categoryid;
-    int supplierid;
-    String name;
-    String suppliername;
-    String categoryname;
-    String formatoname;
+    private int Id;
+    private int formatoid;
+    private int categoryid;
+    private int supplierid;
+    private String name;
+    private String suppliername;
+    private String categoryname;
+    private String formatoname;
 
 
     public Product() {
-
-    }
-
-    public Product(int formatoid, int categoryid, int supplierid, String name) {
-        this.formatoid = formatoid;
-        this.categoryid = categoryid;
-        this.supplierid = supplierid;
-        this.name = name;
 
     }
 

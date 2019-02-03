@@ -72,7 +72,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String PEDIDO_ID = "pedido_id";
     public static final String PRODUCTO_ID = "producto_id";
     public static final String PRODUCTO_CANTIDAD = "producto_cantidad";
-    public static final String PRODUCTO_CANTIDAD_MIN = "producto_cantidad_min";
+    private static final String PRODUCTO_CANTIDAD_MIN = "producto_cantidad_min";
     public static final String PROVEEDOR_ID = "proveedor_id";
 
     //Campos escandallos
@@ -186,18 +186,18 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     // Update for version 2
-    private String SQLUpdate_Create_CampV2 = "ALTER TABLE " + TABLE_INVENTARIOS_LISTAS + " ADD COLUMN " + PRODUCTO_CANTIDAD_MIN + " INTEGER DEFAULT 0;";
+    private final String SQLUpdate_Create_CampV2 = "ALTER TABLE " + TABLE_INVENTARIOS_LISTAS + " ADD COLUMN " + PRODUCTO_CANTIDAD_MIN + " INTEGER DEFAULT 0;";
 
 
     // Update version 3
-    private String SqlCreateTable_Escandallos = "CREATE TABLE IF NOT EXISTS "
+    private final String SqlCreateTable_Escandallos = "CREATE TABLE IF NOT EXISTS "
             + TABLE_ESCANDALLOS + "(" + ID + " INTEGER PRIMARY KEY,"
             + NAME + " TEXT, "
             + COSTE_TOTAL + " REAL, "
             + COMENTARIO + " TEXT, "
             + FECHA + " DEFAULT CURRENT_TIMESTAMP)";
 
-    private String SqlCreateTable_Escadallo_products = "CREATE TABLE IF NOT EXISTS "
+    private final String SqlCreateTable_Escadallo_products = "CREATE TABLE IF NOT EXISTS "
             + TABLE_ESCANDALLOS_PRODUCTS + "(" + ID + " INTEGER PRIMARY KEY,"
             + NAME + " TEXT, "
             + ESCANDALLO_ID + " INTEGER, "
@@ -214,7 +214,7 @@ public class DBHelper extends SQLiteOpenHelper {
             + " END; ";
 
 
-    private Context con;
+    private final Context con;
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

@@ -10,13 +10,11 @@ import rafaxplayer.cheftools.escandallos.fragments.EscandalloNewEdit_Fragment;
 
 public class EscandallosDetalle_Activity extends BaseActivity {
 
-    private int ID;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ID = getIntent().getExtras().getInt("id");
+        int ID = getIntent().getExtras().getInt("id");
 
         if (savedInstanceState == null) {
 

@@ -4,25 +4,15 @@ package rafaxplayer.cheftools.Globalclasses.models;
  * Created by rafaxplayer on 25/06/2015.
  */
 public class Order_Product {
-    int ID;
-    int listaId;
-    int productoId;
-    int cantidad;
-    int formatoid;
-    int categoriaid;
+    private int ID;
+    private int listaId;
+    private int productoId;
+    private int cantidad;
+    private int formatoid;
+    private int categoriaid;
 
     public Order_Product() {
 
-    }
-
-    public Order_Product(int ID, int listaId, int productoId, int cantidad, int formatoid, int categoriaid) {
-        this.ID = ID;
-        this.listaId = listaId;
-
-        this.productoId = productoId;
-        this.cantidad = cantidad;
-        this.formatoid = formatoid;
-        this.categoriaid = categoriaid;
     }
 
     public int getID() {
@@ -36,7 +26,6 @@ public class Order_Product {
     public int getListaId() {
         return listaId;
     }
-
 
     public void setListaId(int listaId) {
         this.listaId = listaId;

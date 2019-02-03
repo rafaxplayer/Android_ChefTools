@@ -1,7 +1,6 @@
 package rafaxplayer.cheftools.stocks.fragment;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -65,7 +64,7 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
     private SqliteWrapper sql;
     private Boolean itemsFound;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+    private final ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 
         StocksAdapter adp;
 
@@ -151,7 +150,7 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_list, container, false);
         ButterKnife.bind(this, v);
@@ -172,7 +171,7 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
         listStocks.setItemAnimator(new DefaultItemAnimator());
         listStocks.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
                 if (dy <= 0 && fab.isShown()) {
@@ -183,7 +182,7 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
             }
 
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
 
                 if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                     fab.show();
@@ -191,7 +190,7 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
                 super.onScrollStateChanged(recyclerView, newState);
             }
         });
-        swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout = v.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.post(new Runnable() {
                                     @Override
@@ -217,6 +216,13 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
         sql = new SqliteWrapper(getActivity());
         sql.open();
         itemsFound = false;
+
+        try {
+            mCallback = (OnSelectedCallback) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
     }
 
     @Override
@@ -226,7 +232,7 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
             sql.open();
         }
 
-        List<Stocks> list = loadValues(null);
+        List<Stocks> list = loadValues();
         if (list.size() > 0) {
             itemsFound = true;
             empty.setVisibility(View.GONE);
@@ -292,7 +298,7 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
                         .inputType(InputType.TYPE_CLASS_TEXT)
                         .input("Text to search...", "", new MaterialDialog.InputCallback() {
                             @Override
-                            public void onInput(MaterialDialog dialog, CharSequence input) {
+                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                                 ((StocksAdapter) listStocks.getAdapter()).getFilter().filter(input);
                                 getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                                 dialog.dismiss();
@@ -312,27 +318,15 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
 
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        try {
-            mCallback = (OnSelectedCallback) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnHeadlineSelectedListener");
-        }
-
-    }
 
     @Override
     public void onRefresh() {
         onResume();
     }
 
-    private List<Stocks> loadValues(String order) {
+    private List<Stocks> loadValues() {
 
-        return (List<Stocks>) (Object) sql.getAllObjects("Stocks", order);
+        return (List<Stocks>) (Object) sql.getAllObjects("Stocks", null);
 
     }
 
@@ -355,22 +349,20 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
 
     public class StocksAdapter extends RecyclerView.Adapter<StocksAdapter.ViewHolder> implements Filterable {
 
-        public Boolean searchResultsok;
         private List<Stocks> mDataset;
-        private List<Stocks> listorigin;
+        private final List<Stocks> listorigin;
         private FilesFilter filefilter;
-        private SparseBooleanArray selectedItems;
+        private final SparseBooleanArray selectedItems;
 
         // Adapter's Constructor
-        public StocksAdapter(List<Stocks> myDataset) {
+        StocksAdapter(List<Stocks> myDataset) {
             mDataset = myDataset;
             listorigin = myDataset;
-            this.searchResultsok = false;
             selectedItems = new SparseBooleanArray();
         }
 
 
-        public void toggleSelection(int pos, ImageView img) {
+        void toggleSelection(int pos, ImageView img) {
 
             if (selectedItems.get(pos, false)) {
                 selectedItems.delete(pos);
@@ -387,9 +379,9 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
 
         }
 
-        public void deleteItem(int pos) {
+        void deleteItem(int pos) {
 
-            int count = sql.DeleteWithId(((Stocks) mDataset.get(pos)).getId(), DBHelper.TABLE_INVENTARIOS);
+            int count = sql.DeleteWithId(mDataset.get(pos).getId(), DBHelper.TABLE_INVENTARIOS);
 
             if (count > 0) {
                 mDataset.remove(pos);
@@ -399,19 +391,19 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
             notifyItemRemoved(pos);
         }
 
-        public void clearSelections() {
+        void clearSelections() {
 
             selectedItems.clear();
             notifyDataSetChanged();
         }
 
 
-        public int getSelectedItemCount() {
+        int getSelectedItemCount() {
             return selectedItems.size();
         }
 
 
-        public void deleteSelectedItems() {
+        void deleteSelectedItems() {
             final List<Integer> items = getSelectedItems();
 
             for (int i = items.size() - 1; i >= 0; i--) {
@@ -435,31 +427,31 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
             return sb.toString();
         }
 
-        public List<Integer> getSelectedItems() {
+        List<Integer> getSelectedItems() {
             List<Integer> items =
-                    new ArrayList<Integer>(selectedItems.size());
+                    new ArrayList<>(selectedItems.size());
             for (int i = 0; i < selectedItems.size(); i++) {
                 items.add(selectedItems.keyAt(i));
             }
             return items;
         }
 
+        @NonNull
         @Override
-        public StocksAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+        public StocksAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                                            int viewType) {
             // Create a new view by inflating the row item xml.
             View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_list_orders_stocks, parent, false);
 
             // Set the view to the ViewHolder
-            ViewHolder holder = new ViewHolder(v);
 
 
-            return holder;
+            return new ViewHolder(v);
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             Picasso.get().load(R.drawable.inventory).into(holder.img);
             holder.sName.setText((mDataset.get(position)).getName());
             holder.sDate.setText((mDataset.get(position)).getFecha());
@@ -498,20 +490,19 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
 
         // Create the ViewHolder class to keep references to your views
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-            public ImageView img;
-            public ImageButton edit;
-            public TextView sName;
-            public TextView sDate;
-            int ID;
-            private ImageButton del;
+            final ImageView img;
+            final ImageButton edit;
+            final TextView sName;
+            final TextView sDate;
+            private final ImageButton del;
 
-            public ViewHolder(View v) {
+            ViewHolder(View v) {
                 super(v);
-                img = (ImageView) v.findViewById(R.id.imageList);
-                sName = (TextView) v.findViewById(R.id.text1);
-                sDate = (TextView) v.findViewById(R.id.text2);
-                edit = (ImageButton) v.findViewById(R.id.ButtonEdit);
-                del = (ImageButton) v.findViewById(R.id.ButtonDelete);
+                img = v.findViewById(R.id.imageList);
+                sName = v.findViewById(R.id.text1);
+                sDate = v.findViewById(R.id.text2);
+                edit = v.findViewById(R.id.ButtonEdit);
+                del = v.findViewById(R.id.ButtonDelete);
                 v.setOnClickListener(this);
                 v.setOnLongClickListener(this);
                 edit.setOnClickListener(this);
@@ -543,10 +534,9 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
                                 }
                             })
                             .show();
-                    return;
                 } else if (v.getId() == R.id.ButtonEdit) {
                     Intent in = new Intent(getActivity(), StocksNewEdit_Activity.class);
-                    in.putExtra("id", ((Stocks) mDataset.get(ViewHolder.this.getLayoutPosition())).getId());
+                    in.putExtra("id", mDataset.get(ViewHolder.this.getLayoutPosition()).getId());
                     getActivity().startActivity(in);
                 } else {
                     if (mActionMode != null) {
@@ -554,7 +544,7 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
                         toggleSelection(ViewHolder.this.getLayoutPosition(), img);
                         if (getResources().getBoolean(R.bool.dual_pane)) {
                             if (mCallback != null) {
-                                mCallback.onSelect(((Stocks) mDataset.get(ViewHolder.this.getLayoutPosition())).getId());
+                                mCallback.onSelect(mDataset.get(ViewHolder.this.getLayoutPosition()).getId());
                             }
                         }
 
@@ -563,7 +553,7 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
                         toggleSelection(ViewHolder.this.getLayoutPosition(), img);
                         v.setSelected(true);
                         if (mCallback != null) {
-                            mCallback.onSelect(((Stocks) mDataset.get(ViewHolder.this.getLayoutPosition())).getId());
+                            mCallback.onSelect(mDataset.get(ViewHolder.this.getLayoutPosition()).getId());
                         }
 
                     }
@@ -600,7 +590,7 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
                     results.count = mDataset.size();
                 } else {
 
-                    List<Stocks> nFilesList = new ArrayList<Stocks>();
+                    List<Stocks> nFilesList = new ArrayList<>();
 
                     for (Stocks p : mDataset) {
                         if (p.getName().toLowerCase().contains(constraint.toString().toLowerCase()))
@@ -620,10 +610,8 @@ public class StocksList_Fragment extends Fragment implements SwipeRefreshLayout.
                 if (results.count == 0) {
                     mDataset = listorigin;
                     Toast.makeText(getActivity(), getString(R.string.noresults), Toast.LENGTH_LONG).show();
-                    searchResultsok = false;
                 } else {
                     mDataset = (ArrayList<Stocks>) results.values;
-                    searchResultsok = true;
                 }
                 notifyDataSetChanged();
             }

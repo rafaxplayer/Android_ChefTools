@@ -1,7 +1,9 @@
 package rafaxplayer.cheftools.recipes.fragments;
 
 import android.Manifest;
+
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,6 +29,11 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+
+import com.shashank.sony.fancydialoglib.Animation;
+import com.shashank.sony.fancydialoglib.FancyAlertDialog;
+import com.shashank.sony.fancydialoglib.FancyAlertDialogListener;
+import com.shashank.sony.fancydialoglib.Icon;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -67,7 +74,6 @@ public class NewEditRecipe_Fragment extends Fragment {
     private IconizedMenu popup;
     private Uri imgUri;
     private int ID;
-    private Boolean edit;
     private SqliteWrapper sql;
 
     private ArrayList<HashMap<String, Object>> catsarr;
@@ -81,7 +87,7 @@ public class NewEditRecipe_Fragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_recipe_new_edit, container, false);
         if (v != null) {
@@ -98,7 +104,7 @@ public class NewEditRecipe_Fragment extends Fragment {
         sql.open();
 
         this.imgUri = null;
-        this.edit = false;
+        Boolean edit = false;
         if (getArguments() != null) {
             this.ID = getArguments().getInt("id");
 
@@ -134,7 +140,7 @@ public class NewEditRecipe_Fragment extends Fragment {
 
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         catsarr = sql.getFormatsOrCategorysData(DBHelper.TABLE_RECETAS_CATEGORIA);
@@ -185,7 +191,7 @@ public class NewEditRecipe_Fragment extends Fragment {
                                                                  .inputType(InputType.TYPE_CLASS_TEXT)
                                                                  .input(getString(R.string.urlimage), "", new MaterialDialog.InputCallback() {
                                                                      @Override
-                                                                     public void onInput(MaterialDialog dialog, CharSequence input) {
+                                                                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                                                                          updateImage(Uri.parse(input.toString()));
                                                                          //getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                                                                          dialog.dismiss();
@@ -217,13 +223,6 @@ public class NewEditRecipe_Fragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
-
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
         inflater.inflate(R.menu.menu_save, menu);
@@ -239,7 +238,7 @@ public class NewEditRecipe_Fragment extends Fragment {
         return onOptionsItemSelected(item);
     }
 
-    public void sendIntentPermission(int action) {
+    private void sendIntentPermission(int action) {
         switch (action) {
             case GlobalUttilities.SELECT_PICTURE:
                 Intent intentGallery = new Intent();
@@ -329,6 +328,8 @@ public class NewEditRecipe_Fragment extends Fragment {
                         })
                         .show();
 
+
+
             }
 
         } else {
@@ -349,7 +350,7 @@ public class NewEditRecipe_Fragment extends Fragment {
 
     }
 
-    public void displayWithId(int id) {
+    private void displayWithId(int id) {
         if (!sql.IsOpen()) {
             sql.open();
         }
@@ -385,7 +386,7 @@ public class NewEditRecipe_Fragment extends Fragment {
         }
     }
 
-    public void refresh() {
+    private void refresh() {
         Picasso.get()
                 .load(Uri.parse(""))
                 .placeholder(R.drawable.item_image_placeholder)
@@ -412,8 +413,7 @@ public class NewEditRecipe_Fragment extends Fragment {
         ((BaseActivity) getActivity()).setTittleDinamic(getString(R.string.activity_newedit));
     }
 
-    public String saveImage(Uri imguri) {
-        Log.e("saveImage ImgUri", imguri.toString());
+    private String saveImage(Uri imguri) {
 
         if (imguri == null) {
             Log.e("saveImage return ", "null");

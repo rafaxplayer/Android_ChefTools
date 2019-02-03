@@ -39,12 +39,6 @@ public class Recipes_Activity extends BaseActivity implements RecipesList_Fragme
         return getString(R.string.activity_recipes);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-    }
-
     public void showRecipeEdit(int num) {
         Intent in = new Intent(getApplicationContext(), NewEditRecipe_Activity.class);
         in.putExtra("id", num);

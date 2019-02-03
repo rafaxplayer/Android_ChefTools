@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="rafaxplayer.micocina.fragments.Web_Fragment"
+    tools:context=".Web_Fragment"
     android:background="@color/windowBackgroundColor">
 
     <!-- TODO: Update blank fragment layout -->

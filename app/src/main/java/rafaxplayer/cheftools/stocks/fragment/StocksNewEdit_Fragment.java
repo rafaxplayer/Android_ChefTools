@@ -27,7 +27,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,7 +55,6 @@ public class StocksNewEdit_Fragment extends Fragment {
     RecyclerView StocksList;
 
     private SqliteWrapper sql;
-    private Menu menu;
     private TextView newlisttxt;
     private EditText name;
     private EditText Comentariostxt;
@@ -68,7 +66,6 @@ public class StocksNewEdit_Fragment extends Fragment {
     private Product prod;
     private Stock_Product stProd;
     private String namestock;
-    private ArrayList<HashMap<String, Object>> arrSuppliers;
 
     public static StocksNewEdit_Fragment newInstance(int id) {
         StocksNewEdit_Fragment f = new StocksNewEdit_Fragment();
@@ -79,7 +76,7 @@ public class StocksNewEdit_Fragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_stocks_new_edit, container, false);
         ButterKnife.bind(this, v);
@@ -92,7 +89,7 @@ public class StocksNewEdit_Fragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         dialogNewStock = new MaterialDialog.Builder(getActivity())
@@ -102,9 +99,9 @@ public class StocksNewEdit_Fragment extends Fragment {
                 .showListener(new DialogInterface.OnShowListener() {
                     @Override
                     public void onShow(DialogInterface dialog) {
-                        newlisttxt = (TextView) dialogNewStock.getCustomView().findViewById(R.id.textnewlist);
+                        newlisttxt = dialogNewStock.getCustomView().findViewById(R.id.textnewlist);
                         newlisttxt.setText(getString(R.string.menu_new_stock));
-                        providerPannel = (LinearLayout) dialogNewStock.getCustomView().findViewById(R.id.providerpanel);
+                        providerPannel = dialogNewStock.getCustomView().findViewById(R.id.providerpanel);
                         providerPannel.setVisibility(View.GONE);
                     }
                 })
@@ -114,7 +111,7 @@ public class StocksNewEdit_Fragment extends Fragment {
                         if (!sql.IsOpen()) {
                             sql.open();
                         }
-                        name = (EditText) dialog.getCustomView().findViewById(R.id.editnameorder);
+                        name = dialog.getCustomView().findViewById(R.id.editnameorder);
                         if (sql.CheckIsDataAlreadyInDBorNot(DBHelper.TABLE_PEDIDOS, DBHelper.NAME, name.getText().toString())) {
 
                             Toast.makeText(getActivity(), getString(R.string.dlgerror_dataexist), Toast.LENGTH_LONG).show();
@@ -130,7 +127,7 @@ public class StocksNewEdit_Fragment extends Fragment {
                             return;
                         }
 
-                        Comentariostxt = (EditText) dialog.getCustomView().findViewById(R.id.editcomment);
+                        Comentariostxt = dialog.getCustomView().findViewById(R.id.editcomment);
                         long ret = sql.newStocksListName(name.getText().toString(), Comentariostxt.getText().toString());
                         if (ret != -1) {
                             ID = (int) ret;
@@ -159,7 +156,7 @@ public class StocksNewEdit_Fragment extends Fragment {
                 .showListener(new DialogInterface.OnShowListener() {
                     @Override
                     public void onShow(DialogInterface dialog) {
-                        EditCantidad = (EditText) dialogEditProduct.getCustomView().findViewById(R.id.editcantproduct);
+                        EditCantidad = dialogEditProduct.getCustomView().findViewById(R.id.editcantproduct);
                         if (stProd != null) {
                             EditCantidad.setText(String.valueOf(stProd.getCantidad()));
                         }
@@ -229,7 +226,7 @@ public class StocksNewEdit_Fragment extends Fragment {
                 }
 
                 int cantidad = Integer.parseInt(Cantidadtxt.getText().toString());
-                ((RecyclerAdapter) StocksList.getAdapter()).addItem(0, ID, cantidad, prod);
+                ((RecyclerAdapter) StocksList.getAdapter()).addItem(ID, cantidad, prod);
                 GlobalUttilities.ocultateclado(getActivity(), Cantidadtxt);
             }
 
@@ -287,7 +284,7 @@ public class StocksNewEdit_Fragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        this.menu = menu;
+        Menu menu1 = menu;
         inflater.inflate(R.menu.menu_lists, menu);
         menu.findItem(R.id.search).setVisible(false);
 
@@ -323,13 +320,13 @@ public class StocksNewEdit_Fragment extends Fragment {
 
     }
 
-    public void displayWithId(int id) {
+    private void displayWithId(int id) {
 
         if (!sql.IsOpen()) {
             sql.open();
         }
         String name = sql.getSimpleData(id, DBHelper.NAME, DBHelper.TABLE_INVENTARIOS);
-        NameStock.setText(name.toString());
+        NameStock.setText(name);
         ArrayList<Stock_Product> listProducts = (ArrayList<Stock_Product>) (Object) sql.getProductListWithListId("Stock_product", id);
         if (listProducts.size() > 0) {
             StocksList.setAdapter(new RecyclerAdapter(listProducts));
@@ -337,7 +334,7 @@ public class StocksNewEdit_Fragment extends Fragment {
 
     }
 
-    public void refresh() {
+    private void refresh() {
 
         NameProduct.setText("");
         StocksList.setAdapter(new RecyclerAdapter(new ArrayList<Stock_Product>()));
@@ -347,7 +344,7 @@ public class StocksNewEdit_Fragment extends Fragment {
 
     }
 
-    public void resetProduct() {
+    private void resetProduct() {
         NameProduct.setText("");
         Cantidadtxt.setText("");
 
@@ -359,21 +356,15 @@ public class StocksNewEdit_Fragment extends Fragment {
         sql.close();
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-
-    }
-
     public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
-        private ArrayList<Stock_Product> mDataset;
+        private final ArrayList<Stock_Product> mDataset;
 
-        public RecyclerAdapter(ArrayList<Stock_Product> myDataset) {
+        RecyclerAdapter(ArrayList<Stock_Product> myDataset) {
             mDataset = myDataset;
         }
 
-        public void deleteItem(int pos) {
+        void deleteItem(int pos) {
 
             int count = sql.DeleteWithId((mDataset.get(pos)).getID(), DBHelper.TABLE_INVENTARIOS_LISTAS);
 
@@ -385,7 +376,7 @@ public class StocksNewEdit_Fragment extends Fragment {
             notifyItemRemoved(pos);
         }
 
-        public void addItem(int pos, int listID, int cantidad, Product pr) {
+        void addItem(int listID, int cantidad, Product pr) {
 
             if (!sql.IsOpen()) {
                 sql.open();
@@ -420,16 +411,16 @@ public class StocksNewEdit_Fragment extends Fragment {
             notifyDataSetChanged();
         }
 
+        @NonNull
         @Override
-        public RecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public RecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_simple, parent, false);
 
-            ViewHolder vh = new ViewHolder(v);
-            return vh;
+            return new ViewHolder(v);
         }
 
         @Override
-        public void onBindViewHolder(RecyclerAdapter.ViewHolder viewHolder, int i) {
+        public void onBindViewHolder(@NonNull RecyclerAdapter.ViewHolder viewHolder, int i) {
             if (!sql.IsOpen()) {
                 sql.open();
             }
@@ -459,7 +450,7 @@ public class StocksNewEdit_Fragment extends Fragment {
             @BindView(R.id.text3)
             TextView txtFormat;
 
-            public ViewHolder(View v) {
+            ViewHolder(View v) {
                 super(v);
                 ButterKnife.bind(this, v);
                 delButton.setOnClickListener(this);

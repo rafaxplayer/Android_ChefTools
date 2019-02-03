@@ -1,11 +1,11 @@
 package rafaxplayer.cheftools.Globalclasses.models;
 
 public class Orders {
-    int id;
-    String Name;
-    String Comentario;
-    int Supplierid;
-    String Fecha;
+    private int id;
+    private String Name;
+    private String Comentario;
+    private int Supplierid;
+    private String Fecha;
 
     public Orders() {
 

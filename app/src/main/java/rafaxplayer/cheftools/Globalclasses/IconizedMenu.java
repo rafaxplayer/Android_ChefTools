@@ -6,7 +6,6 @@ import android.support.v7.view.SupportMenuInflater;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.view.menu.MenuPresenter;
-import android.support.v7.view.menu.SubMenuBuilder;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,10 +19,10 @@ import android.view.View;
  * @since 5:00 PM - 1/27/14
  */
 public class IconizedMenu implements MenuBuilder.Callback, MenuPresenter.Callback {
-    private Context mContext;
-    private MenuBuilder mMenu;
-    private View mAnchor;
-    private MenuPopupHelper mPopup;
+    private final Context mContext;
+    private final MenuBuilder mMenu;
+    private final View mAnchor;
+    private final MenuPopupHelper mPopup;
     private OnMenuItemClickListener mMenuItemClickListener;
     private OnDismissListener mDismissListener;
 
@@ -147,25 +146,19 @@ public class IconizedMenu implements MenuBuilder.Callback, MenuPresenter.Callbac
     /**
      * @hide
      */
-    public void onCloseSubMenu(SubMenuBuilder menu) {
-    }
-
-    /**
-     * @hide
-     */
     public void onMenuModeChange(MenuBuilder menu) {
     }
 
     /**
      * Callback interface used to notify the application that the menu has closed.
      */
-    public interface OnDismissListener {
+    interface OnDismissListener {
         /**
          * Called when the associated menu has been dismissed.
          *
          * @param menu The PopupMenu that was dismissed.
          */
-        public void onDismiss(IconizedMenu menu);
+        void onDismiss(IconizedMenu menu);
     }
 
     /**
@@ -180,7 +173,7 @@ public class IconizedMenu implements MenuBuilder.Callback, MenuPresenter.Callbac
          * @param item {@link android.view.MenuItem} that was clicked
          * @return <code>true</code> if the event was handled, <code>false</code> otherwise.
          */
-        public boolean onMenuItemClick(MenuItem item);
+        boolean onMenuItemClick(MenuItem item);
     }
 
 }

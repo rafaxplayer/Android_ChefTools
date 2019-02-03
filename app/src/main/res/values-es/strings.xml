@@ -51,7 +51,7 @@
     <string name="orders">Pedidos</string>
     <string name="inventories">Inventarios</string>
     <string name="recipe_title">Título De La Receta</string>
-    <string name="recipe_category">Categoria De La Receta</string>
+    <string name="recipe_category">Categoría De La Receta</string>
     <string name="recipe_ingredients">Ingredientes</string>
     <string name="recipe_elaboration">Elaboración</string>
     <string name="recipe_url">Enlace De La Receta</string>

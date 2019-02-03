@@ -1,13 +1,13 @@
 package rafaxplayer.cheftools.Globalclasses.models;
 
 public class Recipe {
-    int id;
-    String name;
-    String img;
-    String Categoty;
-    String Ingredients;
-    String Elaboration;
-    String url;
+    private int id;
+    private String name;
+    private String img;
+    private String Categoty;
+    private String Ingredients;
+    private String Elaboration;
+    private String url;
 
 
     public Recipe() {

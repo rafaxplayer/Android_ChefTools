@@ -1,6 +1,7 @@
 package rafaxplayer.cheftools.menus.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -47,7 +48,7 @@ public class MenuDetalle_Fragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_menu_detalle, container, false);
         ButterKnife.bind(this, v);
@@ -77,7 +78,7 @@ public class MenuDetalle_Fragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.edit:
                 if (ID != 0) {
-                    Boolean islayout = (getActivity().getSupportFragmentManager().findFragmentById(R.id.detallemenu) != null);
+                    boolean islayout = (getActivity().getSupportFragmentManager().findFragmentById(R.id.detallemenu) != null);
                     if (getResources().getBoolean(R.bool.dual_pane) && islayout) {
                         ((Menus_Activity) getActivity()).showMenuEdit(ID);
                     } else {

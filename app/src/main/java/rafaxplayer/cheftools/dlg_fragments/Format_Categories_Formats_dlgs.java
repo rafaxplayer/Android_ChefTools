@@ -2,6 +2,7 @@ package rafaxplayer.cheftools.dlg_fragments;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,7 +42,6 @@ public class Format_Categories_Formats_dlgs extends DialogFragment {
     }
 
     private SqliteWrapper sql;
-    private Categorys_Formats_Adapter adp;
     private String sqltable;
     private int tittle;
 
@@ -76,7 +76,7 @@ public class Format_Categories_Formats_dlgs extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_dlg_categories_products, container, false);
@@ -88,7 +88,7 @@ public class Format_Categories_Formats_dlgs extends DialogFragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         addCategory.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,7 +110,7 @@ public class Format_Categories_Formats_dlgs extends DialogFragment {
         }
 
         try {
-            adp = new Categorys_Formats_Adapter(getActivity(), sql.getFormatsOrCategorysData(this.sqltable), this.sqltable, sql);
+            Categorys_Formats_Adapter adp = new Categorys_Formats_Adapter(getActivity(), sql.getFormatsOrCategorysData(this.sqltable), this.sqltable, sql);
             listItems.setAdapter(adp);
         } catch (Exception ex) {
             ex.printStackTrace();

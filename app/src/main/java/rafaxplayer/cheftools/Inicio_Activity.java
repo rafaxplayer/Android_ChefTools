@@ -48,14 +48,12 @@ public class Inicio_Activity extends BaseActivity implements ProductosMannager_F
 
         File folderBack = new File(GlobalUttilities.PATH_BACKUPS);
         if (!folderBack.exists()) {
-            if (folderBack.mkdirs()) {
-            }
+            folderBack.mkdirs();
         }
 
         File folderImg = new File(GlobalUttilities.PATH_IMAGES_RECIPES);
         if (!folderImg.exists()) {
-            if (folderImg.mkdirs()) {
-            }
+            folderImg.mkdirs();
         }
 
 

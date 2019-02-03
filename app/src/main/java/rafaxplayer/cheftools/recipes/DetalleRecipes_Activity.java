@@ -16,12 +16,10 @@ import rafaxplayer.cheftools.recipes.fragments.NewEditRecipe_Fragment;
 
 public class DetalleRecipes_Activity extends BaseActivity {
 
-    private int ID;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ID = getIntent().getExtras().getInt("id");
+        int ID = getIntent().getExtras().getInt("id");
 
         if (savedInstanceState == null) {
 

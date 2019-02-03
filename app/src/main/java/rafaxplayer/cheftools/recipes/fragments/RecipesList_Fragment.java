@@ -1,6 +1,5 @@
 package rafaxplayer.cheftools.recipes.fragments;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -67,7 +66,7 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
     private SqliteWrapper sql;
     private Boolean recipesFound;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+    private final ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 
         NewsAdapter adp;
 
@@ -153,7 +152,7 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_list, container, false);
         ButterKnife.bind(this, v);
@@ -174,7 +173,7 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
         listRecipes.setItemAnimator(new DefaultItemAnimator());
         listRecipes.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
                 if (dy <= 0 && fab.isShown()) {
@@ -186,7 +185,7 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
             }
 
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
 
                 if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                     fab.show();
@@ -227,6 +226,13 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
         super.onCreate(savedInstanceState);
         sql = new SqliteWrapper(getActivity());
         sql.open();
+
+        try {
+            mCallback = (OnSelectedrecipeCallback) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
     }
 
     @Override
@@ -259,7 +265,7 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
                         .inputType(InputType.TYPE_CLASS_TEXT)
                         .input("Text to search...", "", new MaterialDialog.InputCallback() {
                             @Override
-                            public void onInput(MaterialDialog dialog, CharSequence input) {
+                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                                 ((NewsAdapter) listRecipes.getAdapter()).getFilter().filter(input);
                                 getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                                 dialog.dismiss();
@@ -272,24 +278,12 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        try {
-            mCallback = (OnSelectedrecipeCallback) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnHeadlineSelectedListener");
-        }
-
-    }
 
     @Override
     public void onResume() {
         super.onResume();
         sql.open();
-        List<Recipe> lstRecipes = loadRecipes(null);
+        List<Recipe> lstRecipes = loadRecipes();
         if (lstRecipes.size() > 0) {
             recipesFound = true;
             empty.setVisibility(View.GONE);
@@ -310,9 +304,9 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
 
     }
 
-    private List<Recipe> loadRecipes(String order) {
+    private List<Recipe> loadRecipes() {
 
-        return (List<Recipe>) (Object) sql.getAllObjects("Recipe", order);
+        return (List<Recipe>) (Object) sql.getAllObjects("Recipe", null);
 
     }
 
@@ -335,27 +329,25 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
     }
 
     public interface OnSelectedrecipeCallback {
-        public void onSelectRecipe(int pid);
+        void onSelectRecipe(int pid);
     }
 
     public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> implements Filterable {
 
-        public Boolean searchResultsok;
         private List<Recipe> mDataset;
-        private List<Recipe> listorigin;
+        private final List<Recipe> listorigin;
         private FilesFilter filefilter;
-        private SparseBooleanArray selectedItems;
+        private final SparseBooleanArray selectedItems;
 
         // Adapter's Constructor
-        public NewsAdapter(List<Recipe> myDataset) {
+        NewsAdapter(List<Recipe> myDataset) {
             mDataset = myDataset;
             listorigin = myDataset;
-            this.searchResultsok = false;
             selectedItems = new SparseBooleanArray();
         }
 
 
-        public void toggleSelection(int pos, ImageView img) {
+        void toggleSelection(int pos, ImageView img) {
 
             if (selectedItems.get(pos, false)) {
                 selectedItems.delete(pos);
@@ -374,21 +366,22 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
         }
 
 
-        public void deleteItem(int pos) {
-
-            int count = sql.DeleteWithId((mDataset.get(pos)).getId(), DBHelper.TABLE_RECETAS);
+        void deleteItem(int pos) {
 
             //comprovamos que la imagen este en los datos de la app no en el dispositivo
-            if ((mDataset.get(pos)).getImg().contains("Android/data")) {
-                File imageFile = new File((mDataset.get(pos)).getImg().replace("file://", ""));
-                Log.e("Recipes list", String.valueOf(imageFile.exists()));
-                if (imageFile.exists()) {
-                    if (imageFile.delete()) {
-                        Toast.makeText(getActivity(), "Imagen eliminada", Toast.LENGTH_SHORT).show();
+            if((mDataset.get(pos)).getImg() != null){
+                if ((mDataset.get(pos)).getImg().contains("Android/data")) {
+                    File imageFile = new File((mDataset.get(pos)).getImg().replace("file://", ""));
+                    Log.e("Recipes list", String.valueOf(imageFile.exists()));
+                    if (imageFile.exists()) {
+                        if (imageFile.delete()) {
+                            Toast.makeText(getActivity(), "Imagen eliminada", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
             }
 
+            int count = sql.DeleteWithId((mDataset.get(pos)).getId(), DBHelper.TABLE_RECETAS);
 
             if (count > 0) {
                 mDataset.remove(pos);
@@ -399,19 +392,19 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
             notifyItemRemoved(pos);
         }
 
-        public void clearSelections() {
+        void clearSelections() {
 
             selectedItems.clear();
             notifyDataSetChanged();
         }
 
-        public int getSelectedItemCount() {
+        int getSelectedItemCount() {
 
             return selectedItems.size();
         }
 
 
-        public void deleteSelectedItems() {
+        void deleteSelectedItems() {
             final List<Integer> items = getSelectedItems();
 
             for (int i = items.size() - 1; i >= 0; i--) {
@@ -422,31 +415,31 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
         }
 
 
-        public List<Integer> getSelectedItems() {
+        List<Integer> getSelectedItems() {
             List<Integer> items =
-                    new ArrayList<Integer>(selectedItems.size());
+                    new ArrayList<>(selectedItems.size());
             for (int i = 0; i < selectedItems.size(); i++) {
                 items.add(selectedItems.keyAt(i));
             }
             return items;
         }
 
+        @NonNull
         @Override
-        public NewsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+        public NewsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                                          int viewType) {
             // Create a new view by inflating the row item xml.
             View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_list, parent, false);
 
             // Set the view to the ViewHolder
-            ViewHolder holder = new ViewHolder(v);
 
 
-            return holder;
+            return new ViewHolder(v);
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
             Picasso.get().load((mDataset.get(position)).getImg())
                     .resize(getResources().getDimensionPixelOffset(R.dimen.image_dimen_thumbnail), getResources().getDimensionPixelOffset(R.dimen.image_dimen_thumbnail))
@@ -496,9 +489,8 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
             TextView sName;
             @BindView(R.id.text2)
             TextView sCategory;
-            int ID;
 
-            public ViewHolder(View v) {
+            ViewHolder(View v) {
                 super(v);
                 ButterKnife.bind(this, v);
                 v.setOnClickListener(this);
@@ -557,7 +549,7 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
                     results.count = mDataset.size();
                 } else {
 
-                    List<Recipe> nFilesList = new ArrayList<Recipe>();
+                    List<Recipe> nFilesList = new ArrayList<>();
 
                     for (Recipe p : mDataset) {
                         if (p.getName().toLowerCase().contains(constraint.toString().toLowerCase()))
@@ -577,10 +569,8 @@ public class RecipesList_Fragment extends Fragment implements SwipeRefreshLayout
                 if (results.count == 0) {
                     mDataset = listorigin;
                     Toast.makeText(getActivity(), getString(R.string.noresults), Toast.LENGTH_LONG).show();
-                    searchResultsok = false;
                 } else {
                     mDataset = (ArrayList<Recipe>) results.values;
-                    searchResultsok = true;
                 }
                 notifyDataSetChanged();
             }

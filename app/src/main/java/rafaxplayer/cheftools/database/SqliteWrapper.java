@@ -26,10 +26,9 @@ import rafaxplayer.cheftools.R;
 
 
 public class SqliteWrapper {
-    private static String TAG = SqliteWrapper.class.getSimpleName();
-    private Context con;
+    private final Context con;
     private SQLiteDatabase db;
-    private DBHelper dbHelper;
+    private final DBHelper dbHelper;
 
     public SqliteWrapper(Context context) {
 
@@ -102,107 +101,108 @@ public class SqliteWrapper {
         try {
             Cursor cursor = db.rawQuery(selectQuery, null);
 
-            if (clase.equals("Recipe")) {
-                Recipe rec = new Recipe();
-                if (cursor != null) {
-                    cursor.moveToFirst();
+            switch (clase) {
+                case "Recipe":
+                    Recipe rec = new Recipe();
+                    if (cursor != null) {
+                        cursor.moveToFirst();
 
-                    rec.setId(Integer.parseInt(cursor.getString(0)));
-                    rec.setName(cursor.getString(1));
-                    rec.setImg(cursor.getString(2));
-                    rec.setIngredients(cursor.getString(3));
-                    rec.setElaboration(cursor.getString(4));
-                    rec.setUrl(cursor.getString(5));
-                    rec.setCategoty(cursor.getString(7));
+                        rec.setId(Integer.parseInt(cursor.getString(0)));
+                        rec.setName(cursor.getString(1));
+                        rec.setImg(cursor.getString(2));
+                        rec.setIngredients(cursor.getString(3));
+                        rec.setElaboration(cursor.getString(4));
+                        rec.setUrl(cursor.getString(5));
+                        rec.setCategoty(cursor.getString(7));
 
-                }
+                    }
 
-                return rec;
-            } else if (clase.equals("Menu")) {
-                Menu men = new Menu();
-                if (cursor != null) {
-                    cursor.moveToFirst();
+                    return rec;
+                case "Menu":
+                    Menu men = new Menu();
+                    if (cursor != null) {
+                        cursor.moveToFirst();
 
-                    men.setId(Integer.parseInt(cursor.getString(0)));
-                    men.setName(cursor.getString(1));
-                    men.setEntrantes(cursor.getString(2));
-                    men.setPrimeros(cursor.getString(3));
-                    men.setSegundos(cursor.getString(4));
-                    men.setPostre(cursor.getString(5));
-                    men.setComentario(cursor.getString(6));
-                    men.setFecha(String.valueOf(cursor.getString(7)));
+                        men.setId(Integer.parseInt(cursor.getString(0)));
+                        men.setName(cursor.getString(1));
+                        men.setEntrantes(cursor.getString(2));
+                        men.setPrimeros(cursor.getString(3));
+                        men.setSegundos(cursor.getString(4));
+                        men.setPostre(cursor.getString(5));
+                        men.setComentario(cursor.getString(6));
+                        men.setFecha(String.valueOf(cursor.getString(7)));
 
-                }
-                return men;
-            } else if (clase.equals("Provider")) {
+                    }
+                    return men;
+                case "Provider":
 
-                Supplier pro = new Supplier();
-                if (cursor != null) {
-                    cursor.moveToFirst();
+                    Supplier pro = new Supplier();
+                    if (cursor != null) {
+                        cursor.moveToFirst();
 
-                    pro.setId(Integer.parseInt(cursor.getString(0)));
-                    pro.setName(cursor.getString(1));
-                    pro.setTelefono(cursor.getString(2));
-                    pro.setEmail(cursor.getString(3));
-                    pro.setDireccion(cursor.getString(4));
-                    pro.setComentario(cursor.getString(5));
-                    pro.setCategoria(cursor.getString(6));
-                }
-                return pro;
-            } else if (clase.equals("Product")) {
+                        pro.setId(Integer.parseInt(cursor.getString(0)));
+                        pro.setName(cursor.getString(1));
+                        pro.setTelefono(cursor.getString(2));
+                        pro.setEmail(cursor.getString(3));
+                        pro.setDireccion(cursor.getString(4));
+                        pro.setComentario(cursor.getString(5));
+                        pro.setCategoria(cursor.getString(6));
+                    }
+                    return pro;
+                case "Product":
 
-                Product prod = new Product();
-                if (cursor != null) {
-                    cursor.moveToFirst();
-                    prod.setId(Integer.parseInt(cursor.getString(0)));
-                    prod.setName(cursor.getString(1));
-                    prod.setFormatoname(cursor.getString(2));
-                    prod.setCategoryname(cursor.getString(3));
-                    prod.setSuppliername(cursor.getString(4));
-                    prod.setFormatoid(cursor.getInt(5));
-                    prod.setCategoryid(cursor.getInt(6));
-                    prod.setSupplierid(cursor.getInt(7));
+                    Product prod = new Product();
+                    if (cursor != null) {
+                        cursor.moveToFirst();
+                        prod.setId(Integer.parseInt(cursor.getString(0)));
+                        prod.setName(cursor.getString(1));
+                        prod.setFormatoname(cursor.getString(2));
+                        prod.setCategoryname(cursor.getString(3));
+                        prod.setSuppliername(cursor.getString(4));
+                        prod.setFormatoid(cursor.getInt(5));
+                        prod.setCategoryid(cursor.getInt(6));
+                        prod.setSupplierid(cursor.getInt(7));
 
-                }
-                return prod;
-            } else if (clase.equals("Orders")) {
+                    }
+                    return prod;
+                case "Orders":
 
-                Orders ord = new Orders();
-                if (cursor != null) {
-                    cursor.moveToFirst();
-                    ord.setId(Integer.parseInt(cursor.getString(0)));
-                    ord.setName(cursor.getString(1));
-                    ord.setSupplierid(cursor.getInt(2));
-                    ord.setComentario(cursor.getString(3));
-                    ord.setFecha(cursor.getString(4));
+                    Orders ord = new Orders();
+                    if (cursor != null) {
+                        cursor.moveToFirst();
+                        ord.setId(Integer.parseInt(cursor.getString(0)));
+                        ord.setName(cursor.getString(1));
+                        ord.setSupplierid(cursor.getInt(2));
+                        ord.setComentario(cursor.getString(3));
+                        ord.setFecha(cursor.getString(4));
 
-                }
-                return ord;
-            } else if (clase.equals("Stocks")) {
+                    }
+                    return ord;
+                case "Stocks":
 
-                Stocks stock = new Stocks();
-                if (cursor != null) {
-                    cursor.moveToFirst();
-                    stock.setId(Integer.parseInt(cursor.getString(0)));
-                    stock.setName(cursor.getString(1));
-                    stock.setComentario(cursor.getString(2));
-                    stock.setFecha(cursor.getString(3));
+                    Stocks stock = new Stocks();
+                    if (cursor != null) {
+                        cursor.moveToFirst();
+                        stock.setId(Integer.parseInt(cursor.getString(0)));
+                        stock.setName(cursor.getString(1));
+                        stock.setComentario(cursor.getString(2));
+                        stock.setFecha(cursor.getString(3));
 
-                }
-                return stock;
-            } else if (clase.equals("Escandallo")) {
+                    }
+                    return stock;
+                case "Escandallo":
 
-                Escandallo esc = new Escandallo();
-                if (cursor != null) {
-                    cursor.moveToFirst();
-                    esc.setId(Integer.parseInt(cursor.getString(0)));
-                    esc.setName(cursor.getString(1));
-                    esc.setCostetotal(Double.parseDouble(cursor.getString(2)));
-                    esc.setComment(cursor.getString(3));
-                    esc.setFecha(cursor.getString(4));
+                    Escandallo esc = new Escandallo();
+                    if (cursor != null) {
+                        cursor.moveToFirst();
+                        esc.setId(Integer.parseInt(cursor.getString(0)));
+                        esc.setName(cursor.getString(1));
+                        esc.setCostetotal(Double.parseDouble(cursor.getString(2)));
+                        esc.setComment(cursor.getString(3));
+                        esc.setFecha(cursor.getString(4));
 
-                }
-                return esc;
+                    }
+                    return esc;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -323,161 +323,178 @@ public class SqliteWrapper {
         if (ORDER == null) {
             ORDER = DBHelper.FECHA;
         }
-        List<Object> ObjectList = new ArrayList<Object>();
+        List<Object> ObjectList = new ArrayList<>();
         try {
-            if (clase.equals("Menu")) {
-                String selectQuery = "SELECT * FROM " + DBHelper.TABLE_MENUSCARTAS + " ORDER BY " + ORDER + " DESC";
+            switch (clase) {
+                case "Menu": {
+                    String selectQuery = "SELECT * FROM " + DBHelper.TABLE_MENUSCARTAS + " ORDER BY " + ORDER + " DESC";
 
-                Cursor cursor = db.rawQuery(selectQuery, null);
+                    Cursor cursor = db.rawQuery(selectQuery, null);
 
-                if (cursor.moveToFirst()) {
-                    do {
-                        Menu men = new Menu();
-                        men.setId(Integer.parseInt(cursor.getString(0)));
-                        men.setName(cursor.getString(1));
-                        men.setEntrantes(cursor.getString(2));
-                        men.setPrimeros(cursor.getString(3));
-                        men.setSegundos(cursor.getString(4));
-                        men.setPostre(cursor.getString(5));
-                        men.setComentario(cursor.getString(6));
-                        men.setFecha(String.valueOf(cursor.getString(7)));
+                    if (cursor.moveToFirst()) {
+                        do {
+                            Menu men = new Menu();
+                            men.setId(Integer.parseInt(cursor.getString(0)));
+                            men.setName(cursor.getString(1));
+                            men.setEntrantes(cursor.getString(2));
+                            men.setPrimeros(cursor.getString(3));
+                            men.setSegundos(cursor.getString(4));
+                            men.setPostre(cursor.getString(5));
+                            men.setComentario(cursor.getString(6));
+                            men.setFecha(String.valueOf(cursor.getString(7)));
 
-                        ObjectList.add(men);
-                    } while (cursor.moveToNext());
+                            ObjectList.add(men);
+                        } while (cursor.moveToNext());
+                    }
+
+                    break;
                 }
+                case "Recipe": {
+                    String selectQuery = "SELECT * FROM " + DBHelper.TABLE_RECETAS + " ORDER BY " + ORDER + " DESC";
 
-            } else if (clase.equals("Recipe")) {
-                String selectQuery = "SELECT * FROM " + DBHelper.TABLE_RECETAS + " ORDER BY " + ORDER + " DESC";
+                    Cursor cursor = db.rawQuery(selectQuery, null);
 
-                Cursor cursor = db.rawQuery(selectQuery, null);
+                    if (cursor.moveToFirst()) {
+                        do {
+                            Recipe rec = new Recipe();
+                            rec.setId(Integer.parseInt(cursor.getString(0)));
+                            rec.setName(cursor.getString(1));
+                            rec.setImg(cursor.getString(2));
+                            rec.setIngredients(cursor.getString(3));
+                            rec.setElaboration(cursor.getString(4));
+                            rec.setUrl(cursor.getString(5));
+                            rec.setCategoty(cursor.getString(7));
 
-                if (cursor.moveToFirst()) {
-                    do {
-                        Recipe rec = new Recipe();
-                        rec.setId(Integer.parseInt(cursor.getString(0)));
-                        rec.setName(cursor.getString(1));
-                        rec.setImg(cursor.getString(2));
-                        rec.setIngredients(cursor.getString(3));
-                        rec.setElaboration(cursor.getString(4));
-                        rec.setUrl(cursor.getString(5));
-                        rec.setCategoty(cursor.getString(7));
+                            ObjectList.add(rec);
+                        } while (cursor.moveToNext());
+                    }
 
-                        ObjectList.add(rec);
-                    } while (cursor.moveToNext());
+                    break;
                 }
+                case "Provider": {
+                    String selectQuery = "SELECT * FROM " + DBHelper.TABLE_PROVEEDORES + " ORDER BY " + DBHelper.NAME + " DESC";
 
-            } else if (clase.equals("Provider")) {
-                String selectQuery = "SELECT * FROM " + DBHelper.TABLE_PROVEEDORES + " ORDER BY " + DBHelper.NAME + " DESC";
+                    Cursor cursor = db.rawQuery(selectQuery, null);
 
-                Cursor cursor = db.rawQuery(selectQuery, null);
+                    if (cursor.moveToFirst()) {
+                        do {
+                            Supplier pro = new Supplier();
+                            pro.setId(Integer.parseInt(cursor.getString(0)));
+                            pro.setName(cursor.getString(1));
+                            pro.setTelefono(cursor.getString(2));
+                            pro.setEmail(cursor.getString(3));
+                            pro.setDireccion(cursor.getString(4));
+                            pro.setComentario(cursor.getString(5));
+                            pro.setCategoria(cursor.getString(6));
 
-                if (cursor.moveToFirst()) {
-                    do {
-                        Supplier pro = new Supplier();
-                        pro.setId(Integer.parseInt(cursor.getString(0)));
-                        pro.setName(cursor.getString(1));
-                        pro.setTelefono(cursor.getString(2));
-                        pro.setEmail(cursor.getString(3));
-                        pro.setDireccion(cursor.getString(4));
-                        pro.setComentario(cursor.getString(5));
-                        pro.setCategoria(cursor.getString(6));
+                            ObjectList.add(pro);
+                        } while (cursor.moveToNext());
+                    }
 
-                        ObjectList.add(pro);
-                    } while (cursor.moveToNext());
+                    break;
                 }
+                case "Product": {
+                    String selectQuery = "SELECT * FROM " + DBHelper.TABLE_PRODUCTOS + " ORDER BY " + DBHelper.NAME + " DESC";
 
-            } else if (clase.equals("Product")) {
-                String selectQuery = "SELECT * FROM " + DBHelper.TABLE_PRODUCTOS + " ORDER BY " + DBHelper.NAME + " DESC";
+                    Cursor cursor = db.rawQuery(selectQuery, null);
 
-                Cursor cursor = db.rawQuery(selectQuery, null);
+                    if (cursor.moveToFirst()) {
+                        do {
+                            Product pro = new Product();
+                            pro.setId(Integer.parseInt(cursor.getString(0)));
+                            pro.setName(cursor.getString(1));
+                            pro.setFormatoname(cursor.getString(2));
+                            pro.setCategoryname(cursor.getString(3));
+                            pro.setSuppliername(cursor.getString(4));
+                            pro.setFormatoid(cursor.getInt(5));
+                            pro.setCategoryid(cursor.getInt(6));
+                            pro.setSupplierid(cursor.getInt(7));
 
-                if (cursor.moveToFirst()) {
-                    do {
-                        Product pro = new Product();
-                        pro.setId(Integer.parseInt(cursor.getString(0)));
-                        pro.setName(cursor.getString(1));
-                        pro.setFormatoname(cursor.getString(2));
-                        pro.setCategoryname(cursor.getString(3));
-                        pro.setSuppliername(cursor.getString(4));
-                        pro.setFormatoid(cursor.getInt(5));
-                        pro.setCategoryid(cursor.getInt(6));
-                        pro.setSupplierid(cursor.getInt(7));
+                            ObjectList.add(pro);
+                        } while (cursor.moveToNext());
+                    }
 
-                        ObjectList.add(pro);
-                    } while (cursor.moveToNext());
+                    break;
                 }
+                case "Orders": {
+                    String selectQuery = "SELECT * FROM " + DBHelper.TABLE_PEDIDOS + " ORDER BY " + DBHelper.NAME + " DESC";
 
-            } else if (clase.equals("Orders")) {
-                String selectQuery = "SELECT * FROM " + DBHelper.TABLE_PEDIDOS + " ORDER BY " + DBHelper.NAME + " DESC";
+                    Cursor cursor = db.rawQuery(selectQuery, null);
 
-                Cursor cursor = db.rawQuery(selectQuery, null);
+                    if (cursor.moveToFirst()) {
+                        do {
+                            Orders ord = new Orders();
+                            ord.setId(Integer.parseInt(cursor.getString(0)));
+                            ord.setName(cursor.getString(1));
+                            ord.setSupplierid(cursor.getInt(2));
+                            ord.setComentario(cursor.getString(3));
+                            ord.setFecha(cursor.getString(4));
 
-                if (cursor.moveToFirst()) {
-                    do {
-                        Orders ord = new Orders();
-                        ord.setId(Integer.parseInt(cursor.getString(0)));
-                        ord.setName(cursor.getString(1));
-                        ord.setSupplierid(cursor.getInt(2));
-                        ord.setComentario(cursor.getString(3));
-                        ord.setFecha(cursor.getString(4));
+                            ObjectList.add(ord);
+                        } while (cursor.moveToNext());
+                    }
 
-                        ObjectList.add(ord);
-                    } while (cursor.moveToNext());
+                    break;
                 }
+                case "Stocks": {
+                    String selectQuery = "SELECT * FROM " + DBHelper.TABLE_INVENTARIOS + " ORDER BY " + DBHelper.NAME + " DESC";
 
-            } else if (clase.equals("Stocks")) {
-                String selectQuery = "SELECT * FROM " + DBHelper.TABLE_INVENTARIOS + " ORDER BY " + DBHelper.NAME + " DESC";
+                    Cursor cursor = db.rawQuery(selectQuery, null);
 
-                Cursor cursor = db.rawQuery(selectQuery, null);
+                    if (cursor.moveToFirst()) {
+                        do {
+                            Stocks stock = new Stocks();
+                            stock.setId(Integer.parseInt(cursor.getString(0)));
+                            stock.setName(cursor.getString(1));
+                            stock.setComentario(cursor.getString(2));
+                            stock.setFecha(cursor.getString(3));
 
-                if (cursor.moveToFirst()) {
-                    do {
-                        Stocks stock = new Stocks();
-                        stock.setId(Integer.parseInt(cursor.getString(0)));
-                        stock.setName(cursor.getString(1));
-                        stock.setComentario(cursor.getString(2));
-                        stock.setFecha(cursor.getString(3));
+                            ObjectList.add(stock);
+                        } while (cursor.moveToNext());
+                    }
 
-                        ObjectList.add(stock);
-                    } while (cursor.moveToNext());
+                    break;
                 }
+                case "Escandallos": {
+                    String selectQuery = "SELECT * FROM " + DBHelper.TABLE_ESCANDALLOS + " ORDER BY " + DBHelper.NAME + " DESC";
 
-            } else if (clase.equals("Escandallos")) {
-                String selectQuery = "SELECT * FROM " + DBHelper.TABLE_ESCANDALLOS + " ORDER BY " + DBHelper.NAME + " DESC";
+                    Cursor cursor = db.rawQuery(selectQuery, null);
 
-                Cursor cursor = db.rawQuery(selectQuery, null);
+                    if (cursor.moveToFirst()) {
+                        do {
+                            Escandallo escandallo = new Escandallo();
+                            escandallo.setId(Integer.parseInt(cursor.getString(0)));
+                            escandallo.setName(cursor.getString(1));
+                            escandallo.setCostetotal(cursor.getDouble(2));
+                            escandallo.setComment(cursor.getString(3));
+                            escandallo.setFecha(cursor.getString(4));
 
-                if (cursor.moveToFirst()) {
-                    do {
-                        Escandallo escandallo = new Escandallo();
-                        escandallo.setId(Integer.parseInt(cursor.getString(0)));
-                        escandallo.setName(cursor.getString(1));
-                        escandallo.setCostetotal(cursor.getDouble(2));
-                        escandallo.setComment(cursor.getString(3));
-                        escandallo.setFecha(cursor.getString(4));
+                            ObjectList.add(escandallo);
+                        } while (cursor.moveToNext());
+                    }
 
-                        ObjectList.add(escandallo);
-                    } while (cursor.moveToNext());
+                    break;
                 }
+                case "Escandallos_product": {
+                    String selectQuery = "SELECT * FROM " + DBHelper.TABLE_ESCANDALLOS_PRODUCTS + " ORDER BY " + DBHelper.NAME + " DESC";
 
-            } else if (clase.equals("Escandallos_product")) {
-                String selectQuery = "SELECT * FROM " + DBHelper.TABLE_ESCANDALLOS_PRODUCTS + " ORDER BY " + DBHelper.NAME + " DESC";
+                    Cursor cursor = db.rawQuery(selectQuery, null);
 
-                Cursor cursor = db.rawQuery(selectQuery, null);
+                    if (cursor.moveToFirst()) {
+                        do {
+                            Escandallo_Product escandallo_pr = new Escandallo_Product();
+                            escandallo_pr.setId(Integer.parseInt(cursor.getString(0)));
+                            escandallo_pr.setProductoname(cursor.getString(1));
+                            escandallo_pr.setCantidad(cursor.getString(2));
+                            escandallo_pr.setCantidad(cursor.getString(3));
+                            escandallo_pr.setFormato(cursor.getString(4));
+                            escandallo_pr.setCostforuni(cursor.getString(5));
+                            escandallo_pr.setCoste(cursor.getDouble(6));
 
-                if (cursor.moveToFirst()) {
-                    do {
-                        Escandallo_Product escandallo_pr = new Escandallo_Product();
-                        escandallo_pr.setId(Integer.parseInt(cursor.getString(0)));
-                        escandallo_pr.setProductoname(cursor.getString(1));
-                        escandallo_pr.setCantidad(cursor.getString(2));
-                        escandallo_pr.setCantidad(cursor.getString(3));
-                        escandallo_pr.setFormato(cursor.getString(4));
-                        escandallo_pr.setCostforuni(cursor.getString(5));
-                        escandallo_pr.setCoste(cursor.getDouble(6));
-
-                        ObjectList.add(escandallo_pr);
-                    } while (cursor.moveToNext());
+                            ObjectList.add(escandallo_pr);
+                        } while (cursor.moveToNext());
+                    }
+                    break;
                 }
             }
         } catch (SQLException e) {
@@ -590,13 +607,13 @@ public class SqliteWrapper {
 
         try {
             Cursor cats = db.rawQuery(selectQuery, null);
-            HashMap<String, Object> m = new HashMap<String, Object>();
+            HashMap<String, Object> m = new HashMap<>();
             m.put("ID", 0);
             m.put("Name", con.getString(R.string.none));
             lst.add(m);
             if (cats.moveToFirst()) {
                 do {
-                    HashMap<String, Object> mp = new HashMap<String, Object>();
+                    HashMap<String, Object> mp = new HashMap<>();
                     mp.put("ID", cats.getInt(0));
                     mp.put("Name", cats.getString(1));
 
@@ -616,7 +633,7 @@ public class SqliteWrapper {
 
     //<-- recipes Images gallery--->//
     public List<ImageGalleryModel> getImages() {
-        List<ImageGalleryModel> list = new ArrayList<ImageGalleryModel>();
+        List<ImageGalleryModel> list = new ArrayList<>();
         String sQuery = "SELECT _id,name,img FROM tbl_Recetas";
         Cursor cursor = db.rawQuery(sQuery, null);
         if (cursor.moveToFirst()) {
@@ -746,61 +763,65 @@ public class SqliteWrapper {
         Cursor cursor;
         try {
 
-            if (clase.equals("Escandallo_product")) {
+            switch (clase) {
+                case "Escandallo_product":
 
-                selectQuery = "SELECT * FROM " + DBHelper.TABLE_ESCANDALLOS_PRODUCTS + " WHERE " + DBHelper.ESCANDALLO_ID + "=" + listID;
-                cursor = db.rawQuery(selectQuery, null);
+                    selectQuery = "SELECT * FROM " + DBHelper.TABLE_ESCANDALLOS_PRODUCTS + " WHERE " + DBHelper.ESCANDALLO_ID + "=" + listID;
+                    cursor = db.rawQuery(selectQuery, null);
 
-                if (cursor.moveToFirst()) {
-                    do {
-                        Escandallo_Product escandallo_pr = new Escandallo_Product();
-                        escandallo_pr.setId(Integer.parseInt(cursor.getString(0)));
-                        escandallo_pr.setProductoname(cursor.getString(1));
-                        escandallo_pr.setCantidad(cursor.getString(2));
-                        escandallo_pr.setCantidad(cursor.getString(3));
-                        escandallo_pr.setFormato(cursor.getString(4));
-                        escandallo_pr.setCostforuni(cursor.getString(5));
-                        escandallo_pr.setCoste(cursor.getDouble(6));
+                    if (cursor.moveToFirst()) {
+                        do {
+                            Escandallo_Product escandallo_pr = new Escandallo_Product();
+                            escandallo_pr.setId(Integer.parseInt(cursor.getString(0)));
+                            escandallo_pr.setProductoname(cursor.getString(1));
+                            escandallo_pr.setCantidad(cursor.getString(2));
+                            escandallo_pr.setCantidad(cursor.getString(3));
+                            escandallo_pr.setFormato(cursor.getString(4));
+                            escandallo_pr.setCostforuni(cursor.getString(5));
+                            escandallo_pr.setCoste(cursor.getDouble(6));
 
-                        ObjectList.add(escandallo_pr);
-                    } while (cursor.moveToNext());
-                }
+                            ObjectList.add(escandallo_pr);
+                        } while (cursor.moveToNext());
+                    }
 
-            } else if (clase.equals("Stock_product")) {
+                    break;
+                case "Stock_product":
 
-                selectQuery = "SELECT * FROM " + DBHelper.TABLE_INVENTARIOS_LISTAS + " WHERE " + DBHelper.INVENTARIO_ID + "=" + listID;
-                cursor = db.rawQuery(selectQuery, null);
-                if (cursor.moveToFirst()) {
-                    do {
-                        Stock_Product stock = new Stock_Product();
-                        stock.setID(cursor.getInt(0));
-                        stock.setStockId(cursor.getInt(1));
-                        stock.setProductoId(cursor.getInt(2));
-                        stock.setCantidad(cursor.getInt(3));
-                        stock.setCategoriaid(cursor.getInt(4));
-                        stock.setFormatoid(cursor.getInt(5));
+                    selectQuery = "SELECT * FROM " + DBHelper.TABLE_INVENTARIOS_LISTAS + " WHERE " + DBHelper.INVENTARIO_ID + "=" + listID;
+                    cursor = db.rawQuery(selectQuery, null);
+                    if (cursor.moveToFirst()) {
+                        do {
+                            Stock_Product stock = new Stock_Product();
+                            stock.setID(cursor.getInt(0));
+                            stock.setStockId(cursor.getInt(1));
+                            stock.setProductoId(cursor.getInt(2));
+                            stock.setCantidad(cursor.getInt(3));
+                            stock.setCategoriaid(cursor.getInt(4));
+                            stock.setFormatoid(cursor.getInt(5));
 
-                        ObjectList.add(stock);
-                    } while (cursor.moveToNext());
-                }
+                            ObjectList.add(stock);
+                        } while (cursor.moveToNext());
+                    }
 
-            } else if (clase.equals("Order_product")) {
-                selectQuery = "SELECT * FROM " + DBHelper.TABLE_PEDIDOS_LISTAS + " WHERE " + DBHelper.PEDIDO_ID + "=" + listID;
-                cursor = db.rawQuery(selectQuery, null);
+                    break;
+                case "Order_product":
+                    selectQuery = "SELECT * FROM " + DBHelper.TABLE_PEDIDOS_LISTAS + " WHERE " + DBHelper.PEDIDO_ID + "=" + listID;
+                    cursor = db.rawQuery(selectQuery, null);
 
-                if (cursor.moveToFirst()) {
-                    do {
-                        Order_Product ordP = new Order_Product();
-                        ordP.setID(cursor.getInt(0));
-                        ordP.setListaId(cursor.getInt(1));
-                        ordP.setProductoId(cursor.getInt(2));
-                        ordP.setCantidad(cursor.getInt(3));
-                        ordP.setCategoriaid(cursor.getInt(4));
-                        ordP.setFormatoid(cursor.getInt(5));
+                    if (cursor.moveToFirst()) {
+                        do {
+                            Order_Product ordP = new Order_Product();
+                            ordP.setID(cursor.getInt(0));
+                            ordP.setListaId(cursor.getInt(1));
+                            ordP.setProductoId(cursor.getInt(2));
+                            ordP.setCantidad(cursor.getInt(3));
+                            ordP.setCategoriaid(cursor.getInt(4));
+                            ordP.setFormatoid(cursor.getInt(5));
 
-                        ObjectList.add(ordP);
-                    } while (cursor.moveToNext());
-                }
+                            ObjectList.add(ordP);
+                        } while (cursor.moveToNext());
+                    }
+                    break;
             }
 
         } catch (SQLException e) {

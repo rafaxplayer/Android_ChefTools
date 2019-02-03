@@ -1,14 +1,14 @@
 package rafaxplayer.cheftools.Globalclasses.models;
 
 public class Menu {
-    int id;
-    String name;
-    String Entrantes;
-    String Primeros;
-    String Segundos;
-    String Postre;
-    String Comentario;
-    String Fecha;
+    private int id;
+    private String name;
+    private String Entrantes;
+    private String Primeros;
+    private String Segundos;
+    private String Postre;
+    private String Comentario;
+    private String Fecha;
 
 
     public Menu() {

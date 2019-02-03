@@ -3,6 +3,7 @@ package rafaxplayer.cheftools.Globalclasses;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,11 +29,11 @@ import rafaxplayer.cheftools.database.SqliteWrapper;
  */
 public class Categorys_Formats_Adapter extends RecyclerView.Adapter<Categorys_Formats_Adapter.ViewHolder> {
 
-    private SqliteWrapper sql;
-    private ArrayList<HashMap<String, Object>> mDataset;
-    private String Table;
-    private Context con;
-    private Activity act;
+    private final SqliteWrapper sql;
+    private final ArrayList<HashMap<String, Object>> mDataset;
+    private final String Table;
+    private final Context con;
+    private final Activity act;
 
     public Categorys_Formats_Adapter(Activity con, ArrayList<HashMap<String, Object>> myDataset, String sTable, SqliteWrapper sqlite) {
         this.mDataset = myDataset;
@@ -44,16 +45,16 @@ public class Categorys_Formats_Adapter extends RecyclerView.Adapter<Categorys_Fo
 
     }
 
+    @NonNull
     @Override
-    public Categorys_Formats_Adapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public Categorys_Formats_Adapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_simple, parent, false);
 
-        Categorys_Formats_Adapter.ViewHolder vh = new Categorys_Formats_Adapter.ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(Categorys_Formats_Adapter.ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull Categorys_Formats_Adapter.ViewHolder viewHolder, int i) {
         viewHolder.imglist.setImageResource(R.drawable.config);
         viewHolder.mTextView.setText((String) mDataset.get(i).get("Name"));
         viewHolder.mTextView2.setText(String.valueOf(mDataset.get(i).get("ID")));
@@ -77,7 +78,7 @@ public class Categorys_Formats_Adapter extends RecyclerView.Adapter<Categorys_Fo
 
     }
 
-    public void deleteItem(int pos) {
+    private void deleteItem(int pos) {
         if (!sql.IsOpen()) {
             sql.open();
         }
@@ -98,14 +99,14 @@ public class Categorys_Formats_Adapter extends RecyclerView.Adapter<Categorys_Fo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView mTextView;
-        public TextView mTextView2;
-        public TextView mTextView3;
-        public ImageView imglist;
-        public ImageButton edit;
-        public ImageButton delete;
+        final TextView mTextView;
+        final TextView mTextView2;
+        final TextView mTextView3;
+        final ImageView imglist;
+        final ImageButton edit;
+        final ImageButton delete;
 
-        public ViewHolder(View v) {
+        ViewHolder(View v) {
             super(v);
             imglist = v.findViewById(R.id.imageList);
             mTextView = v.findViewById(R.id.text1);

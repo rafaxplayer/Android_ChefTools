@@ -1,7 +1,6 @@
 package rafaxplayer.cheftools.escandallos.fragments;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -68,7 +67,7 @@ public class EscandalloList_Fragment extends Fragment implements SwipeRefreshLay
     private Boolean escandallosFound;
     private SwipeRefreshLayout swipeRefreshLayout;
 
-    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+    private final ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 
         EscandallosAdapter adp;
 
@@ -159,13 +158,22 @@ public class EscandalloList_Fragment extends Fragment implements SwipeRefreshLay
         super.onCreate(savedInstanceState);
         sql = new SqliteWrapper(getActivity());
         sql.open();
+
+        try {
+            mCallback = (OnSelectedCallback) getActivity();
+        } catch (ClassCastException e) {
+
+
+            throw new ClassCastException(getActivity().toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
         sql.open();
-        List<Escandallo> lstEscandallos = loadescandallos(null);
+        List<Escandallo> lstEscandallos = loadescandallos();
 
         if (lstEscandallos.size() > 0) {
             escandallosFound = true;
@@ -241,7 +249,7 @@ public class EscandalloList_Fragment extends Fragment implements SwipeRefreshLay
                         .inputType(InputType.TYPE_CLASS_TEXT)
                         .input("Text to search...", "", new MaterialDialog.InputCallback() {
                             @Override
-                            public void onInput(MaterialDialog dialog, CharSequence input) {
+                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                                 ((EscandallosAdapter) listEscandallos.getAdapter()).getFilter().filter(input);
                                 getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                                 dialog.dismiss();
@@ -254,13 +262,13 @@ public class EscandalloList_Fragment extends Fragment implements SwipeRefreshLay
         return super.onOptionsItemSelected(item);
     }
 
-    private List<Escandallo> loadescandallos(String order) {
+    private List<Escandallo> loadescandallos() {
 
-        return (List<Escandallo>) (Object) sql.getAllObjects("Escandallos", order);
+        return (List<Escandallo>) (Object) sql.getAllObjects("Escandallos", null);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_list, container, false);
         ButterKnife.bind(this, v);
@@ -282,7 +290,7 @@ public class EscandalloList_Fragment extends Fragment implements SwipeRefreshLay
         listEscandallos.setItemAnimator(new DefaultItemAnimator());
         listEscandallos.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
                 if (dy <= 0 && fab.isShown()) {
@@ -293,7 +301,7 @@ public class EscandalloList_Fragment extends Fragment implements SwipeRefreshLay
             }
 
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
 
                 if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                     fab.show();
@@ -323,20 +331,6 @@ public class EscandalloList_Fragment extends Fragment implements SwipeRefreshLay
         return v;
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        try {
-            mCallback = (OnSelectedCallback) activity;
-        } catch (ClassCastException e) {
-
-
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnHeadlineSelectedListener");
-        }
-
-    }
 
     @Override
     public void onDetach() {
@@ -355,22 +349,20 @@ public class EscandalloList_Fragment extends Fragment implements SwipeRefreshLay
 
 
     public class EscandallosAdapter extends RecyclerView.Adapter<EscandallosAdapter.ViewHolder> implements Filterable {
-        public Boolean searchResultsok;
         private List<Escandallo> mDataset;
-        private List<Escandallo> listorigin;
+        private final List<Escandallo> listorigin;
         private FilesFilter filefilter;
-        private SparseBooleanArray selectedItems;
+        private final SparseBooleanArray selectedItems;
 
         // Adapter's Constructor
-        public EscandallosAdapter(List<Escandallo> myDataset) {
+        EscandallosAdapter(List<Escandallo> myDataset) {
             mDataset = myDataset;
             listorigin = myDataset;
-            this.searchResultsok = false;
             selectedItems = new SparseBooleanArray();
         }
 
 
-        public void toggleSelection(int pos, ImageView img) {
+        void toggleSelection(int pos, ImageView img) {
 
             if (selectedItems.get(pos, false)) {
                 selectedItems.delete(pos);
@@ -387,7 +379,7 @@ public class EscandalloList_Fragment extends Fragment implements SwipeRefreshLay
 
         }
 
-        public void deleteItem(int pos) {
+        void deleteItem(int pos) {
 
             int count = sql.DeleteWithId((mDataset.get(pos)).getId(), DBHelper.TABLE_ESCANDALLOS);
 
@@ -399,19 +391,19 @@ public class EscandalloList_Fragment extends Fragment implements SwipeRefreshLay
             notifyItemRemoved(pos);
         }
 
-        public void clearSelections() {
+        void clearSelections() {
 
             selectedItems.clear();
             notifyDataSetChanged();
         }
 
 
-        public int getSelectedItemCount() {
+        int getSelectedItemCount() {
             return selectedItems.size();
         }
 
 
-        public void deleteSelectedItems() {
+        void deleteSelectedItems() {
             final List<Integer> items = getSelectedItems();
 
             for (int i = items.size() - 1; i >= 0; i--) {
@@ -422,30 +414,30 @@ public class EscandalloList_Fragment extends Fragment implements SwipeRefreshLay
         }
 
 
-        public List<Integer> getSelectedItems() {
+        List<Integer> getSelectedItems() {
             List<Integer> items =
-                    new ArrayList<Integer>(selectedItems.size());
+                    new ArrayList<>(selectedItems.size());
             for (int i = 0; i < selectedItems.size(); i++) {
                 items.add(selectedItems.keyAt(i));
             }
             return items;
         }
 
+        @NonNull
         @Override
-        public EscandallosAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+        public EscandallosAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                                                 int viewType) {
             // Create a new view by inflating the row item xml.
             View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_list_orders_stocks, parent, false);
 
             // Set the view to the ViewHolder
-            ViewHolder holder = new ViewHolder(v);
 
-            return holder;
+            return new ViewHolder(v);
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             Picasso.get().load(R.drawable.cash).into(holder.img);
             holder.sName.setText((mDataset.get(position)).getName());
             holder.sDate.setText((mDataset.get(position)).getFecha());
@@ -497,7 +489,7 @@ public class EscandalloList_Fragment extends Fragment implements SwipeRefreshLay
             @BindView(R.id.ButtonDelete)
             ImageButton del;
 
-            public ViewHolder(View v) {
+            ViewHolder(View v) {
                 super(v);
                 ButterKnife.bind(this, v);
 
@@ -536,7 +528,6 @@ public class EscandalloList_Fragment extends Fragment implements SwipeRefreshLay
                             })
 
                             .show();
-                    return;
                 } else if (v.getId() == R.id.ButtonEdit) {
                     Log.e("activity", "onClick: edit");
                     Intent in = new Intent(getActivity(), EscandallosNewEdit_Activity.class);
@@ -614,10 +605,8 @@ public class EscandalloList_Fragment extends Fragment implements SwipeRefreshLay
                 if (results.count == 0) {
                     mDataset = listorigin;
                     Toast.makeText(getActivity(), getString(R.string.noresults), Toast.LENGTH_LONG).show();
-                    searchResultsok = false;
                 } else {
                     mDataset = (ArrayList<Escandallo>) results.values;
-                    searchResultsok = true;
                 }
                 notifyDataSetChanged();
             }

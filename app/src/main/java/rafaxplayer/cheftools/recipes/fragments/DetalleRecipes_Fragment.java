@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -60,23 +61,23 @@ public class DetalleRecipes_Fragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_recipe_detalle, container, false);
         ButterKnife.bind(this, v);
 
-        textUrldetalle = (TextView) v.findViewById(R.id.textUrl);
+        textUrldetalle = v.findViewById(R.id.textUrl);
         return v;
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         imageDetalle.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (DetalleRecipes_Fragment.this.img.length() > 0 && DetalleRecipes_Fragment.this.img != "null") {
+                if (DetalleRecipes_Fragment.this.img.length() > 0 && !DetalleRecipes_Fragment.this.img.equals("null")) {
                     Intent intent = new Intent();
                     intent.setAction(android.content.Intent.ACTION_VIEW);
                     intent.setDataAndType(Uri.parse(DetalleRecipes_Fragment.this.img), "image/*");
@@ -104,7 +105,7 @@ public class DetalleRecipes_Fragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.edit:
                 if (ID != 0) {
-                    Boolean islayout = (getActivity().getSupportFragmentManager().findFragmentById(R.id.detalle) != null);
+                    boolean islayout = (getActivity().getSupportFragmentManager().findFragmentById(R.id.detalle) != null);
                     if (getResources().getBoolean(R.bool.dual_pane) && islayout) {
                         ((Recipes_Activity) getActivity()).showRecipeEdit(ID);
                     } else {

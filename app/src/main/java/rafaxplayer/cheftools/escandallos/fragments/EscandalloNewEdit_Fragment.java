@@ -20,7 +20,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -106,7 +105,7 @@ public class EscandalloNewEdit_Fragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_escandallo_new_edit, container, false);
@@ -132,7 +131,7 @@ public class EscandalloNewEdit_Fragment extends Fragment {
                     public void onShow(DialogInterface dialog) {
 
                         ((TextView) dialogNewEscandallo.getCustomView().findViewById(R.id.textnewlist)).setText(getString(R.string.menu_new_escandallo));
-                        ((LinearLayout) dialogNewEscandallo.getCustomView().findViewById(R.id.providerpanel)).setVisibility(View.GONE);
+                        dialogNewEscandallo.getCustomView().findViewById(R.id.providerpanel).setVisibility(View.GONE);
 
                         if (ID != 0) {
                             ((EditText) dialogNewEscandallo.getCustomView().findViewById(R.id.editnameorder)).setText(escandalloName.getText().toString());
@@ -310,9 +309,9 @@ public class EscandalloNewEdit_Fragment extends Fragment {
                     public void onShow(DialogInterface dialog) {
 
                         View view = dialogNewProduct.getCustomView();
-                        editnameProduct = ButterKnife.findById(view, R.id.editnameproduct);
+                        editnameProduct = view.findViewById(R.id.editnameproduct);
                         editnameProduct.setText("");
-                        editcostuni = ButterKnife.findById(view, R.id.editcostporuni);
+                        editcostuni = view.findViewById(R.id.editcostporuni);
                         editcostuni.setText("");
                         editcostuni.addTextChangedListener(new TextWatcher() {
                             public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
@@ -333,10 +332,10 @@ public class EscandalloNewEdit_Fragment extends Fragment {
                                 }
                             }
                         });
-                        editquantity = ButterKnife.findById(view, R.id.editunicant);
+                        editquantity = view.findViewById(R.id.editunicant);
                         editquantity.setText("");
-                        spinerFormat = ButterKnife.findById(view, R.id.spinnerFormat);
-                        textCosteProducto = ButterKnife.findById(view, R.id.textcosteProduct);
+                        spinerFormat = view.findViewById(R.id.spinnerFormat);
+                        textCosteProducto = view.findViewById(R.id.textcosteProduct);
                         final ArrayList<HashMap<String, Object>> spinnerFormatsData = generateSpinnerDta();
                         final SimpleAdapter AdapterProv = new SimpleAdapter(getActivity(), spinnerFormatsData, R.layout.spinnerrow, new String[]{"Cant", "Name"}, new int[]{R.id.iddata, R.id.spinnertext});
                         spinerFormat.setAdapter(AdapterProv);
@@ -354,9 +353,9 @@ public class EscandalloNewEdit_Fragment extends Fragment {
 
                             }
                         });
-                        textviewuni = ButterKnife.findById(view, R.id.textViewUni);
-                        textFormat2 = ButterKnife.findById(view, R.id.textFormat2);
-                        editcostuni = ButterKnife.findById(view, R.id.editcostporuni);
+                        textviewuni = view.findViewById(R.id.textViewUni);
+                        textFormat2 = view.findViewById(R.id.textFormat2);
+                        editcostuni = view.findViewById(R.id.editcostporuni);
                         String newText = productCost.replace("#", "KG");
                         textviewuni.setText(newText);
                         textCosteProducto.setText(costTotal);
@@ -384,7 +383,7 @@ public class EscandalloNewEdit_Fragment extends Fragment {
 
                         try {
 
-                            Double result = Double.valueOf(editquantity.getText().toString()) * Double.valueOf(editcostuni.getText().toString()) / Double.valueOf(dataUni);
+                            double result = Double.valueOf(editquantity.getText().toString()) * Double.valueOf(editcostuni.getText().toString()) / dataUni;
                             String textResult = String.format("%s %s", costTotal, GlobalUttilities.FormatDecimal(result));
                             textCosteProducto.setText(textResult);
 
@@ -397,8 +396,7 @@ public class EscandalloNewEdit_Fragment extends Fragment {
 
 
                             ((EscandalloNewEdit_Fragment.RecyclerAdapter) listProducts.getAdapter()).addItem(escpr);
-                            Double sum = ((EscandalloNewEdit_Fragment.RecyclerAdapter) listProducts.getAdapter()).calculatecostetotal();
-                            texttotal.setText(String.format("%s %s%s", costTotal, GlobalUttilities.FormatDecimal(sum), "€"));
+
                             dialog.dismiss();
 
                         } catch (NumberFormatException ex) {
@@ -445,31 +443,41 @@ public class EscandalloNewEdit_Fragment extends Fragment {
 
     public class RecyclerAdapter extends RecyclerView.Adapter<EscandalloNewEdit_Fragment.RecyclerAdapter.ViewHolder> {
 
-        public ArrayList<Escandallo_Product> mDataset;
+        final ArrayList<Escandallo_Product> mDataset;
 
-        public RecyclerAdapter(ArrayList<Escandallo_Product> myDataset) {
+        RecyclerAdapter(ArrayList<Escandallo_Product> myDataset) {
 
             mDataset = myDataset;
         }
 
-        public void clear() {
+        void clear() {
             this.mDataset.clear();
             notifyDataSetChanged();
         }
 
-        public void deleteItem(int pos) {
+        void deleteItem(int pos) {
 
             int count = sql.DeleteWithId(mDataset.get(pos).getId(), DBHelper.TABLE_ESCANDALLOS_PRODUCTS);
 
             if (count > 0) {
-                mDataset.remove(pos);
-                Toast.makeText(getActivity(), getString(R.string.productdeleted), Toast.LENGTH_LONG).show();
+
+                double sum = calculatecostetotal();
+
+                long c = sql.UpdateSimpleData(DBHelper.TABLE_ESCANDALLOS, DBHelper.COSTE_TOTAL, String.valueOf(sum), ID);
+
+                if (c > 0) {
+                    mDataset.remove(pos);
+                    texttotal.setText(String.format("%s %s%s", costTotal, GlobalUttilities.FormatDecimal(sum), "€"));
+                    Toast.makeText(getActivity(), getString(R.string.productdeleted), Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getActivity(), "Error delete product", Toast.LENGTH_LONG).show();
+                }
             }
 
             notifyItemRemoved(pos);
         }
 
-        public void addItem(Escandallo_Product escPr) {
+        void addItem(Escandallo_Product escPr) {
 
             if (!sql.IsOpen()) {
                 sql.open();
@@ -490,7 +498,17 @@ public class EscandalloNewEdit_Fragment extends Fragment {
 
                 mDataset.add(escPr);
 
-                Toast.makeText(getActivity(), "Ok , Product added", Toast.LENGTH_LONG).show();
+                double sum = calculatecostetotal();
+
+                long c = sql.UpdateSimpleData(DBHelper.TABLE_ESCANDALLOS, DBHelper.COSTE_TOTAL, String.valueOf(sum), ID);
+
+                if (c > 0) {
+
+                    Toast.makeText(getActivity(), "Ok , Product added", Toast.LENGTH_LONG).show();
+                    texttotal.setText(String.format("%s %s%s", costTotal, GlobalUttilities.FormatDecimal(sum), "€"));
+                } else {
+                    Toast.makeText(getActivity(), "Error delte product", Toast.LENGTH_LONG).show();
+                }
 
             }
 
@@ -498,11 +516,7 @@ public class EscandalloNewEdit_Fragment extends Fragment {
 
         }
 
-        public ArrayList<Escandallo_Product> getProducts() {
-            return mDataset;
-        }
-
-        public double calculatecostetotal() {
+        double calculatecostetotal() {
 
             double coste = 0;
             try {
@@ -514,19 +528,19 @@ public class EscandalloNewEdit_Fragment extends Fragment {
                 Log.e("error :", e.getMessage());
             }
 
-            return Double.valueOf(coste);
+            return coste;
         }
 
+        @NonNull
         @Override
-        public RecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public RecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_simple, parent, false);
 
-            RecyclerAdapter.ViewHolder vh = new RecyclerAdapter.ViewHolder(v);
-            return vh;
+            return new ViewHolder(v);
         }
 
         @Override
-        public void onBindViewHolder(EscandalloNewEdit_Fragment.RecyclerAdapter.ViewHolder viewHolder, int i) {
+        public void onBindViewHolder(@NonNull EscandalloNewEdit_Fragment.RecyclerAdapter.ViewHolder viewHolder, int i) {
             Escandallo_Product escPr = mDataset.get(i);
             viewHolder.txtProd.setText(escPr.getProductoname());
             viewHolder.txtCantidad.setText(String.format("%s%s", escPr.getCantidad(), escPr.getFormato()));
@@ -540,12 +554,12 @@ public class EscandalloNewEdit_Fragment extends Fragment {
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-            public ImageButton delButton;
-            public TextView txtProd;
-            public TextView txtCantidad;
-            public TextView txtCoste;
+            final ImageButton delButton;
+            final TextView txtProd;
+            final TextView txtCantidad;
+            final TextView txtCoste;
 
-            public ViewHolder(View v) {
+            ViewHolder(View v) {
                 super(v);
                 delButton = v.findViewById(R.id.ButtonDeleteProduct);
                 v.findViewById(R.id.ButtonEditProduct).setVisibility(View.GONE);

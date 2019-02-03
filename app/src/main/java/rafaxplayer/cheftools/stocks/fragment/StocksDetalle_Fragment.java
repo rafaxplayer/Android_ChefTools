@@ -2,6 +2,7 @@ package rafaxplayer.cheftools.stocks.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -50,7 +51,7 @@ public class StocksDetalle_Fragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_stocks_detalle, container, false);
         ButterKnife.bind(this, v);
@@ -58,13 +59,6 @@ public class StocksDetalle_Fragment extends Fragment {
         listStock.setLayoutManager(new LinearLayoutManager(getActivity()));
         listStock.setItemAnimator(new DefaultItemAnimator());
         return v;
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-
     }
 
     @Override
@@ -100,7 +94,7 @@ public class StocksDetalle_Fragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.edit:
                 if (ID != 0) {
-                    Boolean islayout = (getActivity().getSupportFragmentManager().findFragmentById(R.id.detallestocks) != null);
+                    boolean islayout = (getActivity().getSupportFragmentManager().findFragmentById(R.id.detallestocks) != null);
                     if (getResources().getBoolean(R.bool.dual_pane) && islayout) {
                         ((Stocks_Activity) getActivity()).showMenuEdit(ID);
                     } else {
@@ -166,31 +160,31 @@ public class StocksDetalle_Fragment extends Fragment {
 
     public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
-        private ArrayList<Stock_Product> mDataset;
+        private final ArrayList<Stock_Product> mDataset;
 
-        public RecyclerAdapter(ArrayList<Stock_Product> myDataset) {
+        RecyclerAdapter(ArrayList<Stock_Product> myDataset) {
             mDataset = myDataset;
         }
 
+        @NonNull
         @Override
-        public RecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public RecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_simple, parent, false);
 
-            ViewHolder vh = new ViewHolder(v);
-            return vh;
+            return new ViewHolder(v);
         }
 
         @Override
-        public void onBindViewHolder(RecyclerAdapter.ViewHolder viewHolder, int i) {
+        public void onBindViewHolder(@NonNull RecyclerAdapter.ViewHolder viewHolder, int i) {
             if (!sql.IsOpen()) {
                 sql.open();
             }
-            String productName = sql.getSimpleData(((Stock_Product) mDataset.get(i)).getProductoId(), DBHelper.NAME, DBHelper.TABLE_PRODUCTOS);
-            String formatName = sql.getSimpleData(((Stock_Product) mDataset.get(i)).getProductoId(), DBHelper.PRODUCTO_FORMATO_NAME, DBHelper.TABLE_PRODUCTOS);
+            String productName = sql.getSimpleData(mDataset.get(i).getProductoId(), DBHelper.NAME, DBHelper.TABLE_PRODUCTOS);
+            String formatName = sql.getSimpleData(mDataset.get(i).getProductoId(), DBHelper.PRODUCTO_FORMATO_NAME, DBHelper.TABLE_PRODUCTOS);
             viewHolder.delbut.setVisibility(View.GONE);
             viewHolder.editbut.setVisibility(View.GONE);
             viewHolder.txtProd.setText(productName);
-            viewHolder.txtCantidad.setText(String.valueOf(((Stock_Product) mDataset.get(i)).getCantidad()));
+            viewHolder.txtCantidad.setText(String.valueOf(mDataset.get(i).getCantidad()));
             viewHolder.txtFormat.setText(formatName);
         }
 
@@ -202,19 +196,19 @@ public class StocksDetalle_Fragment extends Fragment {
 
         public class ViewHolder extends RecyclerView.ViewHolder {
 
-            public TextView txtProd;
-            public TextView txtCantidad;
-            public TextView txtFormat;
-            public ImageButton delbut;
-            public ImageButton editbut;
+            final TextView txtProd;
+            final TextView txtCantidad;
+            final TextView txtFormat;
+            final ImageButton delbut;
+            final ImageButton editbut;
 
-            public ViewHolder(View v) {
+            ViewHolder(View v) {
                 super(v);
-                delbut = (ImageButton) v.findViewById(R.id.ButtonDeleteProduct);
-                editbut = (ImageButton) v.findViewById(R.id.ButtonEditProduct);
-                txtProd = (TextView) v.findViewById(R.id.text1);
-                txtCantidad = (TextView) v.findViewById(R.id.text2);
-                txtFormat = (TextView) v.findViewById(R.id.text3);
+                delbut = v.findViewById(R.id.ButtonDeleteProduct);
+                editbut = v.findViewById(R.id.ButtonEditProduct);
+                txtProd = v.findViewById(R.id.text1);
+                txtCantidad = v.findViewById(R.id.text2);
+                txtFormat = v.findViewById(R.id.text3);
             }
         }
     }
